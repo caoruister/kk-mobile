@@ -1,7 +1,9 @@
 import React from 'react';
 
 import { HashRouter } from 'react-router-dom';
-import { Icon, TabBar } from 'antd-mobile';
+import { Icon, TabBar, LocaleProvider } from 'antd-mobile';
+
+import zhCN from 'antd-mobile/lib/locale-provider/en_US';
 
 import iconfontUser from './assets/images/iconfont-user.png';
 import iconfontUserActive from './assets/images/iconfont-user-active.png';
@@ -32,9 +34,11 @@ class App extends React.Component {
 
   render() {
     return (
+      <LocaleProvider locale={zhCN}>
       <HashRouter>
         <MyRoute />
       </HashRouter>
+      </LocaleProvider>
     );
   }
 }
