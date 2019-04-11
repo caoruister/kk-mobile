@@ -1,11 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react';
 
+import { HashRouter } from 'react-router-dom';
 import { Icon, TabBar } from 'antd-mobile';
 
 import iconfontUser from './assets/images/iconfont-user.png';
 import iconfontUserActive from './assets/images/iconfont-user-active.png';
 import iconfontHome from './assets/images/iconfont-home.png';
 import iconfontHomeActive from './assets/images/iconfont-home-active.png';
+
+import BottomTabBar from './common/BottomTabBar';
+import { MyRoute } from './common/MyRoute';
+
+import { WEB_CONTEXT } from './common/Utils';
 
 class App extends React.Component {
   constructor(props) {
@@ -15,53 +21,20 @@ class App extends React.Component {
     };
   }
 
-  renderContent(tab) {
-    return (
-      <div style={{ backgroundColor: 'white', height: '100%', textAlign: 'center' }}>
-        {tab}
-      </div>
-    );
+  componentDidMount() {
+    let token = localStorage.getItem('__token__');
+    if (token == null || token == '') {
+      window.location.href = WEB_CONTEXT + '/#/Login';
+    } else {
+
+    }
   }
 
   render() {
     return (
-      <div style={{ position: 'fixed', height: '100%', width: '100%', top: 0 }}>
-        <TabBar
-          unselectedTintColor="#949494"
-          tintColor="#33A3F4"
-          barTintColor="white"
-          tabBarPosition="bottom"
-        >
-          <TabBar.Item
-            icon={<img style={{width:'22px', height:'22px'}} src={iconfontHome} />}
-            selectedIcon={<img style={{width:'22px', height:'22px'}} src={iconfontHomeActive} />}
-            title="首页"
-            key="home"
-            selected={this.state.selectedTab === 'home'}
-            onPress={() => {
-              this.setState({
-                selectedTab: 'home',
-              });
-            }}
-          >
-            {this.renderContent('home')}
-          </TabBar.Item>
-          <TabBar.Item
-            icon={<img style={{width:'22px', height:'22px'}} src={iconfontUser} />}
-            selectedIcon={<img style={{width:'22px', height:'22px'}} src={iconfontUserActive} />}
-            title="我的"
-            key="my"
-            selected={this.state.selectedTab === 'my'}
-            onPress={() => {
-              this.setState({
-                selectedTab: 'my',
-              });
-            }}
-          >
-            {this.renderContent('my')}
-          </TabBar.Item>
-        </TabBar>
-      </div>
+      <HashRouter>
+        <MyRoute />
+      </HashRouter>
     );
   }
 }
