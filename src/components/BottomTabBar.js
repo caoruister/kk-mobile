@@ -22,6 +22,7 @@ class BottomTabBar extends React.Component {
   }
 
   componentDidMount() {
+
   }
 
   render() {
@@ -43,6 +44,7 @@ class BottomTabBar extends React.Component {
               this.setState({
                 selectedTab: 'home',
               });
+              window.location.href = WEB_CONTEXT + '/#/Home';
             }}
           >
 
@@ -57,6 +59,7 @@ class BottomTabBar extends React.Component {
               this.setState({
                 selectedTab: 'my',
               });
+               window.location.href = WEB_CONTEXT + '/#/My';
             }}
           >
 
