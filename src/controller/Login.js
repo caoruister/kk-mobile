@@ -12,6 +12,7 @@ export const login = (info) => axios.post(URL_PREFIX + 'login?op=login', qs.stri
 }).then(function (response) {
 	if (response.data && response.data.success) {
     localStorage.setItem('__token__', response.data.token);
+    localStorage.setItem('__token__userName', response.data.name);
     //
     return response.data;
   } else {
