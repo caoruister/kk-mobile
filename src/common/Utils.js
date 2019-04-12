@@ -1,5 +1,5 @@
 
-export const URL_PREFIX = 'http://192.168.3.47:8080/xcx/';
+export const URL_PREFIX = 'https://api.kz-info.cn:9243/kkdev-xcx/';
 export const WEB_CONTEXT = '';
 
 export const setFormFieldsValue = (getForm, data, stateConfig) => {

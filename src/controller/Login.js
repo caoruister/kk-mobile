@@ -15,7 +15,7 @@ export const login = (info) => axios.post(URL_PREFIX + 'login?op=login', qs.stri
     //
     return response.data;
   } else {
-    alert(response.data.msg);
+    Toast.fail(response.data.msg);
     return false;
   }
 }).catch(function (error) {

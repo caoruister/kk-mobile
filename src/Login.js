@@ -64,11 +64,10 @@ function Base64() {
 
 class BasicInput extends React.Component {
   state = {
-    username: '', // 'zxm@qq.com',
-    password: '', // '1',
+    username: '',
+    password: '',
   }
   componentDidMount() {
-    // this.autoFocusInst.focus();
   }
   onChangeOfUsername = (value) => {
     this.setState({
