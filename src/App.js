@@ -13,7 +13,7 @@ class App extends React.Component {
 
   componentDidMount() {
     let token = localStorage.getItem('__token__');
-    if (token == null || token == '') {
+    if (token === null || token === '') {
       window.location.href = WEB_CONTEXT + '/#/Login';
     } else {
 
