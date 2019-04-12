@@ -12,8 +12,12 @@ import { WEB_CONTEXT } from './Utils';
 class BottomTabBar extends React.Component {
   constructor(props) {
     super(props);
+    let selectedTab = this.props.selectedTab;
+    if (selectedTab == null) {
+      selectedTab = 'home';
+    }
     this.state = {
-      selectedTab: 'home',
+      selectedTab: selectedTab,
     };
   }
 

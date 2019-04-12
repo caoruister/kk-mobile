@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 
 import { Toast, InputItem, Button, List } from 'antd-mobile';
 import { createForm } from 'rc-form';
-import { login } from './controller/Login';
+import { login } from '../controller/Login';
+import { WEB_CONTEXT } from './Utils';
 
-import loginImg from './assets/images/login.png';
-import mobile from './assets/images/mobile.png';
-import password from './assets/images/password.png';
+import loginImg from '../assets/images/login.png';
+import mobile from '../assets/images/mobile.png';
+import password from '../assets/images/password.png';
 
-import './App.css';
+import '../App.css';
+
 
 function Base64() {
 	// private property
@@ -117,7 +119,7 @@ class BasicInput extends React.Component {
           password: null,
         });
         //
-
+				window.location.href = WEB_CONTEXT + '/#/My';
       }
     });
   }
