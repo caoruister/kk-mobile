@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 
 import { Toast, InputItem, Button, List } from 'antd-mobile';
 import { createForm } from 'rc-form';
-import { login } from '../controller/Login';
-import { WEB_CONTEXT } from './Utils';
+import { login } from '../api/LoginAPI';
+import { WEB_CONTEXT } from '../common/Utils';
 
 import loginImg from '../assets/images/login.png';
 import mobile from '../assets/images/mobile.png';
 import password from '../assets/images/password.png';
 
-import '../App.css';
+import './Login.css';
 
 
 function Base64() {

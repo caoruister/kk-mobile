@@ -1,8 +1,8 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import Login from './Login';
-import My from '../template/My';
+import Login from '../components/Login';
+import My from '../components/My';
 
 export const MyRoute = () => (
   <main>

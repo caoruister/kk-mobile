@@ -7,7 +7,7 @@ import iconfontUserActive from '../assets/images/iconfont-user-active.png';
 import iconfontHome from '../assets/images/iconfont-home.png';
 import iconfontHomeActive from '../assets/images/iconfont-home-active.png';
 
-import { WEB_CONTEXT } from './Utils';
+import { WEB_CONTEXT } from '../common/Utils';
 
 class BottomTabBar extends React.Component {
   constructor(props) {

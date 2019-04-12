@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 import { List, Icon, Button } from 'antd-mobile';
-import BottomTabBar from '../common/BottomTabBar';
-import { logout } from '../controller/Login';
+import BottomTabBar from './BottomTabBar';
+import { logout } from '../api/LoginAPI';
 import { WEB_CONTEXT } from '../common/Utils';
 
 import './My.css';
