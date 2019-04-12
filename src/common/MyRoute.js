@@ -5,8 +5,10 @@ import Login from '../components/Login';
 import My from '../components/My';
 import Home from '../components/Home';
 
+import '../assets/weui.css';
+
 export const MyRoute = () => (
-  <main>
+  <main className="page">
     <Switch>
       <Route path='/Login' component={Login}/>
       <Route path='/My' component={My}/>

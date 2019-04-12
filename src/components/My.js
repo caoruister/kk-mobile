@@ -39,7 +39,7 @@ class My extends React.Component {
 		let userInfo = this.state.userInfo;
 
     return (
-      <div >
+      <div className="">
 				<div style={{backgroundColor: '#4182e6', height:'100px'}}>
 					<table border='0'>
 					<tbody>

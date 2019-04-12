@@ -131,11 +131,11 @@ class Home extends React.Component {
         return (
             <div>
                 <div>
-                {sections}
-                {sections}
-                {sections}
-                <Section/>
-                    </div>
+                    {sections}
+                    {sections}
+                    {sections}
+                    <Section/>
+                </div>
                 <BottomTabBar selectedTab='home'/>
             </div>
         );
