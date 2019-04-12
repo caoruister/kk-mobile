@@ -1,14 +1,7 @@
 import axios from 'axios';
 import qs from 'qs';
+import { Toast } from 'antd-mobile';
 import { URL_PREFIX } from '../common/Utils';
-
-const openNotificationWithIcon = (type, description) => {
-  // notification[type]({
-  //   message: '提示',
-  //   description: description,
-  // });
-  alert(description);
-};
 
 export const login = (info) => axios.post(URL_PREFIX + 'login?op=login', qs.stringify({
   info: info,
@@ -27,7 +20,7 @@ export const login = (info) => axios.post(URL_PREFIX + 'login?op=login', qs.stri
   }
 }).catch(function (error) {
     console.log(error);
-		openNotificationWithIcon('error', '无法访问服务器，请稍后再试');
+		Toast.fail('无法访问服务器，请稍后再试');
 	  return null;
 });
 
@@ -45,6 +38,6 @@ export const logout = () => axios.post(URL_PREFIX + 'login?op=logout', qs.string
   }
 }).catch(function (error) {
     console.log(error);
-		openNotificationWithIcon('error', '无法访问服务器，请稍后再试');
+		Toast.fail('无法访问服务器，请稍后再试');
 	  return null;
 });

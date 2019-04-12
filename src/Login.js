@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { InputItem, Button, List } from 'antd-mobile';
+import { Toast, InputItem, Button, List } from 'antd-mobile';
 import { createForm } from 'rc-form';
 import { login } from './controller/Login';
 
@@ -84,12 +84,12 @@ class BasicInput extends React.Component {
     let username = this.state.username;
     let password = this.state.password;
     if (username == null || username === '') {
-      alert('请输入用户名');
+      Toast.info('请输入用户名');
       document.getElementById('idOfUsername').focus();
       return;
     }
     if (password == null || password === '') {
-      alert('请输入密码');
+      Toast.info('请输入密码');
       document.getElementById('idOfPassword').focus();
       return;
     }
@@ -117,6 +117,8 @@ class BasicInput extends React.Component {
           username: null,
           password: null,
         });
+        //
+
       }
     });
   }
