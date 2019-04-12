@@ -5,7 +5,7 @@ import Login from '../components/Login';
 import My from '../components/My';
 import Home from '../components/Home';
 
-import '../assets/weui.css';
+//import '../assets/weui.css';
 
 export const MyRoute = () => (
   <main className="page">
