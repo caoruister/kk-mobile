@@ -10,6 +10,9 @@ import iconfontHomeActive from '../assets/images/iconfont-home-active.png';
 import { WEB_CONTEXT } from '../common/Utils';
 
 class BottomTabBar extends React.Component {
+  state = {
+    selectedTab: null,
+  }
   constructor(props) {
     super(props);
     let selectedTab = this.props.selectedTab;
@@ -27,7 +30,7 @@ class BottomTabBar extends React.Component {
 
   render() {
     return (
-      <div style={{ position: 'fixed', height: '100%', width: '100%', top: 0 }}>
+      <div style={{ zIndex:-999, position: 'fixed', height: '100%', width: '100%', bottom:0 }}>
         <TabBar
           unselectedTintColor="#949494"
           tintColor="#33A3F4"

@@ -144,7 +144,7 @@ class BasicInput extends React.Component {
             id='idOfPassword'
           ><img className="weui-grid__icon" src={password} /></InputItem>
         </List>
-        <Button type='primary' style={{marginTop:'10px'}} onClick={this.handleOk}>登 录</Button>
+        <Button type='primary' style={{marginTop:'10px'}} onClick={this.handleOk}>登录</Button>
       </div>
     );
   }
@@ -156,7 +156,6 @@ class Login extends React.Component {
   componentDidMount() {
     document.title = '登录';
   }
-
   render() {
     return (
       <div className="page">
