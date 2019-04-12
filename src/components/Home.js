@@ -35,7 +35,7 @@ class Home extends React.Component {
                 "show": true,
                 "data": [
                     {
-                        "path": "/pages/webview/webview",
+                        "path": "/#/My",
                         "webviewUrl": "https://www.smglpt.com/xcx2c/h5/h5-2.html",
                         "icon": "/assets/images/yellow/1_03-07.png",
                         "label": "睡眠常识"
@@ -124,17 +124,14 @@ class Home extends React.Component {
     render() {
         const {items} = this.state;
 
-        const sections = items.map((section) =>
-            <Section data={section} />
+        const sections = items.map((section, idx) =>
+            <Section key={section.templateType+idx} sectionData={ section } />
         );
 
         return (
             <div>
                 <div style={{paddingBottom:'80px'}}>
                     {sections}
-                    {sections}
-                    {sections}
-                    <Section/>
                 </div>
                 <BottomTabBar selectedTab='home'/>
             </div>
