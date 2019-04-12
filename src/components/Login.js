@@ -66,8 +66,8 @@ function Base64() {
 
 class BasicInput extends React.Component {
   state = {
-    username: '',
-    password: '',
+    username: 'admin@kkdev.com',
+    password: '1',
   }
   componentDidMount() {
   }
