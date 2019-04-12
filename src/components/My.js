@@ -25,16 +25,15 @@ class My extends React.Component {
     }
   }
 	logout = () => {
-		alert(9)
-		// logout().then(res => {
-    //   if (res == null) {return;}
-    //   //
-		// 	console.log(res);
-    // });
-		// //
-		// localStorage.removeItem('__token__');
-		// localStorage.removeItem('__token__userName');
-		// window.location.href = WEB_CONTEXT + '/#/Login';
+		logout().then(res => {
+      if (res == null) {return;}
+      //
+			console.log(res);
+    });
+		//
+		localStorage.removeItem('__token__');
+		localStorage.removeItem('__token__userName');
+		window.location.href = WEB_CONTEXT + '/#/Login';
 	}
   render() {
 		let userInfo = this.state.userInfo;
@@ -59,23 +58,30 @@ class My extends React.Component {
 					</table>
 				</div>
 
-				<List>
-					<Item
-						arrow="horizontal"
-						thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
-						onClick={() => {}}>我的信息</Item>
-					<Item
-						arrow="horizontal"
-						thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
-						onClick={() => {}}>我的建立</Item>
-					<Item
-						arrow="horizontal"
-						thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
-						onClick={() => {}}>我的投递</Item>
-				</List>
+				<div>
+					<List>
+						<Item
+							arrow="horizontal"
+							thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
+							onClick={() => {}}>我的信息</Item>
+						<Item
+							arrow="horizontal"
+							thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
+							onClick={() => {}}>我的建立</Item>
+						<Item
+							arrow="horizontal"
+							thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
+							onClick={() => {}}>我的投递</Item>
+					</List>
+				</div>
 
-				<Button style={{marginTop:'10px'}} onClick={this.logout}>退出</Button>
-        <BottomTabBar selectedTab='my'/>
+				<div>
+					<Button style={{marginTop:'10px'}} onClick={this.logout}>退出</Button>
+				</div>
+
+				<div>
+					<BottomTabBar selectedTab='my'/>
+				</div>
       </div>
     );
   }
