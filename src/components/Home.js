@@ -130,7 +130,7 @@ class Home extends React.Component {
 
         return (
             <div>
-                <div>
+                <div style={{paddingBottom:'80px'}}>
                     {sections}
                     {sections}
                     {sections}
