@@ -11,14 +11,14 @@ class Swiper extends React.Component {
     }
     componentDidMount() {
         // simulate img loading
-        this.timeout = setTimeout(() => {
+        this.timeoutId = setTimeout(() => {
             this.setState({
                 data: ['AiyWuByWklrrUDlFignR', 'TekJlZRVCjLFexlOCuWn', 'IJOtIlfsYdTyaDTRVrLI'],
             });
         }, 100);
     }
     componentWillUnmount() {
-        clearTimeout(this.timeout);
+        clearTimeout(this.timeoutId);
     }
     render() {
         return (

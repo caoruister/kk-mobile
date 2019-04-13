@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { List, Icon, Button } from 'antd-mobile';
+import {} from 'antd-mobile';
 import Section from './Section';
 import BottomTabBar from './BottomTabBar';
 import { WEB_CONTEXT } from '../common/Utils';
@@ -35,7 +35,7 @@ class Home extends React.Component {
                 "show": true,
                 "data": [
                     {
-                        "path": "/#/My",
+                        "path": "/#/List",
                         "webviewUrl": "https://www.smglpt.com/xcx2c/h5/h5-2.html",
                         "icon": "/assets/images/yellow/1_03-07.png",
                         "label": "睡眠常识"
@@ -125,7 +125,7 @@ class Home extends React.Component {
         const {items} = this.state;
 
         const sections = items.map((section, idx) =>
-            <Section key={section.templateType+idx} sectionData={ section } />
+            <Section key={section.templateType+idx} type={section.templateType} showSection={section.show} title={section.sectionTitle} showTitle={!section.hideSectionTitle} columnNum={section.columnCount}  data={section.data} />
         );
 
         return (

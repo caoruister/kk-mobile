@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Grid } from 'antd-mobile';
+import { Grid,WhiteSpace } from 'antd-mobile';
 
 import Swiper from './Swiper'
 import { WEB_CONTEXT } from '../common/Utils';
@@ -54,17 +54,17 @@ class Section extends React.Component {
     render() {
 
         //debugger
-        const {templateType,show,hideSectionTitle,columnCount,data} = this.props.sectionData;
+        //const {templateType,show,hideSectionTitle,columnCount,data} = this.props.sectionData;
 
         return (
-            show &&
+            this.props.showSection &&
                 <div>
                     <div className="weui-panel">
-                        {!hideSectionTitle && <div className="weui-panel__hd">{'标题'}</div>}
+                        {this.props.showTitle && <div className="weui-panel__hd">{this.props.title}</div>}
                         <div className="weui-panel__bd">
 
-                            {(templateType === 'topItems') && <Grid data={data}
-                                  columnNum={columnCount}
+                            {(this.props.type === 'topItems') && <Grid data={this.props.data}
+                                  columnNum={this.props.columnNum}
                                   renderItem={dataItem => (
                                              <a href={dataItem.path} className='am-grid-item-inner-content'>
                                               <img src={dataItem.icon} alt="" className='am-grid-icon'/>
@@ -75,11 +75,11 @@ class Section extends React.Component {
                                           )}
                                 />}
 
-                            {(templateType === 'swiper') && <Swiper/>}
+                            {(this.props.type === 'swiper') && <Swiper/>}
 
                         </div>
                     </div>
-                    <div className="bottom-gap"></div>
+                    <WhiteSpace size="lg" />
                 </div>
         );
     }
