@@ -5,6 +5,7 @@ import Login from '../components/Login';
 import My from '../components/My';
 import Home from '../components/Home';
 import List from '../components/List';
+import Add from '../components/Add';
 
 //import '../assets/weui.css';
 
@@ -15,6 +16,7 @@ export const MyRoute = () => (
       <Route path='/My' component={My}/>
       <Route path='/Home' component={Home}/>
       <Route path='/List' component={List}/>
+      <Route path='/Add' component={Add}/>
     </Switch>
   </main>
 );
