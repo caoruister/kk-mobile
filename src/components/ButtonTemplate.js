@@ -17,12 +17,13 @@ class ButtonTemplate extends React.Component {
     onClickOfButton = (e) => {
     }
     render() {
-        const buttons = this.props.data;
+        const templates = this.props.data.map((button, idx)=>
+                <Button key={button.id} type="primary" inline size="small" style={{ marginRight: '4px' }} data-method-name={ button.methodName } onClick={this.onClickOfButton}>{ button.text }</Button>
+        );
+
         return (
             <WingBlank>
-                {buttons.map((button, idx)=>
-                    <Button key={button.id} type="primary" inline size="small" style={{ marginRight: '4px' }} data-method-name={ button.methodName } onClick={this.onClickOfButton}>{ button.text }</Button>
-                )}
+                {templates}
             </WingBlank>
         );
     }

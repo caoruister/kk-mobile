@@ -86,26 +86,16 @@ class Image extends React.Component {
             files,
         });
     }
-    onSegChange = (e) => {
-        const index = e.nativeEvent.selectedSegmentIndex;
-        this.setState({
-            multiple: index === 1,
-        });
-    }
     render() {
         const { files } = this.state;
         return (
-            <FieldLayout field={this.props.field}>
-                <WingBlank>
-                    <ImagePicker
-                        files={files}
-                        onChange={this.onChange}
-                        onImageClick={(index, fs) => console.log(index, fs)}
-                        selectable={files.length < 7}
-                        multiple={this.state.multiple}
-                        />
-                </WingBlank>
-            </FieldLayout>
+            <ImagePicker
+                files={files}
+                onChange={this.onChange}
+                onImageClick={(index, fs) => console.log(index, fs)}
+                selectable={files.length < 7}
+                multiple={this.state.multiple}
+                />
         );
     }
 }
