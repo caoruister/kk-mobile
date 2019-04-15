@@ -3,6 +3,7 @@ import React from 'react';
 import {List, Button, InputItem, WingBlank, ImagePicker, Picker, DatePicker, TextareaItem, Switch} from 'antd-mobile';
 import { createForm } from 'rc-form';
 
+import { getAdd } from '../api/AddAPI';
 import { WEB_CONTEXT } from '../common/Utils';
 
 import './Add.css';
@@ -193,406 +194,47 @@ class ButtonItems extends React.Component {
         });
     }
     render() {
-        return this.props.buttons.map((button, idx)=>
-                <Button key={button.id} type="primary" inline size="small" style={{ marginRight: '4px' }} data-method-name={ button.methodName } onClick={this.save}>{ button.text }</Button>
-        )
+        let buttons = '';
+        if (this.props.buttons.length === 0) {
+            buttons = <Button type="primary" onClick={this.save}>确认</Button>
+        } else {
+            buttons = this.props.buttons.map((button, idx)=><Button key={button.id+idx} type="primary" inline size="small" style={{ marginRight: '4px' }} data-method-name={ button.methodName } onClick={this.onClickOfButton}>{ button.text }</Button>)
+        }
+
+        return buttons;
     }
 
 }
 
-class BasicInput extends React.Component {
+class BasicForm extends React.Component {
     state = {
-        "sections": [
-        {
-            "defaultHideInDetailPage": false,
-            "defaultHideInEditPage": false,
-            "icon": null,
-            "name": null,
-            "title": "基本信息",
-            "fields": [
-                {
-                    "length": "255",
-                    "name": "name",
-                    "readOnly": true,
-                    "label": "编号",
-                    "type": "V",
-                    "key": "2C904B7269D8FEA60169E25061A80100",
-                    "required": false,
-                    "fieldid": "2C904B7269D8FEA60169E25061A80100",
-                    "hideLabel": false
-                },
-                {
-                    "length": "100",
-                    "name": "wb",
-                    "readOnly": false,
-                    "label": "文本",
-                    "type": "S",
-                    "key": "2C904B7269D8FEA60169E2521FB7012D",
-                    "required": false,
-                    "fieldid": "2C904B7269D8FEA60169E2521FB7012D",
-                    "hideLabel": false
-                },
-                {
-                    "decimalPlaces": 0,
-                    "length": "10",
-                    "name": "sz",
-                    "readOnly": false,
-                    "label": "数字",
-                    "type": "N",
-                    "key": "2C904B7269D8FEA60169E25239FB0138",
-                    "required": false,
-                    "fieldid": "2C904B7269D8FEA60169E25239FB0138",
-                    "hideLabel": false
-                },
-                {
-                    "length": null,
-                    "name": "rq",
-                    "readOnly": false,
-                    "label": "日期",
-                    "type": "D",
-                    "key": "2C904B7269D8FEA60169E25253580143",
-                    "required": false,
-                    "fieldid": "2C904B7269D8FEA60169E25253580143",
-                    "hideLabel": false
-                },
-                {
-                    "length": null,
-                    "name": "rqsj",
-                    "readOnly": false,
-                    "label": "日期/时间",
-                    "type": "F",
-                    "key": "2C904B7269D8FEA60169E2526ADB014E",
-                    "required": false,
-                    "fieldid": "2C904B7269D8FEA60169E2526ADB014E",
-                    "hideLabel": false
-                },
-                {
-                    "length": "1000",
-                    "name": "wbq",
-                    "readOnly": false,
-                    "label": "文本区",
-                    "type": "X",
-                    "key": "2C904B7269D8FEA60169E25286970159",
-                    "required": false,
-                    "fieldid": "2C904B7269D8FEA60169E25286970159",
-                    "hideLabel": false
-                },
-                {
-                    "length": null,
-                    "name": "xxlbxllb",
-                    "options": [
-                        {
-                            "text": "　",
-                            "value": ""
-                        },
-                        {
-                            "text": "A",
-                            "value": "A"
-                        },
-                        {
-                            "text": "B",
-                            "value": "B"
-                        },
-                        {
-                            "text": "C",
-                            "value": "C"
-                        },
-                        {
-                            "text": "D",
-                            "value": "D"
-                        }
-                    ],
-                    "readOnly": false,
-                    "label": "选项列表（下拉列表）",
-                    "type": "L",
-                    "key": "2C904B7269D8FEA60169E252C3420164",
-                    "required": false,
-                    "fieldid": "2C904B7269D8FEA60169E252C3420164",
-                    "hideLabel": false
-                },
-                {
-                    "length": null,
-                    "name": "xxlbdxklb",
-                    "options": [
-                        {
-                            "text": "　",
-                            "value": ""
-                        },
-                        {
-                            "text": "A",
-                            "value": "A"
-                        },
-                        {
-                            "text": "B",
-                            "value": "B"
-                        },
-                        {
-                            "text": "C",
-                            "value": "C"
-                        }
-                    ],
-                    "readOnly": false,
-                    "label": "选项列表（单选框列表）",
-                    "type": "L",
-                    "key": "2C904B7269D8FEA60169E2531C0D016F",
-                    "required": false,
-                    "fieldid": "2C904B7269D8FEA60169E2531C0D016F",
-                    "hideLabel": false
-                },
-                {
-                    "lookupObjShowedFieldName": "name",
-                    "lookupObjid": "2C904B72686017330168605160FA0106",
-                    "length": null,
-                    "name": "czgx",
-                    "readOnly": false,
-                    "label": "查找关系",
-                    "type": "Y",
-                    "lookupObjShowedFieldid": "2C904B72686017330168605161560107",
-                    "key": "2C904B7269D8FEA60169E2536CD20185",
-                    "required": false,
-                    "fieldid": "2C904B7269D8FEA60169E2536CD20185",
-                    "hideLabel": false
-                },
-                {
-                    "formulaType": "文本",
-                    "length": null,
-                    "name": "gs",
-                    "readOnly": true,
-                    "label": "公式",
-                    "type": "Z",
-                    "key": "2C904B7269D8FEA60169E253CB570191",
-                    "required": false,
-                    "fieldid": "2C904B7269D8FEA60169E253CB570191",
-                    "hideLabel": false
-                },
-                {
-                    "length": null,
-                    "name": "zdbh",
-                    "readOnly": true,
-                    "label": "自动编号",
-                    "type": "V",
-                    "key": "2C904B7269D8FEA60169E254111F019D",
-                    "required": false,
-                    "fieldid": "2C904B7269D8FEA60169E254111F019D",
-                    "hideLabel": false
-                },
-                {
-                    "lookupObjShowedFieldName": "name",
-                    "lookupObjid": "2C904B72686017330168605160FA0106",
-                    "length": null,
-                    "name": "zxxxgx",
-                    "readOnly": false,
-                    "label": "主详信息关系",
-                    "type": "M",
-                    "lookupObjShowedFieldid": "2C904B72686017330168605161560107",
-                    "key": "2C904B7269D8FEA60169E2546DF001AC",
-                    "required": false,
-                    "fieldid": "2C904B7269D8FEA60169E2546DF001AC",
-                    "hideLabel": false
-                },
-                {
-                    "length": null,
-                    "name": "url",
-                    "readOnly": false,
-                    "label": "URL",
-                    "type": "U",
-                    "key": "2C904B7269D8FEA60169E2550DC201C5",
-                    "required": false,
-                    "fieldid": "2C904B7269D8FEA60169E2550DC201C5",
-                    "hideLabel": false
-                },
-                {
-                    "length": null,
-                    "name": "pf",
-                    "readOnly": false,
-                    "label": "评分",
-                    "type": "SCORE",
-                    "maxScore": "10",
-                    "key": "2C904B7269D8FEA60169E25537EF01D0",
-                    "required": false,
-                    "fieldid": "2C904B7269D8FEA60169E25537EF01D0",
-                    "hideLabel": false
-                },
-                {
-                    "length": "2",
-                    "name": "tp",
-                    "readOnly": false,
-                    "label": "图片",
-                    "type": "IMG",
-                    "key": "2C904B7269D8FEA60169E2556A5E01DB",
-                    "required": false,
-                    "fieldid": "2C904B7269D8FEA60169E2556A5E01DB",
-                    "hideLabel": false
-                },
-                {
-                    "decimalPlaces": 0,
-                    "length": "10",
-                    "name": "bfb",
-                    "readOnly": false,
-                    "label": "百分比",
-                    "type": "P",
-                    "key": "2C904B7269D8FEA60169E2558F8701E6",
-                    "required": false,
-                    "fieldid": "2C904B7269D8FEA60169E2558F8701E6",
-                    "hideLabel": false
-                },
-                {
-                    "length": "2000",
-                    "name": "wbqz",
-                    "readOnly": false,
-                    "label": "文本区 (长)",
-                    "type": "J",
-                    "key": "2C904B7269D8FEA60169E255BEAB01F1",
-                    "required": false,
-                    "fieldid": "2C904B7269D8FEA60169E255BEAB01F1",
-                    "hideLabel": false
-                },
-                {
-                    "length": null,
-                    "name": "dh",
-                    "readOnly": false,
-                    "label": "电话",
-                    "type": "H",
-                    "key": "2C904B7269D8FEA60169E255E08801FC",
-                    "required": false,
-                    "fieldid": "2C904B7269D8FEA60169E255E08801FC",
-                    "hideLabel": false
-                },
-                {
-                    "length": null,
-                    "name": "dzyj",
-                    "readOnly": false,
-                    "label": "电子邮件",
-                    "type": "E",
-                    "key": "2C904B7269D8FEA60169E255FF710207",
-                    "required": false,
-                    "fieldid": "2C904B7269D8FEA60169E255FF710207",
-                    "hideLabel": false
-                },
-                {
-                    "length": null,
-                    "name": "fxk",
-                    "readOnly": false,
-                    "label": "复选框",
-                    "type": "B",
-                    "value": false,
-                    "key": "2C904B7269D8FEA60169E25623D60212",
-                    "required": false,
-                    "fieldid": "2C904B7269D8FEA60169E25623D60212",
-                    "hideLabel": false
-                },
-                {
-                    "length": null,
-                    "name": "wbqfwb",
-                    "readOnly": false,
-                    "label": "文本区（富文本",
-                    "type": "A",
-                    "key": "2C904B7269D8FEA60169E25648C3021D",
-                    "required": false,
-                    "fieldid": "2C904B7269D8FEA60169E25648C3021D",
-                    "hideLabel": false
-                },
-                {
-                    "length": "100",
-                    "name": "jmwbccjm",
-                    "readOnly": false,
-                    "label": "加密文本(存储加密)",
-                    "type": "enc",
-                    "key": "2C904B7269D8FEA60169E2567A500228",
-                    "required": false,
-                    "maskcharacter": "*",
-                    "fieldid": "2C904B7269D8FEA60169E2567A500228",
-                    "hideLabel": false
-                },
-                {
-                    "length": "100",
-                    "name": "jmwbxsjm",
-                    "readOnly": false,
-                    "label": "加密文本(显示加密)",
-                    "type": "encd",
-                    "key": "2C904B7269D8FEA60169E256ADC70233",
-                    "required": false,
-                    "maskcharacter": "*",
-                    "fieldid": "2C904B7269D8FEA60169E256ADC70233",
-                    "hideLabel": false
-                },
-                {
-                    "length": null,
-                    "name": "xxlbdx",
-                    "options": [
-                        {
-                            "text": "A",
-                            "value": "A"
-                        },
-                        {
-                            "text": "B",
-                            "value": "B"
-                        },
-                        {
-                            "text": "C",
-                            "value": "C"
-                        }
-                    ],
-                    "readOnly": false,
-                    "label": "选项列表（多选，下拉列表）",
-                    "type": "Q",
-                    "key": "2C904B7269D8FEA60169E2570C75023E",
-                    "required": false,
-                    "fieldid": "2C904B7269D8FEA60169E2570C75023E",
-                    "hideLabel": false
-                },
-                {
-                    "length": null,
-                    "name": "xxlbdxfxklb",
-                    "readOnly": false,
-                    "label": "选项列表（多选，复选框列表）",
-                    "type": "Q",
-                    "key": "2C904B7269D8FEA60169E25746B50249",
-                    "required": false,
-                    "fieldid": "2C904B7269D8FEA60169E25746B50249",
-                    "hideLabel": false
-                },
-                {
-                    "length": "2",
-                    "name": "wj",
-                    "readOnly": false,
-                    "label": " 文件",
-                    "type": "FILE",
-                    "key": "2C904B7269D8FEA60169E25786650254",
-                    "required": false,
-                    "fieldid": "2C904B7269D8FEA60169E25786650254",
-                    "hideLabel": false
-                }
-            ],
-            "titleShowedInEditPage": true,
-            "titleShowedInDetailPage": true,
-            "key": "2C904B7269D8FEA60169E2506788010C"
-        }
-        ],
-        "buttons": [
-            {
-                "standard": false,
-                "custom": true,
-                "methodName": "onClick1",
-                "id": "C032F30F3B2D48EEB86FDC49A88408FB",
-                "text": "申请检测"
-            }
-        ]
-
+        "sections": [],
+        "buttons": []
     }
     componentDidMount() {
+        let token = localStorage.getItem('__token__');
+        if (token === null || token === '') {
+            window.location.href = WEB_CONTEXT + '/#/Login';
+        } else {
+             this.getData();
+        }
     }
-    onChangeOfUsername = (value) => {
-        this.setState({
-            username: value,
+    getData = () => {
+        getAdd({
+            objid: '2C904B7269D8FEA60169E250612C00FF',
+            notNeedLogin: true
+        }).then(res => {
+            if (res == null) {return;}
+            //
+            console.log(res);
+            this.setState({
+                sections: res.sections || [],
+                buttons: res.buttons || [],
+                layoutid: res.layoutid,
+                objLabel: res.objLabel,
+                objid: res.objid
+            });
         });
-    }
-    onChangeOfPassword = (value) => {
-        this.setState({
-            password: value,
-        });
-    }
-    handleOk = ()=> {
     }
     render() {
 
@@ -608,7 +250,7 @@ class BasicInput extends React.Component {
     }
 }
 
-const BasicInputWrapper = createForm()(BasicInput);
+const BasicInputWrapper = createForm()(BasicForm);
 
 class Add extends React.Component {
 
