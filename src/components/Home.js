@@ -35,7 +35,7 @@ class Home extends React.Component {
                 "show": true,
                 "data": [
                     {
-                        "path": "/#/List",
+                        "path": "/#/Edit",
                         "webviewUrl": "https://www.smglpt.com/xcx2c/h5/h5-2.html",
                         "icon": "/assets/images/yellow/1_03-07.png",
                         "label": "睡眠常识"

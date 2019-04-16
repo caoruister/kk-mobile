@@ -82,6 +82,7 @@ class BasicInput extends React.Component {
     });
   }
   handleOk = ()=> {
+
     let username = this.state.username;
     let password = this.state.password;
     if (username == null || username === '') {

@@ -19,7 +19,6 @@ class SectionItems extends React.Component {
         let fieldValues = this.state.fieldValues;
         fieldValues[fieldid] = value;
         this.setState(fieldValues);
-        //this.props.form.setFieldsValue(value);
     }
     render() {
 
@@ -72,7 +71,6 @@ class SectionItems extends React.Component {
                                     return {"label": option.text, "value": option.value}
                                 });
 
-                                //console.log(data);
                                 return <Picker
                                     {...getFieldProps(field.fieldid, {
                                         initialValue: this.state.fieldValues[field.fieldid]
@@ -85,6 +83,7 @@ class SectionItems extends React.Component {
                                     {...getFieldProps(field.fieldid, {
                                         initialValue: this.state.fieldValues[field.fieldid]
                                     })}
+                                    mode="date"
                                     key={field.fieldid+idx2} extra="请选择"
                                     onChange={this.onChangeOfValue.bind(this, field.fieldid)}
                                     >
@@ -113,7 +112,7 @@ class SectionItems extends React.Component {
                                      ...getFieldProps(field.fieldid, {
                                         initialValue: this.state.fieldValues[field.fieldid]
                                      })}
-                                    checked={this.state.fieldValues[field.fieldid]}
+                                    checked={field.value}
                                     onChange={this.onChangeOfValue.bind(this, field.fieldid)}
                                   />}
                                     >{field.label}</List.Item>
@@ -209,30 +208,33 @@ class ButtonItems extends React.Component {
 class BasicForm extends React.Component {
     state = {
         "sections": [],
-        "buttons": []
+        "buttons": [],
+        "layoutid": '',
+        "objLabel": '',
+        "objid": '',
+        "id": ''
     }
     componentDidMount() {
-        let token = localStorage.getItem('__token__');
-        if (token === null || token === '') {
-            window.location.href = WEB_CONTEXT + '/#/Login';
-        } else {
-             this.getData();
-        }
+        this.getData();
     }
     getData = () => {
         getAdd({
             objid: '2C904B7269D8FEA60169E250612C00FF',
             notNeedLogin: true
         }).then(res => {
-            if (res == null) {return;}
+            if (res == null || !res) {
+                window.location.href = WEB_CONTEXT + '/#/Login';
+                return;
+            }
             //
             console.log(res);
+
             this.setState({
-                sections: res.sections || [],
-                buttons: res.buttons || [],
-                layoutid: res.layoutid,
-                objLabel: res.objLabel,
-                objid: res.objid
+                "sections": res.sections || [],
+                "buttons": res.buttons || [],
+                "layoutid": res.layoutid,
+                "objLabel": res.objLabel,
+                "objid": res.objid
             });
         });
     }
@@ -250,25 +252,27 @@ class BasicForm extends React.Component {
     }
 }
 
-const BasicInputWrapper = createForm()(BasicForm);
+const BasicFormWrapper = createForm()(BasicForm);
 
 class Add extends React.Component {
 
     componentDidMount() {
         document.title = '新增';
 
+        //debugger
         let token = localStorage.getItem('__token__');
         if (token === null || token === '') {
             window.location.href = WEB_CONTEXT + '/#/Login';
         } else {
             // this.getData(token);
+
         }
     }
     render() {
 
         return (
             <div style={{paddingBottom:'80px'}}>
-                <BasicInputWrapper/>
+                <BasicFormWrapper/>
             </div>
         );
     }

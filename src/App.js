@@ -16,7 +16,7 @@ class App extends React.Component {
     if (token === null || token === '') {
       window.location.href = WEB_CONTEXT + '/#/Login';
     } else {
-      window.location.href = WEB_CONTEXT + '/#/Add';
+      window.location.href = WEB_CONTEXT + '/#/My';
     }
   }
 
