@@ -7,6 +7,7 @@ import Home from '../components/Home';
 import List from '../components/List';
 import Add from '../components/Add';
 import Edit from '../components/Edit';
+import View from '../components/View';
 
 //import '../assets/weui.css';
 
@@ -19,6 +20,7 @@ export const MyRoute = () => (
       <Route path='/List' component={List}/>
       <Route path='/Add' component={Add}/>
       <Route path='/Edit' component={Edit}/>
+      <Route path='/View' component={View}/>
     </Switch>
   </main>
 );

@@ -1,5 +1,6 @@
 
-export const URL_PREFIX = 'http://api.kz-info.cn:9002/kkdev-xcx/';
+//export const URL_PREFIX = 'http://api.kz-info.cn:9002/kkdev-xcx/';
+export const URL_PREFIX = 'https://kkdev.kz-info.cn:9243/kkdev-xcx2c/'
 export const WEB_CONTEXT = '';
 
 export const setFormFieldsValue = (getForm, data, stateConfig) => {

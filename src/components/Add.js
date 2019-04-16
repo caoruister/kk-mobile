@@ -10,15 +10,11 @@ import './Add.css';
 
 class SectionItems extends React.Component {
     state = {
-        objid: '',
-        layoutid: '',
-        fieldValues: {}
     }
-    onChangeOfValue(fieldid, value) {
-        console.log(fieldid + ':' + value);
-        let fieldValues = this.state.fieldValues;
-        fieldValues[fieldid] = value;
-        this.setState(fieldValues);
+    onChangeOfValue(field, value) {
+        console.log(field.fieldid + ':' + value);
+        field.value = value;
+        this.setState({});
     }
     render() {
 
@@ -35,7 +31,9 @@ class SectionItems extends React.Component {
                         section.fields.map((field, idx2)=> {
                             if (field.type === 'S') {
                                 return <InputItem
-                                    {...getFieldProps(field.fieldid)}
+                                    {...getFieldProps(field.fieldid, {
+                                        initialValue: field.value
+                                    })}
                                     key={field.fieldid+idx2}
                                     placeholder={'请输入'+field.label}
                                     type="text"
@@ -44,7 +42,9 @@ class SectionItems extends React.Component {
                                     >{field.label}</InputItem>
                             } else if (field.type === 'N') {
                                 return <InputItem
-                                    {...getFieldProps(field.fieldid)}
+                                    {...getFieldProps(field.fieldid, {
+                                        initialValue: field.value
+                                    })}
                                     key={field.fieldid+idx2}
                                     placeholder={'请输入'+field.label}
                                     type="tel"
@@ -52,7 +52,9 @@ class SectionItems extends React.Component {
                                     >{field.label}</InputItem>
                             } else if (field.type === 'H') {
                                 return <InputItem
-                                    {...getFieldProps(field.fieldid)}
+                                    {...getFieldProps(field.fieldid, {
+                                        initialValue: field.value
+                                    })}
                                     key={field.fieldid+idx2}
                                     placeholder={'请输入'+field.label}
                                     type="phone"
@@ -60,7 +62,9 @@ class SectionItems extends React.Component {
                                     >{field.label}</InputItem>
                             } else if (field.type === 'enc') {
                                 return <InputItem
-                                    {...getFieldProps(field.fieldid)}
+                                    {...getFieldProps(field.fieldid, {
+                                        initialValue: field.value
+                                    })}
                                     key={field.fieldid+idx2}
                                     placeholder={'请输入'+field.label}
                                     type="password"
@@ -73,7 +77,7 @@ class SectionItems extends React.Component {
 
                                 return <Picker
                                     {...getFieldProps(field.fieldid, {
-                                        initialValue: this.state.fieldValues[field.fieldid]
+                                        initialValue: field.value
                                     })}
                                     key={field.fieldid+idx2} extra="请选择" data={data} cols={1} className="forss">
                                     <List.Item arrow="horizontal">{field.label}</List.Item>
@@ -81,11 +85,11 @@ class SectionItems extends React.Component {
                             } else if (field.type === 'D') {
                                 return <DatePicker
                                     {...getFieldProps(field.fieldid, {
-                                        initialValue: this.state.fieldValues[field.fieldid]
+                                        initialValue: field.value
                                     })}
                                     mode="date"
                                     key={field.fieldid+idx2} extra="请选择"
-                                    onChange={this.onChangeOfValue.bind(this, field.fieldid)}
+                                    onChange={this.onChangeOfValue.bind(this, field)}
                                     >
                                     <List.Item arrow="horizontal">{field.label}</List.Item>
                                 </DatePicker>
@@ -94,7 +98,9 @@ class SectionItems extends React.Component {
                                     <List.Item
                                         >{field.label}</List.Item>
                                     <TextareaItem
-                                        {...getFieldProps(field.fieldid)}
+                                        {...getFieldProps(field.fieldid, {
+                                            initialValue: field.value
+                                        })}
                                         key={field.fieldid+idx2}
                                         rows={5}
                                         count={100}
@@ -108,12 +114,11 @@ class SectionItems extends React.Component {
                                 return <List.Item
                                     key={field.fieldid+idx2}
                                     extra={<Switch
-                                     {
-                                     ...getFieldProps(field.fieldid, {
-                                        initialValue: this.state.fieldValues[field.fieldid]
-                                     })}
+                                    {...getFieldProps(field.fieldid, {
+                                        initialValue: field.value
+                                    })}
                                     checked={field.value}
-                                    onChange={this.onChangeOfValue.bind(this, field.fieldid)}
+                                    onChange={this.onChangeOfValue.bind(this, field)}
                                   />}
                                     >{field.label}</List.Item>
 
@@ -123,12 +128,11 @@ class SectionItems extends React.Component {
                                     <List.Item
                                         >{field.label}</List.Item>
                                     <ImagePicker
-                                        {
-                                            ...getFieldProps(field.fieldid, {
-                                                initialValue: this.state.fieldValues[field.fieldid]
-                                            })}
-                                        files={this.state.fieldValues[field.fieldid]}
-                                        onChange={this.onChangeOfValue.bind(this, field.fieldid)}
+                                        {...getFieldProps(field.fieldid, {
+                                            initialValue: field.value
+                                        })}
+                                        files={field.value}
+                                        onChange={this.onChangeOfValue.bind(this, field)}
                                         onImageClick={(index, fs) => console.log(index, fs)}
                                         selectable={files.length < 7}
                                         multiple={false}
@@ -207,12 +211,12 @@ class ButtonItems extends React.Component {
 
 class BasicForm extends React.Component {
     state = {
-        "sections": [],
-        "buttons": [],
-        "layoutid": '',
-        "objLabel": '',
-        "objid": '',
-        "id": ''
+        sections: [],
+        buttons: [],
+        layoutid: '',
+        objLabel: '',
+        objid: '',
+        id: ''
     }
     componentDidMount() {
         this.getData();
@@ -229,12 +233,26 @@ class BasicForm extends React.Component {
             //
             console.log(res);
 
+            let sections = res.sections;
+            for (var i = 0; i < sections.length; i++) {
+                let section = sections[i];
+                let fields = section.fields;
+                for (var k = 0; k < fields.length; k++) {
+                    let field = fields[k];
+                    if (field.type === "D") {
+                        field.value = new Date();
+                    } else if (field.type === "L") {
+                        field.value = [field.value];
+                    }
+                }
+            }
+
             this.setState({
-                "sections": res.sections || [],
-                "buttons": res.buttons || [],
-                "layoutid": res.layoutid,
-                "objLabel": res.objLabel,
-                "objid": res.objid
+                sections: res.sections || [],
+                buttons: res.buttons || [],
+                layoutid: res.layoutid,
+                objLabel: res.objLabel,
+                objid: res.objid
             });
         });
     }
@@ -242,12 +260,12 @@ class BasicForm extends React.Component {
 
         const {sections, buttons} = this.state;
         return (
-            <div>
+            <form>
                 <SectionItems sections={sections} form={this.props.form}/>
                 <WingBlank>
                     <ButtonItems buttons={buttons} form={this.props.form}/>
                 </WingBlank>
-            </div>
+            </form>
         );
     }
 }

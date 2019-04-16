@@ -256,7 +256,7 @@ class BasicForm extends React.Component {
                 let fields = section.fields;
                 for (var k = 0; k < fields.length; k++) {
                     let field = fields[k];
-                    if (field.type === "D") {
+                    if (field.type === "D" && field.value) {
                         let dateStr = field.value.replace(/-/g,"/");
                         field.value = new Date(dateStr);
                     } else if (field.type === "L") {
