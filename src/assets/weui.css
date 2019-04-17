@@ -652,9 +652,10 @@
 }
 .weui-grid__icon {
   display: block;
-  width: 28px;
-  height: 28px;
+  /*width: 28px;*/
+  /*height: 28px;*/
   margin: 0 auto;
+  text-align: center;
 }
 .weui-grid__label {
   margin-top: 5px;

@@ -9,7 +9,7 @@ import { WEB_CONTEXT } from '../common/Utils';
 
 import { getHome } from '../api/HomeAPI'
 
-import './Home.css';
+import '../assets/weui.css';
 
 function GridItems(props) {
     return <Grid data={props.data}

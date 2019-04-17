@@ -8,7 +8,7 @@ import { WEB_CONTEXT } from '../common/Utils';
 
 import addImg from '../assets/images/add.png';
 
-import './List.css';
+import '../assets/weui.css';
 
 function MyBody(props) {
     return (

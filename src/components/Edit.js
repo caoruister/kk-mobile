@@ -6,7 +6,7 @@ import { createForm } from 'rc-form';
 import { getEdit } from '../api/EditAPI';
 import { WEB_CONTEXT } from '../common/Utils';
 
-import './Edit.css';
+import '../assets/weui.css';
 
 class SectionItems extends React.Component {
     state = {

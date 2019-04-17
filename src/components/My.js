@@ -6,7 +6,7 @@ import { logout } from '../api/LoginAPI';
 import { getMy } from '../api/MyAPI';
 import { WEB_CONTEXT } from '../common/Utils';
 
-import './My.css';
+import '../assets/weui.css';
 
 const Item = List.Item;
 
@@ -90,18 +90,18 @@ class My extends React.Component {
 			          <div className="weui-grid">
 			            <div className="title">
 			              <div className="weui-grid__icon">{userInfo.label1}</div>
-			              <div className="weui-grid__label" style={{color:'#f55b34'}}>{userInfo.text1}</div>
+			              <div className="weui-grid__label" style={{color:'#f55b34'}}>34213</div>
 			            </div>
 			          </div>
 			          <div className="weui-grid">
 			            <div className="title">
 			              <div className="weui-grid__icon">{userInfo.label2}</div>
-			              <div className="weui-grid__label" style={{color:'#3d8de9'}}>{userInfo.text2}</div>
+			              <div className="weui-grid__label" style={{color:'#3d8de9'}}>232</div>
 			            </div>
 			          </div>
 			          <div className="weui-grid">
 			            <div className="weui-grid__icon">{userInfo.label3}</div>
-			            <div className="weui-grid__label" style={{color:'#fea33a'}}>{userInfo.text3}</div>
+			            <div className="weui-grid__label" style={{color:'#fea33a'}}>2342</div>
 			          </div>
 			        </div>
 			      </div>

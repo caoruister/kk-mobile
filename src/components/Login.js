@@ -9,8 +9,7 @@ import loginImg from '../assets/images/login.png';
 import mobile from '../assets/images/mobile.png';
 import password from '../assets/images/password.png';
 
-import './Login.css';
-
+import '../assets/weui.css';
 
 function Base64() {
 	// private property
