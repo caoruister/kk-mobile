@@ -25,10 +25,15 @@ function GridItems(props) {
         />
 }
 
-class Section extends React.Component {
-
-    componentDidMount() {
+class SectionItems extends React.Component {
+    render() {
+        return this.props.sections.map((section, idx) =>
+                <Section key={section.templateType+idx} type={section.templateType} showSection={section.show} title={section.sectionTitle} showTitle={!section.hideSectionTitle} columnNum={section.columnCount}  data={section.data} />
+        );
     }
+}
+
+class Section extends React.Component {
 
     render() {
         //debugger
@@ -87,14 +92,10 @@ class Home extends React.Component {
     render() {
         const {items} = this.state;
 
-        const sections = items.map((section, idx) =>
-            <Section key={section.templateType+idx} type={section.templateType} showSection={section.show} title={section.sectionTitle} showTitle={!section.hideSectionTitle} columnNum={section.columnCount}  data={section.data} />
-        );
-
         return (
             <div>
                 <div style={{paddingBottom:'80px'}}>
-                    {sections}
+                    <SectionItems sections={items}/>
                 </div>
                 <BottomTabBar selectedTab='home'/>
             </div>

@@ -238,8 +238,8 @@ class BasicForm extends React.Component {
     }
     getData = () => {
         getEdit({
-            id: '402883AB69E5E1BD0169E5E1BD8B0001',
-            objid: '2C904B7269D8FEA60169E250612C00FF'
+            id: this.props.match.params.id,
+            objid: this.props.match.params.objid,
         }).then(res => {
             if (res == null || !res) {
                 window.location.href = WEB_CONTEXT + '/#/Login';

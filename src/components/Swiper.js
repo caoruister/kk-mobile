@@ -6,47 +6,39 @@ import './Swiper.css';
 
 class Swiper extends React.Component {
     state = {
-        data: ['AiyWuByWklrrUDlFignR', 'TekJlZRVCjLFexlOCuWn', 'IJOtIlfsYdTyaDTRVrLI'],
-        imgHeight: 176,
+        imgHeight: '176',
     }
     componentDidMount() {
-        // simulate img loading
-        this.timeoutId = setTimeout(() => {
-            this.setState({
-                data: ['AiyWuByWklrrUDlFignR', 'TekJlZRVCjLFexlOCuWn', 'IJOtIlfsYdTyaDTRVrLI'],
-            });
-        }, 100);
-    }
-    componentWillUnmount() {
-        clearTimeout(this.timeoutId);
     }
     render() {
+        const imgHtml = this.props.data.map(val => (
+            <a
+                key={val}
+                href={val.webviewUrl}
+                style={{ display: 'inline-block', width: '100%'}}
+                >
+                <img
+                    src={val.imageUrl}
+                    alt=""
+                    style={{ width: '100%', verticalAlign: 'top' }}
+                    onLoad={() => {
+                      // fire window resize event to change height
+                      window.dispatchEvent(new Event('resize'));
+                      this.setState({ imgHeight: 'auto' });
+                    }}
+                    />
+            </a>
+        ));
+
         return (
             <WingBlank>
                 <Carousel
                     autoplay={true}
-                    infinite
+                    infinite={true}
                     beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}
                     afterChange={index => console.log('slide to', index)}
                     >
-                    {this.state.data.map(val => (
-                        <a
-                            key={val}
-                            href="http://www.alipay.com"
-                            style={{ display: 'inline-block', width: '100%', height: this.state.imgHeight }}
-                            >
-                            <img
-                                src={`https://zos.alipayobjects.com/rmsportal/${val}.png`}
-                                alt=""
-                                style={{ width: '100%', verticalAlign: 'top' }}
-                                onLoad={() => {
-                  // fire window resize event to change height
-                  window.dispatchEvent(new Event('resize'));
-                  this.setState({ imgHeight: 'auto' });
-                }}
-                                />
-                        </a>
-                    ))}
+                    {imgHtml}
                 </Carousel>
             </WingBlank>
         );

@@ -96,42 +96,9 @@ class ButtonItems extends React.Component {
 }
 
 class BasicForm extends React.Component {
-    state = {
-        sections: [],
-        buttons: [],
-        layoutid: '',
-        objLabel: '',
-        objid: '',
-        id: ''
-    }
-    componentDidMount() {
-        this.getData();
-    }
-    getData = () => {
-        getView({
-            id: '402883AB69E5E1BD0169E5E1BD8B0001',
-            objid: '2C904B7269D8FEA60169E250612C00FF',
-            notNeedLogin: true
-        }).then(res => {
-            if (res == null || !res) {
-                window.location.href = WEB_CONTEXT + '/#/Login';
-                return;
-            }
-            //
-            console.log(res);
-
-            this.setState({
-                "sections": res.sections || [],
-                "buttons": res.buttons || [],
-                "layoutid": res.layoutid,
-                "objLabel": res.objLabel,
-                "objid": res.objid
-            });
-        });
-    }
     render() {
 
-        const {sections, buttons} = this.state;
+        const {sections, buttons} = this.props.state0;
         return (
             <div>
                 <SectionItems sections={sections} form={this.props.form}/>
@@ -144,7 +111,14 @@ class BasicForm extends React.Component {
 }
 
 class View extends React.Component {
-
+    state = {
+        sections: [],
+        buttons: [],
+        layoutid: '',
+        objLabel: '',
+        objid: '',
+        id: ''
+    }
     componentDidMount() {
         document.title = '新增';
 
@@ -153,15 +127,36 @@ class View extends React.Component {
         if (token === null || token === '') {
             window.location.href = WEB_CONTEXT + '/#/Login';
         } else {
-            // this.getData(token);
-
+             this.getData(token);
         }
+    }
+    getData = () => {
+        getView({
+            id: this.props.match.params.id,
+            objid: this.props.match.params.objid,
+            notNeedLogin: true
+        }).then(res => {
+            if (res == null || !res) {
+                window.location.href = WEB_CONTEXT + '/#/Login';
+                return;
+            }
+            //
+            console.log(res);
+
+            this.setState({
+                sections: res.sections || [],
+                buttons: res.buttons || [],
+                layoutid: res.layoutid,
+                objLabel: res.objLabel,
+                objid: res.objid
+            });
+        });
     }
     render() {
 
         return (
             <div style={{paddingBottom:'80px'}}>
-                <BasicForm/>
+                <BasicForm state0={this.state}/>
             </div>
         );
     }

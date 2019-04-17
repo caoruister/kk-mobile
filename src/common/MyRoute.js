@@ -17,10 +17,10 @@ export const MyRoute = () => (
       <Route path='/Login' component={Login}/>
       <Route path='/My' component={My}/>
       <Route path='/Home' component={Home}/>
-      <Route path='/List' component={List}/>
-      <Route path='/Add' component={Add}/>
-      <Route path='/Edit' component={Edit}/>
-      <Route path='/View' component={View}/>
+      <Route path='/List/:objid/' component={List}/>
+      <Route path='/Add/:objid' component={Add}/>
+      <Route path='/Edit/:objid/:id' component={Edit}/>
+      <Route path='/View/:objid/:id' component={View}/>
     </Switch>
   </main>
 );

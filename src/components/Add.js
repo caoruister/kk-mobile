@@ -198,18 +198,32 @@ class ButtonItems extends React.Component {
     }
     render() {
         let buttons = '';
-        if (this.props.buttons.length === 0) {
-            buttons = <Button type="primary" onClick={this.save}>确认</Button>
-        } else {
+        if (this.props.buttons.length !== 0) {
             buttons = this.props.buttons.map((button, idx)=><Button key={button.id+idx} type="primary" inline size="small" style={{ marginRight: '4px' }} data-method-name={ button.methodName } onClick={this.onClickOfButton}>{ button.text }</Button>)
         }
 
-        return buttons;
+        return <Button type="primary" inline size="small" style={{ marginRight: '4px' }} onClick={this.save}>确认</Button>
     }
 
 }
 
 class BasicForm extends React.Component {
+    render() {
+        const {sections, buttons} = this.props.state0;
+        return (
+            <form>
+                <SectionItems sections={sections} form={this.props.form}/>
+                <WingBlank>
+                    <ButtonItems buttons={buttons} form={this.props.form}/>
+                </WingBlank>
+            </form>
+        );
+    }
+}
+
+const BasicFormWrapper = createForm()(BasicForm);
+
+class Add extends React.Component {
     state = {
         sections: [],
         buttons: [],
@@ -218,12 +232,23 @@ class BasicForm extends React.Component {
         objid: '',
         id: ''
     }
+
     componentDidMount() {
-        this.getData();
+        document.title = '新增';
+
+        //debugger
+        let token = localStorage.getItem('__token__');
+        if (token === null || token === '') {
+            window.location.href = WEB_CONTEXT + '/#/Login';
+        } else {
+             this.getData();
+
+        }
     }
     getData = () => {
+
         getAdd({
-            objid: '2C904B7269D8FEA60169E250612C00FF',
+            objid: this.props.match.params.objid,
             notNeedLogin: true
         }).then(res => {
             if (res == null || !res) {
@@ -257,40 +282,9 @@ class BasicForm extends React.Component {
         });
     }
     render() {
-
-        const {sections, buttons} = this.state;
-        return (
-            <form>
-                <SectionItems sections={sections} form={this.props.form}/>
-                <WingBlank>
-                    <ButtonItems buttons={buttons} form={this.props.form}/>
-                </WingBlank>
-            </form>
-        );
-    }
-}
-
-const BasicFormWrapper = createForm()(BasicForm);
-
-class Add extends React.Component {
-
-    componentDidMount() {
-        document.title = '新增';
-
-        //debugger
-        let token = localStorage.getItem('__token__');
-        if (token === null || token === '') {
-            window.location.href = WEB_CONTEXT + '/#/Login';
-        } else {
-            // this.getData(token);
-
-        }
-    }
-    render() {
-
         return (
             <div style={{paddingBottom:'80px'}}>
-                <BasicFormWrapper/>
+                <BasicFormWrapper state0={this.state}/>
             </div>
         );
     }
