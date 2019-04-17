@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {List, Button, InputItem, WingBlank, ImagePicker, Picker, DatePicker, TextareaItem, Switch} from 'antd-mobile';
+import {List, Button, InputItem, WingBlank, ImagePicker, Picker, DatePicker, TextareaItem, Switch, Flex} from 'antd-mobile';
 import { createForm } from 'rc-form';
 
 import { getView } from '../api/ViewAPI';
@@ -84,13 +84,19 @@ class ButtonItems extends React.Component {
     }
     render() {
         let buttons = '';
-        if (this.props.buttons.length === 0) {
-            buttons = <Button type="primary" onClick={this.save}>确认</Button>
+        if (this.props.buttons.length !== 0) {
+            buttons = this.props.buttons.map((button, idx)=><Flex.Item><Button key={button.id+idx} type="primary" style={{ marginRight: '4px' }} data-method-name={ button.methodName } onClick={this.onClickOfButton}>{ button.text }</Button></Flex.Item>)
         } else {
-            buttons = this.props.buttons.map((button, idx)=><Button key={button.id+idx} type="primary" inline size="small" style={{ marginRight: '4px' }} data-method-name={ button.methodName } onClick={this.onClickOfButton}>{ button.text }</Button>)
+            buttons = <Flex.Item><Button type="primary" style={{ marginRight: '4px' }} onClick={this.save}>确认</Button></Flex.Item>
         }
 
-        return buttons;
+        return (
+            <WingBlank>
+                <Flex>
+                    {buttons}
+                </Flex>
+            </WingBlank>
+        )
     }
 
 }
@@ -102,9 +108,7 @@ class BasicForm extends React.Component {
         return (
             <div>
                 <SectionItems sections={sections} form={this.props.form}/>
-                <WingBlank>
-                    <ButtonItems buttons={buttons} form={this.props.form}/>
-                </WingBlank>
+                <ButtonItems buttons={buttons} form={this.props.form}/>
             </div>
         );
     }

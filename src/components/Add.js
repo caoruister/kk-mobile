@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {List, Button, InputItem, WingBlank, ImagePicker, Picker, DatePicker, TextareaItem, Switch} from 'antd-mobile';
+import {List, Button, InputItem, WingBlank, ImagePicker, Picker, DatePicker, TextareaItem, Switch, Flex} from 'antd-mobile';
 import { createForm } from 'rc-form';
 
 import { getAdd, saveAdd } from '../api/AddAPI';
@@ -154,7 +154,6 @@ class ButtonItems extends React.Component {
             errorMsg: '',
         });
         e.preventDefault();
-        let oThis = this;
         this.props.form.validateFields((err, values) => {
             console.log('接收到的表单的值为: ', values);
             console.log(err);
@@ -171,6 +170,8 @@ class ButtonItems extends React.Component {
                         values[key] = null;
                     }
                 }
+
+                console.log('saveAdd:' + values);
                 //
                 saveAdd(values).then(res => {
                     if (res == null) {return;}
@@ -181,7 +182,8 @@ class ButtonItems extends React.Component {
                                 errorMsg: res.errorMsg,
                             });
                         } else {
-                            this.props.history.goBack();
+                            //this.props.history.goBack();
+                            window.location.href = WEB_CONTEXT + '/#/List/' + this.props.objid;
                         }
                     }
                 });
@@ -191,17 +193,18 @@ class ButtonItems extends React.Component {
     render() {
         let buttons = '';
         if (this.props.buttons.length !== 0) {
-            buttons = this.props.buttons.map((button, idx)=><Button key={button.id+idx} type="primary" inline size="small" style={{ marginRight: '4px' }} data-method-name={ button.methodName } onClick={this.onClickOfButton}>{ button.text }</Button>)
+            buttons = this.props.buttons.map((button, idx)=><Flex.Item><Button key={button.id+idx} type="primary" style={{ marginRight: '4px' }} data-method-name={ button.methodName } onClick={this.onClickOfButton}>{ button.text }</Button></Flex.Item>)
+        } else {
+            buttons = <Flex.Item><Button type="primary" style={{ marginRight: '4px' }} onClick={this.save}>确认</Button></Flex.Item>
         }
 
         return (
-                <WingBlank>
-                    <Button type="primary" inline size="small" style={{ marginRight: '4px' }} onClick={this.save}>确认</Button>
+            <WingBlank>
+                <Flex>
                     {buttons}
-                </WingBlank>
-            )
-
-
+                </Flex>
+            </WingBlank>
+        )
     }
 
 }

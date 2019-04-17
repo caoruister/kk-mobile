@@ -1,9 +1,9 @@
 import React from 'react';
 
-import {List, Button, InputItem, WingBlank, ImagePicker, Picker, DatePicker, TextareaItem, Switch} from 'antd-mobile';
+import {List, Button, InputItem, WingBlank, ImagePicker, Picker, DatePicker, TextareaItem, Switch, Flex} from 'antd-mobile';
 import { createForm } from 'rc-form';
 
-import { getEdit } from '../api/EditAPI';
+import { getEdit, saveEdit } from '../api/EditAPI';
 import { WEB_CONTEXT } from '../common/Utils';
 
 import '../assets/weui.css';
@@ -159,10 +159,6 @@ class SectionItems extends React.Component {
 }
 
 class ButtonItems extends React.Component {
-    state = {
-        objid: '',
-        layoutid: '',
-    }
     save = (e) => {
         this.setState({
             errorMsg: '',
@@ -173,58 +169,77 @@ class ButtonItems extends React.Component {
             console.log('接收到的表单的值为: ', values);
             console.log(err);
             if (!err) {
-                values.objid = this.state.objid;
-                values.layoutid = this.state.layoutid;
+                values.token = localStorage.getItem('__token__');
+                values.objid = this.props.objid;
+                values.layoutid = this.props.layoutid;
+                values.id = this.props.id;
                 //
-                /*
-                 let objName = oThis.props.match.params.objName;
-                 if (objName == 'Attachment') { // 添加附件
-                 values.recordId = oThis.props.match.params.valueOfLookupField;
-                 }
-                 //
-                 let valueStringMap = this.state.valueStringMap;
-                 for (var key in values) {
-                 console.log(key + ': ' + (key in valueStringMap));
-                 if (key in valueStringMap) {
-                 values[key] = valueStringMap[key];
-                 }
-                 //
-                 let tempValue = values[key];
-                 if (typeof(tempValue) == 'undefined') { // 如果不处理 值为 undefined 的情况，则 输入框中 清空值时，会导致 不提交 该字段的值（应该提交 空值）
-                 values[key] = null;
-                 }
-                 }*/
+
+                for (var key in values) {
+                    //
+                    let tempValue = values[key];
+                    if (typeof(tempValue) == 'undefined') { // 如果不处理 值为 undefined 的情况，则 输入框中 清空值时，会导致 不提交 该字段的值（应该提交 空值）
+                        values[key] = null;
+                    }
+                }
+
+                console.log('saveEdit:' + values);
                 //
-                //saveRecord(values).then(res => {
-                //    if (res == null) {return;}
-                //    //
-                //    if (res) {
-                //        if (res.errorMsg) {
-                //            this.setState({
-                //                errorMsg: res.errorMsg,
-                //            });
-                //        } else {
-                //            this.props.history.goBack();
-                //        }
-                //    }
-                //});
+                saveEdit(values).then(res => {
+                    if (res == null) {return;}
+                    //
+                    if (res) {
+                        if (res.errorMsg) {
+                            this.setState({
+                                errorMsg: res.errorMsg,
+                            });
+                        } else {
+                            //this.props.history.goBack();
+                            window.location.href = WEB_CONTEXT + '/#/List/' + this.props.objid;
+                        }
+                    }
+                });
             }
         });
     }
     render() {
         let buttons = '';
-        if (this.props.buttons.length === 0) {
-            buttons = <Button type="primary" onClick={this.save}>确认</Button>
+        if (this.props.buttons.length !== 0) {
+            buttons = this.props.buttons.map((button, idx)=><Flex.Item><Button key={button.id+idx} type="primary" style={{ marginRight: '4px' }} data-method-name={ button.methodName } onClick={this.onClickOfButton}>{ button.text }</Button></Flex.Item>)
         } else {
-            buttons = this.props.buttons.map((button, idx)=><Button key={button.id+idx} type="primary" inline size="small" style={{ marginRight: '4px' }} data-method-name={ button.methodName } onClick={this.onClickOfButton}>{ button.text }</Button>)
+            buttons = <Flex.Item><Button type="primary" style={{ marginRight: '4px' }} onClick={this.save}>确认</Button></Flex.Item>
         }
 
-        return buttons;
+        return (
+            <WingBlank>
+                <Flex>
+                    {buttons}
+                </Flex>
+            </WingBlank>
+        )
     }
 
 }
 
 class BasicForm extends React.Component {
+
+    render() {
+
+        const {sections, buttons, objid, id, layoutid} = this.props.state0;
+        return (
+            <form>
+                <SectionItems sections={sections} form={this.props.form}/>
+                <WingBlank>
+                    <ButtonItems buttons={buttons} objid={objid} layoutid={layoutid} id={id} form={this.props.form}/>
+                </WingBlank>
+            </form>
+        );
+    }
+}
+
+const BasicFormWrapper = createForm()(BasicForm);
+
+class Edit extends React.Component {
     state = {
         sections: [],
         buttons: [],
@@ -234,9 +249,19 @@ class BasicForm extends React.Component {
         id: '',
         fieldValues: {}
     }
+
     componentDidMount() {
-        this.getData();
+        document.title = '编辑';
+
+        //debugger
+        let token = localStorage.getItem('__token__');
+        if (token === null || token === '') {
+            window.location.href = WEB_CONTEXT + '/#/Login';
+        } else {
+             this.getData(token);
+        }
     }
+
     getData = () => {
         getEdit({
             id: this.props.match.params.id,
@@ -250,7 +275,6 @@ class BasicForm extends React.Component {
             //
             console.log(res);
 
-            let fieldValues = {};
             let sections = res.sections;
             for (var i = 0; i < sections.length; i++) {
                 let section = sections[i];
@@ -272,45 +296,16 @@ class BasicForm extends React.Component {
                 layoutid: res.layoutid,
                 objLabel: res.objLabel,
                 objid: res.objid,
-                id: res.id,
-                fieldValues: fieldValues
+                id: res.id
             });
         });
     }
-    render() {
 
-        const {sections, buttons} = this.state;
-        return (
-            <form>
-                <SectionItems sections={sections} form={this.props.form}/>
-                <WingBlank>
-                    <ButtonItems buttons={buttons} form={this.props.form}/>
-                </WingBlank>
-            </form>
-        );
-    }
-}
-
-const BasicFormWrapper = createForm()(BasicForm);
-
-class Edit extends React.Component {
-
-    componentDidMount() {
-        document.title = '编辑';
-
-        //debugger
-        let token = localStorage.getItem('__token__');
-        if (token === null || token === '') {
-            window.location.href = WEB_CONTEXT + '/#/Login';
-        } else {
-            // this.getData(token);
-        }
-    }
     render() {
 
         return (
             <div style={{paddingBottom:'80px'}}>
-                <BasicFormWrapper/>
+                <BasicFormWrapper state0={this.state}/>
             </div>
         );
     }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Toast, InputItem, Button, List } from 'antd-mobile';
+import { Toast, InputItem, Button, List, WingBlank } from 'antd-mobile';
 import { createForm } from 'rc-form';
 import { login } from '../api/LoginAPI';
 import { WEB_CONTEXT } from '../common/Utils';
@@ -128,7 +128,7 @@ class BasicInput extends React.Component {
   render() {
     const { getFieldProps } = this.props.form;
     return (
-      <div>
+      <WingBlank>
         <List>
           <InputItem
             {...getFieldProps('username')}
@@ -147,7 +147,7 @@ class BasicInput extends React.Component {
           ><img className="weui-grid__icon" src={password} /></InputItem>
         </List>
         <Button type='primary' style={{marginTop:'10px'}} onClick={this.handleOk}>登录</Button>
-      </div>
+      </WingBlank>
     );
   }
 }
@@ -161,7 +161,7 @@ class Login extends React.Component {
   render() {
     return (
       <div className="page">
-        <div className="page__hd" style={{textAlign:'center'}}>
+        <div className="page__hd" style={{textAlign:'center',padding:'40px'}}>
           <img className="weui-grid__icon" style={{height:'80px', width:'80px'}} src={loginImg} />
         </div>
         <div className="page__bd page__bd_spacing">

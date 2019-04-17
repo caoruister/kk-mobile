@@ -60,7 +60,9 @@ class My extends React.Component {
 					arrow="horizontal"
 					key={('listItem-' + i)}
 					thumb={item.icon}
-					onClick={() => {}}>{item.label}</Item>
+					onClick={() => {
+						window.location.href = WEB_CONTEXT + item.path;
+					}}>{item.label}</Item>
 			);
 		}
     return (
@@ -90,18 +92,18 @@ class My extends React.Component {
 			          <div className="weui-grid">
 			            <div className="title">
 			              <div className="weui-grid__icon">{userInfo.label1}</div>
-			              <div className="weui-grid__label" style={{color:'#f55b34'}}>34213</div>
+			              <div className="weui-grid__label" style={{color:'#f55b34'}}>{userInfo.text1}</div>
 			            </div>
 			          </div>
 			          <div className="weui-grid">
 			            <div className="title">
 			              <div className="weui-grid__icon">{userInfo.label2}</div>
-			              <div className="weui-grid__label" style={{color:'#3d8de9'}}>232</div>
+			              <div className="weui-grid__label" style={{color:'#3d8de9'}}>{userInfo.text2}</div>
 			            </div>
 			          </div>
 			          <div className="weui-grid">
 			            <div className="weui-grid__icon">{userInfo.label3}</div>
-			            <div className="weui-grid__label" style={{color:'#fea33a'}}>2342</div>
+			            <div className="weui-grid__label" style={{color:'#fea33a'}}>{userInfo.text3}</div>
 			          </div>
 			        </div>
 			      </div>
