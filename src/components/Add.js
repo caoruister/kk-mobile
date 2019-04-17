@@ -3,7 +3,7 @@ import React from 'react';
 import {List, Button, InputItem, WingBlank, ImagePicker, Picker, DatePicker, TextareaItem, Switch} from 'antd-mobile';
 import { createForm } from 'rc-form';
 
-import { getAdd } from '../api/AddAPI';
+import { getAdd, saveAdd } from '../api/AddAPI';
 import { WEB_CONTEXT } from '../common/Utils';
 
 import './Add.css';
@@ -47,7 +47,7 @@ class SectionItems extends React.Component {
                                     })}
                                     key={field.fieldid+idx2}
                                     placeholder={'请输入'+field.label}
-                                    type="tel"
+                                    type="number"
                                     maxLength={field.length}
                                     >{field.label}</InputItem>
                             } else if (field.type === 'H') {
@@ -79,7 +79,7 @@ class SectionItems extends React.Component {
                                     {...getFieldProps(field.fieldid, {
                                         initialValue: field.value
                                     })}
-                                    key={field.fieldid+idx2} extra="请选择" data={data} cols={1} className="forss">
+                                    key={field.fieldid+idx2} extra={'请选择'+field.label} data={data} cols={1} className="forss">
                                     <List.Item arrow="horizontal">{field.label}</List.Item>
                                 </Picker>
                             } else if (field.type === 'D') {
@@ -88,7 +88,7 @@ class SectionItems extends React.Component {
                                         initialValue: field.value
                                     })}
                                     mode="date"
-                                    key={field.fieldid+idx2} extra="请选择"
+                                    key={field.fieldid+idx2} extra={'请选择'+field.label}
                                     onChange={this.onChangeOfValue.bind(this, field)}
                                     >
                                     <List.Item arrow="horizontal">{field.label}</List.Item>
@@ -101,6 +101,7 @@ class SectionItems extends React.Component {
                                         {...getFieldProps(field.fieldid, {
                                             initialValue: field.value
                                         })}
+                                        placeholder={'请输入'+field.label}
                                         key={field.fieldid+idx2}
                                         rows={5}
                                         count={100}
@@ -158,41 +159,32 @@ class ButtonItems extends React.Component {
             console.log('接收到的表单的值为: ', values);
             console.log(err);
             if (!err) {
-                values.objid = this.state.objid;
-                values.layoutid = this.state.layoutid;
+                values.token = localStorage.getItem('__token__');
+                values.objid = this.props.objid;
+                values.layoutid = this.props.layoutid;
                 //
-                /*
-                let objName = oThis.props.match.params.objName;
-                if (objName == 'Attachment') { // 添加附件
-                    values.recordId = oThis.props.match.params.valueOfLookupField;
-                }
-                //
-                let valueStringMap = this.state.valueStringMap;
+
                 for (var key in values) {
-                    console.log(key + ': ' + (key in valueStringMap));
-                    if (key in valueStringMap) {
-                        values[key] = valueStringMap[key];
-                    }
                     //
                     let tempValue = values[key];
                     if (typeof(tempValue) == 'undefined') { // 如果不处理 值为 undefined 的情况，则 输入框中 清空值时，会导致 不提交 该字段的值（应该提交 空值）
                         values[key] = null;
                     }
-                }*/
+                }
                 //
-                //saveRecord(values).then(res => {
-                //    if (res == null) {return;}
-                //    //
-                //    if (res) {
-                //        if (res.errorMsg) {
-                //            this.setState({
-                //                errorMsg: res.errorMsg,
-                //            });
-                //        } else {
-                //            this.props.history.goBack();
-                //        }
-                //    }
-                //});
+                saveAdd(values).then(res => {
+                    if (res == null) {return;}
+                    //
+                    if (res) {
+                        if (res.errorMsg) {
+                            this.setState({
+                                errorMsg: res.errorMsg,
+                            });
+                        } else {
+                            this.props.history.goBack();
+                        }
+                    }
+                });
             }
         });
     }
@@ -202,20 +194,25 @@ class ButtonItems extends React.Component {
             buttons = this.props.buttons.map((button, idx)=><Button key={button.id+idx} type="primary" inline size="small" style={{ marginRight: '4px' }} data-method-name={ button.methodName } onClick={this.onClickOfButton}>{ button.text }</Button>)
         }
 
-        return <Button type="primary" inline size="small" style={{ marginRight: '4px' }} onClick={this.save}>确认</Button>
+        return (
+                <WingBlank>
+                    <Button type="primary" inline size="small" style={{ marginRight: '4px' }} onClick={this.save}>确认</Button>
+                    {buttons}
+                </WingBlank>
+            )
+
+
     }
 
 }
 
 class BasicForm extends React.Component {
     render() {
-        const {sections, buttons} = this.props.state0;
+        const {sections, buttons, objid, layoutid} = this.props.state0;
         return (
             <form>
                 <SectionItems sections={sections} form={this.props.form}/>
-                <WingBlank>
-                    <ButtonItems buttons={buttons} form={this.props.form}/>
-                </WingBlank>
+                <ButtonItems buttons={buttons} objid={objid} layoutid={layoutid} form={this.props.form}/>
             </form>
         );
     }
@@ -267,7 +264,7 @@ class Add extends React.Component {
                     if (field.type === "D") {
                         field.value = new Date();
                     } else if (field.type === "L") {
-                        field.value = [field.value];
+                        field.value = [];
                     }
                 }
             }

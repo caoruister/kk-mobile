@@ -35,6 +35,8 @@ function View(props) {
 }
 
 class List extends React.Component {
+    _isMounted = false;
+
     constructor(props) {
         super(props);
 
@@ -58,17 +60,21 @@ class List extends React.Component {
     }
 
     componentDidMount() {
+        this._isMounted = true;
         document.title = '列表';
         // you can scroll to the specified position
         // setTimeout(() => this.lv.scrollTo(0, 120), 800);
 
         const hei = document.documentElement.clientHeight - ReactDOM.findDOMNode(this.lv).parentNode.offsetTop;
         this.genData().then(()=>{
-            this.setState({
-                dataSource: this.state.dataSource.cloneWithRows(this.state.dataBlobs),
-                isLoading: false,
-                height: hei,
-            });
+            if (this._isMounted) {
+                this.setState({
+                    dataSource: this.state.dataSource.cloneWithRows(this.state.dataBlobs),
+                    isLoading: false,
+                    height: hei,
+                });
+            }
+
         });
     }
 
@@ -93,18 +99,21 @@ class List extends React.Component {
             let root = res.root;
             let data = this.state.data.concat(root.records);
 
-            this.setState({
-                data: data,
-                fields: root.showedFields,
-                objLabel: root.objLabel,
-                objid: root.objid,
-                hasMore: root.records != 0 && data.length < root.total
-            });
+            if (this._isMounted) {
+                this.setState({
+                    data: data,
+                    fields: root.showedFields,
+                    objLabel: root.objLabel,
+                    objid: root.objid,
+                    hasMore: root.records != 0 && data.length < root.total
+                });
+            }
+
         });
     }
 
     componentWillUnmount() {
-        clearTimeout(this.timeoutId);
+        this._isMounted = false;
     }
 
     // If you use redux, the data maybe at props, you need use `componentWillReceiveProps`

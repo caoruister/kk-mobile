@@ -111,6 +111,8 @@ class BasicForm extends React.Component {
 }
 
 class View extends React.Component {
+    _isMounted = false;
+
     state = {
         sections: [],
         buttons: [],
@@ -119,7 +121,9 @@ class View extends React.Component {
         objid: '',
         id: ''
     }
+
     componentDidMount() {
+        this._isMounted = true;
         document.title = '新增';
 
         //debugger
@@ -130,6 +134,11 @@ class View extends React.Component {
              this.getData(token);
         }
     }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     getData = () => {
         getView({
             id: this.props.match.params.id,
@@ -143,13 +152,16 @@ class View extends React.Component {
             //
             console.log(res);
 
-            this.setState({
-                sections: res.sections || [],
-                buttons: res.buttons || [],
-                layoutid: res.layoutid,
-                objLabel: res.objLabel,
-                objid: res.objid
-            });
+            if (this._isMounted) {
+                this.setState({
+                    sections: res.sections || [],
+                    buttons: res.buttons || [],
+                    layoutid: res.layoutid,
+                    objLabel: res.objLabel,
+                    objid: res.objid
+                });
+            }
+
         });
     }
     render() {

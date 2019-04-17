@@ -86,7 +86,7 @@ class SectionItems extends React.Component {
                                         initialValue: field.value
                                     })}
                                     onChange={this.onChangeOfValue.bind(this, field)}
-                                    key={field.fieldid+idx2} extra="请选择" data={data} cols={1}>
+                                    key={field.fieldid+idx2} extra={'请输入'+field.label} data={data} cols={1}>
                                     <List.Item arrow="horizontal">{field.label}</List.Item>
                                 </Picker>
                             } else if (field.type === 'D') {
@@ -95,7 +95,7 @@ class SectionItems extends React.Component {
                                         initialValue: field.value
                                     })}
                                     mode="date"
-                                    key={field.fieldid+idx2} extra="请选择"
+                                    key={field.fieldid+idx2} extra={'请输入'+field.label}
                                     onChange={this.onChangeOfValue.bind(this, field)}
                                     >
                                     <List.Item arrow="horizontal">{field.label}</List.Item>
@@ -109,6 +109,7 @@ class SectionItems extends React.Component {
                                             initialValue: field.value
                                         })}
                                         key={field.fieldid+idx2}
+                                        placeholder={'请输入'+field.label}
                                         onChange={this.onChangeOfValue.bind(this, field)}
                                         rows={5}
                                         count={100}
@@ -259,7 +260,7 @@ class BasicForm extends React.Component {
                     if (field.type === "D" && field.value) {
                         let dateStr = field.value.replace(/-/g,"/");
                         field.value = new Date(dateStr);
-                    } else if (field.type === "L") {
+                    } else if (field.type === "L" && field.value) {
                         field.value = [field.value];
                     }
                 }
