@@ -3,26 +3,70 @@ import React from 'react';
 import {List, Button, InputItem, WingBlank, ImagePicker, Picker, DatePicker, TextareaItem, Switch, Flex} from 'antd-mobile';
 import { createForm } from 'rc-form';
 
-import { getEdit, saveEdit } from '../api/EditAPI';
-import { WEB_CONTEXT } from '../common/Utils';
+import { getEdit, saveEdit, uploadFile } from '../api/EditAPI';
+import { WEB_CONTEXT, FILE_URL_PREFIX } from '../common/Utils';
 
 import '../assets/weui.css';
 
 class SectionItems extends React.Component {
-    state = {
-        fieldValues: {}
-    }
+
     onChangeOfValue(field, value) {
         console.log(field.fieldid + ':' + value);
         field.value = value;
         this.setState({});
     }
-    render() {
 
-        const files = [{
-            url: 'https://zos.alipayobjects.com/rmsportal/PZUUCKTRIHWiZSY.jpeg',
-            id: '2121',
-        }];
+    onChangeOfFileValue(field, values, operationType) {
+        //console.log(operationType);
+        //console.log(values);
+
+        //上传图片
+        if (operationType === 'add'){
+            let formdata = new FormData();
+            let orgid= localStorage.getItem('__orgid__');
+            formdata.append("orgid", orgid);
+
+            values && values.forEach((val, idx)=>{
+                formdata.append("file", val.file);
+            });
+
+            uploadFile(formdata).then((res) => {
+                /*
+                res && res.map((img, idx)=>{
+                    img.url = FILE_URL_PREFIX + img.url;
+                    return img;
+                });*/
+
+                field.value = [...field.value, ...res];
+                this.setState({});
+            });
+        } else if (operationType === 'remove') {
+            field.value = values;
+            this.setState({});
+        }
+
+        console.log(field);
+    }
+
+    getImages(images) {
+        let absoluteImages = [];
+        images && images.forEach((img, idx)=>{
+
+            let url = img.url;
+            if (img.url.match(/^file\?getfile.*/g) ) {
+                url = FILE_URL_PREFIX + url;
+            }
+
+            absoluteImages.push({
+                url: url
+            });
+        });
+
+        console.log(absoluteImages);
+        return absoluteImages;
+    }
+
+    render() {
 
         const { getFieldProps } = this.props.form;
 
@@ -132,24 +176,21 @@ class SectionItems extends React.Component {
                                     >{field.label}</List.Item>
 
                             } else if (field.type === 'IMG') {
-                                /*
-
                                 let imageField = <div key={field.fieldid+idx2}>
                                     <List.Item
                                         >{field.label}</List.Item>
                                     <ImagePicker
-                                        {
-                                            ...getFieldProps(field.fieldid, {
-                                                initialValue: this.state.fieldValues[field.fieldid]
-                                            })}
-                                        files={this.state.fieldValues[field.fieldid]}
-                                        onChange={this.onChangeOfValue.bind(this, field.fieldid)}
+                                        {...getFieldProps(field.fieldid, {
+                                            initialValue: field.value
+                                        })}
+                                        files={this.getImages(field.value)}
+                                        onChange={this.onChangeOfFileValue.bind(this, field)}
                                         onImageClick={(index, fs) => console.log(index, fs)}
-                                        selectable={files.length < 7}
+                                        selectable={field.length < 7}
                                         multiple={false}
                                         />
                                 </div>;
-                                return imageField*/
+                                return imageField
                             }
                         })
                     }
@@ -180,10 +221,16 @@ class ButtonItems extends React.Component {
                     let tempValue = values[key];
                     if (typeof(tempValue) == 'undefined') { // 如果不处理 值为 undefined 的情况，则 输入框中 清空值时，会导致 不提交 该字段的值（应该提交 空值）
                         values[key] = null;
+                    } else if (Array.isArray(tempValue)) {
+                        let field = this.props.fieldMap[key];
+                        if (field && field.type === 'IMG') {
+                            values[key] = JSON.stringify(tempValue);
+                        }
                     }
                 }
 
-                console.log('saveEdit:' + values);
+                console.log('saveEdit:');
+                console.log(values);
                 //
                 saveEdit(values).then(res => {
                     if (res == null) {return;}
@@ -204,8 +251,8 @@ class ButtonItems extends React.Component {
     }
     render() {
         let buttons = '';
-        if (this.props.buttons.length !== 0) {
-            buttons = this.props.buttons.map((button, idx)=><Flex.Item><Button key={button.id+idx} type="primary" style={{ marginRight: '4px' }} data-method-name={ button.methodName } onClick={this.onClickOfButton}>{ button.text }</Button></Flex.Item>)
+        if (this.props.buttons.length === 0) {
+            buttons = this.props.buttons.map((button, idx)=><Flex.Item key={button.id+idx}><Button type="primary" style={{ marginRight: '4px' }} data-method-name={ button.methodName } onClick={this.onClickOfButton}>{ button.text }</Button></Flex.Item>)
         } else {
             buttons = <Flex.Item><Button type="primary" style={{ marginRight: '4px' }} onClick={this.save}>确认</Button></Flex.Item>
         }
@@ -225,12 +272,12 @@ class BasicForm extends React.Component {
 
     render() {
 
-        const {sections, buttons, objid, id, layoutid} = this.props.state0;
+        const {sections, buttons, objid, id, layoutid, fieldMap} = this.props.state0;
         return (
             <form>
                 <SectionItems sections={sections} form={this.props.form}/>
                 <WingBlank>
-                    <ButtonItems buttons={buttons} objid={objid} layoutid={layoutid} id={id} form={this.props.form}/>
+                    <ButtonItems buttons={buttons} objid={objid} layoutid={layoutid} id={id} fieldMap={fieldMap} form={this.props.form}/>
                 </WingBlank>
             </form>
         );
@@ -240,6 +287,8 @@ class BasicForm extends React.Component {
 const BasicFormWrapper = createForm()(BasicForm);
 
 class Edit extends React.Component {
+    _isMounted = false;
+
     state = {
         sections: [],
         buttons: [],
@@ -247,10 +296,11 @@ class Edit extends React.Component {
         objLabel: '',
         objid: '',
         id: '',
-        fieldValues: {}
+        fieldMap: {}
     }
 
     componentDidMount() {
+        this._isMounted = true;
         document.title = '编辑';
 
         //debugger
@@ -260,6 +310,10 @@ class Edit extends React.Component {
         } else {
              this.getData(token);
         }
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     getData = () => {
@@ -281,6 +335,7 @@ class Edit extends React.Component {
                 let fields = section.fields;
                 for (var k = 0; k < fields.length; k++) {
                     let field = fields[k];
+                    this.state.fieldMap[field.fieldid] = field;
                     if (field.type === "D" && field.value) {
                         let dateStr = field.value.replace(/-/g,"/");
                         field.value = new Date(dateStr);
@@ -290,14 +345,16 @@ class Edit extends React.Component {
                 }
             }
 
-            this.setState({
-                sections: res.sections || [],
-                buttons: res.buttons || [],
-                layoutid: res.layoutid,
-                objLabel: res.objLabel,
-                objid: res.objid,
-                id: res.id
-            });
+            if (this._isMounted) {
+                this.setState({
+                    sections: res.sections || [],
+                    buttons: res.buttons || [],
+                    layoutid: res.layoutid,
+                    objLabel: res.objLabel,
+                    objid: res.objid,
+                    id: res.id
+                });
+            }
         });
     }
 

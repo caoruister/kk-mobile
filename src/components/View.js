@@ -9,8 +9,7 @@ import { WEB_CONTEXT } from '../common/Utils';
 import '../assets/weui.css';
 
 class SectionItems extends React.Component {
-    state = {
-    }
+
     render() {
 
         return this.props.sections.map((section, idx1)=>
@@ -34,62 +33,12 @@ class SectionItems extends React.Component {
 }
 
 class ButtonItems extends React.Component {
-    save = (e) => {
-        this.setState({
-            errorMsg: '',
-        });
-        e.preventDefault();
-        let oThis = this;
-        this.props.form.validateFields((err, values) => {
-            console.log('接收到的表单的值为: ', values);
-            console.log(err);
-            if (!err) {
-                values.objid = this.state.objid;
-                values.layoutid = this.state.layoutid;
-                //
-                /*
-                 let objName = oThis.props.match.params.objName;
-                 if (objName == 'Attachment') { // 添加附件
-                 values.recordId = oThis.props.match.params.valueOfLookupField;
-                 }
-                 //
-                 let valueStringMap = this.state.valueStringMap;
-                 for (var key in values) {
-                 console.log(key + ': ' + (key in valueStringMap));
-                 if (key in valueStringMap) {
-                 values[key] = valueStringMap[key];
-                 }
-                 //
-                 let tempValue = values[key];
-                 if (typeof(tempValue) == 'undefined') { // 如果不处理 值为 undefined 的情况，则 输入框中 清空值时，会导致 不提交 该字段的值（应该提交 空值）
-                 values[key] = null;
-                 }
-                 }*/
-                //
-                //saveRecord(values).then(res => {
-                //    if (res == null) {return;}
-                //    //
-                //    if (res) {
-                //        if (res.errorMsg) {
-                //            this.setState({
-                //                errorMsg: res.errorMsg,
-                //            });
-                //        } else {
-                //            this.props.history.goBack();
-                //        }
-                //    }
-                //});
-            }
-        });
-    }
+
     render() {
         let buttons = '';
         if (this.props.buttons.length !== 0) {
-            buttons = this.props.buttons.map((button, idx)=><Flex.Item><Button key={button.id+idx} type="primary" style={{ marginRight: '4px' }} data-method-name={ button.methodName } onClick={this.onClickOfButton}>{ button.text }</Button></Flex.Item>)
-        } else {
-            buttons = <Flex.Item><Button type="primary" style={{ marginRight: '4px' }} onClick={this.save}>确认</Button></Flex.Item>
+            buttons = this.props.buttons.map((button, idx)=><Flex.Item key={button.id+idx}><Button type="primary" style={{ marginRight: '4px' }} data-method-name={ button.methodName } onClick={this.onClickOfButton}>{ button.text }</Button></Flex.Item>)
         }
-
         return (
             <WingBlank>
                 <Flex>
@@ -128,7 +77,7 @@ class View extends React.Component {
 
     componentDidMount() {
         this._isMounted = true;
-        document.title = '新增';
+        document.title = '查看';
 
         //debugger
         let token = localStorage.getItem('__token__');

@@ -4,14 +4,6 @@ import { ImagePicker, WingBlank } from 'antd-mobile';
 
 import './Image.css';
 
-const data = [{
-    url: 'https://zos.alipayobjects.com/rmsportal/PZUUCKTRIHWiZSY.jpeg',
-    id: '2121',
-}, {
-    url: 'https://zos.alipayobjects.com/rmsportal/hqQWgTXdrlmVVYi.jpeg',
-    id: '2122',
-}];
-
 function FieldRequired(props) {
     if (props.field.required) {
         return <div className="required">*</div>
