@@ -4,7 +4,7 @@ import {List, Button, InputItem, WingBlank, ImagePicker, Picker, DatePicker, Tex
 import { createForm } from 'rc-form';
 
 import { getAdd, saveAdd, uploadFile } from '../api/AddAPI';
-import { WEB_CONTEXT, FILE_URL_PREFIX } from '../common/Utils';
+import { WEB_CONTEXT, FILE_URL_PREFIX, formatTime } from '../common/Utils';
 
 import '../assets/weui.css';
 
@@ -193,10 +193,14 @@ class ButtonItems extends React.Component {
                     if (typeof(tempValue) == 'undefined') { // 如果不处理 值为 undefined 的情况，则 输入框中 清空值时，会导致 不提交 该字段的值（应该提交 空值）
                         values[key] = null;
                     } else if (Array.isArray(tempValue)) {
-                        let field = this.props.fieldMap[key];
-                        if (field && field.type === 'IMG') {
-                            values[key] = JSON.stringify(tempValue);
-                        }
+                        //noop
+                    }
+
+                    let field = this.props.fieldMap[key];
+                    if (field && field.type === 'IMG') {
+                        values[key] = JSON.stringify(tempValue);
+                    } else if (field && field.type === 'D') {
+                        values[key] = formatTime(tempValue).split(' ')[0];
                     }
                 }
 
