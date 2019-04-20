@@ -1,7 +1,9 @@
 import React from 'react';
 
-import {List, Button, InputItem, WingBlank, ImagePicker, Picker, DatePicker, TextareaItem, Switch, Flex} from 'antd-mobile';
+import {List, Button, InputItem, WingBlank, ImagePicker, Picker, DatePicker, TextareaItem, Switch, Flex, PickerView} from 'antd-mobile';
 import { createForm } from 'rc-form';
+
+import Lookup from './Lookup';
 
 import { getAdd, saveAdd, uploadFile } from '../api/AddAPI';
 import { WEB_CONTEXT, FILE_URL_PREFIX, formatTime } from '../common/Utils';
@@ -165,6 +167,12 @@ class SectionItems extends React.Component {
                                         />
                                 </div>;
                                 return imageField
+                            } else if (field.type === 'Y') {
+                                return <List.Item
+                                    key={field.fieldid+idx2}
+                                    extra={field.value}
+                                    arrow="horizontal" onClick={()=>{this.props.showLookupModal(field)}}
+                                    >{field.label}</List.Item>
                             }
                         })
                     }
@@ -248,7 +256,7 @@ class BasicForm extends React.Component {
         const {sections, buttons, objid, layoutid, fieldMap} = this.props.state0;
         return (
             <form>
-                <SectionItems sections={sections} form={this.props.form}/>
+                <SectionItems sections={sections} showLookupModal={this.props.showLookupModal}  form={this.props.form}/>
                 <ButtonItems buttons={buttons} objid={objid} layoutid={layoutid} fieldMap={fieldMap} form={this.props.form}/>
             </form>
         );
@@ -267,7 +275,9 @@ class Add extends React.Component {
         objLabel: '',
         objid: '',
         id: '',
-        fieldMap: {}
+        fieldMap: {},
+        lookupModal: false,
+        currentField: {}
     }
 
     componentDidMount() {
@@ -280,12 +290,29 @@ class Add extends React.Component {
             window.location.href = WEB_CONTEXT + '/#/Login';
         } else {
              this.getData();
-
         }
     }
 
     componentWillUnmount() {
         this._isMounted = false;
+    }
+
+    showLookupModal(field) {
+        //console.log(field);
+
+        this.setState({
+            lookupModal: true,
+            currentField: field
+        });
+    }
+
+    selectLookupRecord(record) {
+        //console.log(record);
+        this.state.currentField.value = record.name;
+
+        this.setState({
+            lookupModal: false
+        });
     }
 
     getData = () => {
@@ -330,10 +357,19 @@ class Add extends React.Component {
         });
     }
     render() {
+
         return (
-            <div style={{paddingBottom:'80px'}}>
-                <BasicFormWrapper state0={this.state}/>
+            <div>
+                <div>
+                    {this.state.lookupModal && <Lookup objid={this.state.currentField.lookupObjid} lookupObjShowedFieldid={this.state.currentField.lookupObjShowedFieldid} selectLookupRecord={record=>this.selectLookupRecord(record)}/>}
+                </div>
+                <div style={{paddingBottom:'80px'}} ref={ node => this.contentNode = node }>
+                    <div className={this.state.lookupModal ? 'hide' : 'show'} >
+                        <BasicFormWrapper state0={this.state} showLookupModal={field=>this.showLookupModal(field)} />
+                    </div>
+                </div>
             </div>
+
         );
     }
 }
