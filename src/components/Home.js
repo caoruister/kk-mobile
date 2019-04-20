@@ -62,11 +62,15 @@ class Section extends React.Component {
 }
 
 class Home extends React.Component {
+    _isMounted = false;
+
     state = {
         items: []
     }
+
     componentDidMount() {
         document.title = '首页';
+        this._isMounted = true;
 
         let token = localStorage.getItem('__token__');
         if (token === null || token === '') {
@@ -75,6 +79,11 @@ class Home extends React.Component {
              this.getData(token);
         }
     }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     getData = () => {
         getHome({}).then(res => {
             if (res == null || !res) {
@@ -84,9 +93,11 @@ class Home extends React.Component {
             //
             console.log(res);
 
-            this.setState({
-                items: res.items || [],
-            });
+            if (this._isMounted) {
+                this.setState({
+                    items: res.items || [],
+                });
+            }
         });
     }
     render() {
