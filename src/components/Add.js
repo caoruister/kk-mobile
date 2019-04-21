@@ -169,8 +169,11 @@ class SectionItems extends React.Component {
                                 return imageField
                             } else if (field.type === 'Y') {
                                 return <List.Item
+                                    {...getFieldProps(field.fieldid, {
+                                        initialValue: field.value
+                                    })}
                                     key={field.fieldid+idx2}
-                                    extra={field.value}
+                                    extra={field.value.name}
                                     arrow="horizontal" onClick={()=>{this.props.showLookupModal(field)}}
                                     >{field.label}</List.Item>
                             }
@@ -256,7 +259,7 @@ class BasicForm extends React.Component {
         const {sections, buttons, objid, layoutid, fieldMap} = this.props.state0;
         return (
             <form>
-                <SectionItems sections={sections} showLookupModal={this.props.showLookupModal}  form={this.props.form}/>
+                <SectionItems sections={sections} showLookupModal={this.props.showLookupModal} form={this.props.form}/>
                 <ButtonItems buttons={buttons} objid={objid} layoutid={layoutid} fieldMap={fieldMap} form={this.props.form}/>
             </form>
         );
@@ -277,7 +280,7 @@ class Add extends React.Component {
         id: '',
         fieldMap: {},
         lookupModal: false,
-        currentField: {}
+        currentLookupField: {}
     }
 
     componentDidMount() {
@@ -302,16 +305,21 @@ class Add extends React.Component {
 
         this.setState({
             lookupModal: true,
-            currentField: field
+            currentLookupField: field
         });
     }
 
     selectLookupRecord(record) {
         //console.log(record);
-        this.state.currentField.value = record.name;
 
         this.setState({
-            lookupModal: false
+            lookupModal: false,
+            currentLookupField: {
+                value: {
+                    id: this.state.currentLookupField.lookupObjShowedFieldid,
+                    name: record.name
+                }
+            }
         });
     }
 
@@ -341,6 +349,11 @@ class Add extends React.Component {
                         field.value = [];
                     } else if (field.type === "IMG") {
                         field.value = [];
+                    } else if (field.type === "Y") {
+                        field.value = {
+                            id: field.lookupObjShowedFieldid,
+                            name: ''
+                        };
                     }
                 }
             }
@@ -361,7 +374,7 @@ class Add extends React.Component {
         return (
             <div>
                 <div>
-                    {this.state.lookupModal && <Lookup objid={this.state.currentField.lookupObjid} lookupObjShowedFieldid={this.state.currentField.lookupObjShowedFieldid} selectLookupRecord={record=>this.selectLookupRecord(record)}/>}
+                    {this.state.lookupModal && <Lookup objid={this.state.currentLookupField.lookupObjid} lookupObjShowedFieldid={this.state.currentLookupField.lookupObjShowedFieldid} selectLookupRecord={record=>this.selectLookupRecord(record)}/>}
                 </div>
                 <div style={{paddingBottom:'80px'}} ref={ node => this.contentNode = node }>
                     <div className={this.state.lookupModal ? 'hide' : 'show'} >

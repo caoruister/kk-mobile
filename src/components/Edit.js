@@ -3,6 +3,7 @@ import React from 'react';
 import {List, Button, InputItem, WingBlank, ImagePicker, Picker, DatePicker, TextareaItem, Switch, Flex} from 'antd-mobile';
 import { createForm } from 'rc-form';
 
+import Lookup from './Lookup';
 import { getEdit, saveEdit, uploadFile } from '../api/EditAPI';
 import { WEB_CONTEXT, FILE_URL_PREFIX, formatTime } from '../common/Utils';
 
@@ -191,6 +192,15 @@ class SectionItems extends React.Component {
                                         />
                                 </div>;
                                 return imageField
+                            } else if (field.type === 'Y') {
+                                return <List.Item
+                                    {...getFieldProps(field.fieldid, {
+                                        initialValue: field.value
+                                    })}
+                                    key={field.fieldid+idx2}
+                                    extra={field.value.name}
+                                    arrow="horizontal" onClick={()=>{this.props.showLookupModal(field)}}
+                                    >{field.label}</List.Item>
                             }
                         })
                     }
@@ -279,7 +289,7 @@ class BasicForm extends React.Component {
         const {sections, buttons, objid, id, layoutid, fieldMap} = this.props.state0;
         return (
             <form>
-                <SectionItems sections={sections} form={this.props.form}/>
+                <SectionItems sections={sections} showLookupModal={this.props.showLookupModal} form={this.props.form}/>
                 <WingBlank>
                     <ButtonItems buttons={buttons} objid={objid} layoutid={layoutid} id={id} fieldMap={fieldMap} form={this.props.form}/>
                 </WingBlank>
@@ -300,7 +310,9 @@ class Edit extends React.Component {
         objLabel: '',
         objid: '',
         id: '',
-        fieldMap: {}
+        fieldMap: {},
+        lookupModal: false,
+        currentLookupField: {}
     }
 
     componentDidMount() {
@@ -318,6 +330,29 @@ class Edit extends React.Component {
 
     componentWillUnmount() {
         this._isMounted = false;
+    }
+
+    showLookupModal(field) {
+        //console.log(field);
+
+        this.setState({
+            lookupModal: true,
+            currentLookupField: field
+        });
+    }
+
+    selectLookupRecord(record) {
+        //console.log(record);
+
+        this.setState({
+            lookupModal: false,
+            currentLookupField: {
+                value: {
+                    id: this.state.currentLookupField.lookupObjShowedFieldid,
+                    name: record.name
+                }
+            }
+        });
     }
 
     getData = () => {
@@ -365,8 +400,15 @@ class Edit extends React.Component {
     render() {
 
         return (
-            <div style={{paddingBottom:'80px'}}>
-                <BasicFormWrapper state0={this.state}/>
+            <div>
+                <div>
+                    {this.state.lookupModal && <Lookup objid={this.state.currentLookupField.lookupObjid} lookupObjShowedFieldid={this.state.currentLookupField.lookupObjShowedFieldid} selectLookupRecord={record=>this.selectLookupRecord(record)}/>}
+                </div>
+                <div style={{paddingBottom:'80px'}}>
+                    <div className={this.state.lookupModal ? 'hide' : 'show'} >
+                        <BasicFormWrapper state0={this.state} showLookupModal={field=>this.showLookupModal(field)} />
+                    </div>
+                </div>
             </div>
         );
     }

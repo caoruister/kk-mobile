@@ -8,8 +8,10 @@ class Swiper extends React.Component {
     state = {
         imgHeight: '176',
     }
+
     componentDidMount() {
     }
+
     render() {
         const imgHtml = this.props.data.map(val => (
             <a
