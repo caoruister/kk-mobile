@@ -4,6 +4,7 @@ import qs from 'qs';
 import {List, Button, InputItem, WingBlank, ImagePicker, Picker, DatePicker, TextareaItem, Switch, Flex} from 'antd-mobile';
 
 import { getView } from '../api/ViewAPI';
+import { _callInterface } from '../api/CommonAPI';
 import { WEB_CONTEXT, FILE_URL_PREFIX } from '../common/Utils';
 
 import '../assets/weui.css';
@@ -43,7 +44,7 @@ class ButtonItems extends React.Component {
 
     onClickHandler(onClick) {
         let page = this.props.page;
-        console.log(page);
+        console.log(onClick);
 
         //debugger
         eval(onClick);
@@ -106,12 +107,22 @@ class View extends React.Component {
         //    this.fetchInvoice()
     }
 
+    callInterface = (apiName, data, callback)=> {
+        _callInterface(apiName, data).then((res)=>{
+            !!callback && callback(res);
+        });
+    }
+
     getFieldValue = (fieldName) => {
         return this.state.fieldNameMap[fieldName] && this.state.fieldNameMap[fieldName].value;
     }
 
     setFieldValue = (fieldName, value) => {
         this.state.fieldNameMap[fieldName] && (this.state.fieldNameMap[fieldName].value =  value) && this.setState({});
+    }
+
+    getId = () => {
+        return this.state.id;
     }
 
     getData = () => {
@@ -130,7 +141,7 @@ class View extends React.Component {
         getView(params).then(res => {
             if (res == null || !res) {
                 //window.location.href = WEB_CONTEXT + '/#/Login';
-                this.history.push('/Login', null);
+                this.props.history.push('/Login', null);
                 return;
             }
             //
@@ -153,7 +164,8 @@ class View extends React.Component {
                     buttons: res.buttons || [],
                     layoutid: res.layoutid,
                     objLabel: res.objLabel,
-                    objid: res.objid
+                    objid: res.objid,
+                    id: res.id
                 });
 
                 //used in onLoad method

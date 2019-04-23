@@ -5,9 +5,10 @@ import {List, Button, InputItem, WingBlank, ImagePicker, Picker, DatePicker, Tex
 import { createForm } from 'rc-form';
 
 import Lookup from './Lookup';
-
 import { getAdd, saveAdd, uploadFile } from '../api/AddAPI';
-import { WEB_CONTEXT, FILE_URL_PREFIX, formatDate } from '../common/Utils';
+import { _callInterface } from '../api/CommonAPI';
+
+import { WEB_CONTEXT, FILE_URL_PREFIX, formatDate, } from '../common/Utils';
 
 import '../assets/weui.css';
 
@@ -65,6 +66,7 @@ class SectionItems extends React.Component {
                                     key={field.fieldid+idx2}
                                     placeholder={'请输入'+field.label}
                                     type="text"
+                                    editable={!field.readOnly}
                                     maxLength={field.length}
                                     id={field.fieldid}
                                     >{field.label}</InputItem>
@@ -76,6 +78,7 @@ class SectionItems extends React.Component {
                                     key={field.fieldid+idx2}
                                     placeholder={'请输入'+field.label}
                                     type="number"
+                                    editable={!field.readOnly}
                                     maxLength={field.length}
                                     >{field.label}</InputItem>
                             } else if (field.type === 'H') {
@@ -86,6 +89,7 @@ class SectionItems extends React.Component {
                                     key={field.fieldid+idx2}
                                     placeholder={'请输入'+field.label}
                                     type="phone"
+                                    editable={!field.readOnly}
                                     maxLength={field.length}
                                     >{field.label}</InputItem>
                             } else if (field.type === 'enc') {
@@ -96,6 +100,7 @@ class SectionItems extends React.Component {
                                     key={field.fieldid+idx2}
                                     placeholder={'请输入'+field.label}
                                     type="password"
+                                    editable={!field.readOnly}
                                     maxLength={field.length}
                                     >{field.label}</InputItem>
                             } else if (field.type === 'L') {
@@ -146,6 +151,7 @@ class SectionItems extends React.Component {
                                         })}
                                         placeholder={'请输入'+field.label}
                                         key={field.fieldid+idx2}
+                                        editable={!field.readOnly}
                                         rows={5}
                                         count={100}
                                         />
@@ -204,7 +210,7 @@ class ButtonItems extends React.Component {
 
     onClickHandler(onClick) {
         let page = this.props.page;
-        console.log(page);
+        console.log(onClick);
 
         //debugger
         eval(onClick);
@@ -296,6 +302,20 @@ class Add extends React.Component {
         });
     }
 
+    getFieldValue = (fieldName) => {
+        return this.state.fieldNameMap[fieldName] && this.state.fieldNameMap[fieldName].value;
+    }
+
+    setFieldValue = (fieldName, value) => {
+        this.state.fieldNameMap[fieldName] && (this.state.fieldNameMap[fieldName].value =  value) && this.setState({});
+    }
+
+    callInterface = (apiName, data, callback)=> {
+        _callInterface(apiName, data).then((res)=>{
+            !!callback && callback(res);
+        });
+    }
+
     getData = () => {
 
         let layoutid = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).layoutid;
@@ -350,9 +370,9 @@ class Add extends React.Component {
 
                 //used in onload method
                 let page = this;
-                let onLoadMethodName = res.onLoadMethodName;
-                console.log(onLoadMethodName);
-                !!onLoadMethodName && eval(onLoadMethodName);
+                let onLoadMethod = res.events && res.events.onLoad;
+                console.log(onLoadMethod);
+                !!onLoadMethod && eval(onLoadMethod);
             }
         });
     }
@@ -388,7 +408,8 @@ class Add extends React.Component {
                     }
                 }
 
-                console.log('saveAdd:' + values);
+                console.log('saveAdd:');
+                console.log(values)
                 //
                 return saveAdd(values).then(res => {
                     if (res == null) {return;}
@@ -399,7 +420,7 @@ class Add extends React.Component {
                                 errorMsg: res.errorMsg,
                             });
                         } else {
-                            !!callback ? callback() : this.history.goBack();
+                            !!callback ? callback(res.id) : this.props.history.goBack();
                             //window.location.href = WEB_CONTEXT + '/#/List/' + this.props.objid;
                         }
                     }

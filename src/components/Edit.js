@@ -5,7 +5,8 @@ import { createForm } from 'rc-form';
 
 import Lookup from './Lookup';
 import { getEdit, saveEdit, uploadFile } from '../api/EditAPI';
-import { WEB_CONTEXT, FILE_URL_PREFIX, formatTime } from '../common/Utils';
+import { _callInterface } from '../api/CommonAPI';
+import { WEB_CONTEXT, FILE_URL_PREFIX, formatDate } from '../common/Utils';
 
 import '../assets/weui.css';
 
@@ -213,7 +214,7 @@ class ButtonItems extends React.Component {
 
     onClickHandler(onClick) {
         let page = this.props.page;
-        console.log(page);
+        console.log(onClick);
 
         //debugger
         eval(onClick);
@@ -248,7 +249,8 @@ class Edit extends React.Component {
         objLabel: '',
         objid: '',
         id: '',
-        fieldMap: {},
+        fieldIdMap: {},
+        fieldNameMap: {},
         lookupModal: false,
         currentLookupField: {}
     }
@@ -290,6 +292,20 @@ class Edit extends React.Component {
         });
     }
 
+    getFieldValue = (fieldName) => {
+        return this.state.fieldNameMap[fieldName] && this.state.fieldNameMap[fieldName].value;
+    }
+
+    setFieldValue = (fieldName, value) => {
+        this.state.fieldNameMap[fieldName] && (this.state.fieldNameMap[fieldName].value =  value) && this.setState({});
+    }
+
+    callInterface = (apiName, data, callback)=> {
+        _callInterface(apiName, data).then((res)=>{
+            !!callback && callback(res);
+        });
+    }
+
     getData = () => {
         getEdit({
             id: this.props.match.params.id,
@@ -309,7 +325,8 @@ class Edit extends React.Component {
                 let fields = section.fields;
                 for (var k = 0; k < fields.length; k++) {
                     let field = fields[k];
-                    this.state.fieldMap[field.fieldid] = field;
+                    this.state.fieldIdMap[field.fieldid] = field;
+                    this.state.fieldNameMap[field.name] = field;
                     if (field.type === "D" && field.value) {
                         let dateStr = field.value.replace(/-/g,"/");
                         field.value = new Date(dateStr);
@@ -328,6 +345,12 @@ class Edit extends React.Component {
                     objid: res.objid,
                     id: res.id
                 });
+
+                //used in onload method
+                let page = this;
+                let onLoadMethod = res.events && res.events.onLoad;
+                console.log(onLoadMethod);
+                !!onLoadMethod && eval(onLoadMethod);
             }
         });
     }
@@ -355,11 +378,11 @@ class Edit extends React.Component {
                         //noop
                     }
 
-                    let field = this.state.fieldMap[key];
+                    let field = this.state.fieldIdMap[key];
                     if (field && field.type === 'IMG') {
                         values[key] = JSON.stringify(tempValue);
                     } else if (field && field.type === 'D') {
-                        values[key] = formatTime(tempValue).split(' ')[0];
+                        values[key] = formatDate(tempValue);
                     }
                 }
 
@@ -375,7 +398,7 @@ class Edit extends React.Component {
                                 errorMsg: res.errorMsg,
                             });
                         } else {
-                            !!callback ? callback() : this.history.goBack();
+                            !!callback ? callback(res.id) : this.props.history.goBack();
                             //window.location.href = WEB_CONTEXT + '/#/List/' + this.props.objid;
                         }
                     }
