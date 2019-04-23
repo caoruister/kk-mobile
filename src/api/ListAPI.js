@@ -5,9 +5,7 @@ import { URL_PREFIX } from '../common/Utils';
 
 export const getList = (params) => axios.post(URL_PREFIX + 'record?op=searchRecords', qs.stringify({
     token: localStorage.getItem('__token__'),
-    objid: params.objid,
-    current: params.current,
-    notNeedLogin: params.notNeedLogin
+    ...params
 }), {
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'

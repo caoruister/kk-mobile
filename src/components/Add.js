@@ -1,7 +1,7 @@
 import React from 'react';
 import qs from 'qs';
 
-import {List, Button, InputItem, WingBlank, ImagePicker, Picker, DatePicker, TextareaItem, Switch, Flex, PickerView, Radio} from 'antd-mobile';
+import {List, Button, InputItem, WingBlank, ImagePicker, Picker, DatePicker, TextareaItem, Switch, Flex, PickerView, Radio, NavBar, Icon} from 'antd-mobile';
 import { createForm } from 'rc-form';
 
 import Lookup from './Lookup';
@@ -66,7 +66,7 @@ class SectionItems extends React.Component {
                                     key={field.fieldid+idx2}
                                     placeholder={'请输入'+field.label}
                                     type="text"
-                                    editable={!field.readOnly}
+                                    disabled={field.readOnly}
                                     maxLength={field.length}
                                     id={field.fieldid}
                                     >{field.label}</InputItem>
@@ -78,7 +78,7 @@ class SectionItems extends React.Component {
                                     key={field.fieldid+idx2}
                                     placeholder={'请输入'+field.label}
                                     type="number"
-                                    editable={!field.readOnly}
+                                    disabled={field.readOnly}
                                     maxLength={field.length}
                                     >{field.label}</InputItem>
                             } else if (field.type === 'H') {
@@ -89,7 +89,7 @@ class SectionItems extends React.Component {
                                     key={field.fieldid+idx2}
                                     placeholder={'请输入'+field.label}
                                     type="phone"
-                                    editable={!field.readOnly}
+                                    disabled={field.readOnly}
                                     maxLength={field.length}
                                     >{field.label}</InputItem>
                             } else if (field.type === 'enc') {
@@ -100,7 +100,7 @@ class SectionItems extends React.Component {
                                     key={field.fieldid+idx2}
                                     placeholder={'请输入'+field.label}
                                     type="password"
-                                    editable={!field.readOnly}
+                                    disabled={field.readOnly}
                                     maxLength={field.length}
                                     >{field.label}</InputItem>
                             } else if (field.type === 'L') {
@@ -113,6 +113,7 @@ class SectionItems extends React.Component {
                                         {...getFieldProps(field.fieldid, {
                                             initialValue: field.value
                                         })}
+                                        disabled={field.readOnly}
                                         key={field.fieldid+idx2} extra={'请选择'+field.label} data={data} cols={1} className="forss">
                                         <List.Item arrow="horizontal">{field.label}</List.Item>
                                     </Picker>
@@ -124,7 +125,7 @@ class SectionItems extends React.Component {
                                             })}
                                             >{field.label}</List.Item>
                                         {data.map(i => (
-                                            <Radio.RadioItem key={i.value} checked={field.value === i.value} onChange={this.onChangeOfValue.bind(this, field, i.value)}>
+                                            <Radio.RadioItem key={i.value} checked={field.value === i.value} disabled={field.readOnly} onChange={this.onChangeOfValue.bind(this, field, i.value)}>
                                                 {i.label}
                                             </Radio.RadioItem>
                                         ))}
@@ -136,28 +137,26 @@ class SectionItems extends React.Component {
                                         initialValue: field.value
                                     })}
                                     mode="date"
+                                    disabled={field.readOnly}
                                     key={field.fieldid+idx2} extra={'请选择'+field.label}
                                     onChange={this.onChangeOfValue.bind(this, field)}
                                     >
                                     <List.Item arrow="horizontal">{field.label}</List.Item>
                                 </DatePicker>
                             } else if (field.type === 'X') {
-                                let textareaField = <div key={field.fieldid+idx2}>
-                                    <List.Item
-                                        >{field.label}</List.Item>
-                                    <TextareaItem
-                                        {...getFieldProps(field.fieldid, {
-                                            initialValue: field.value
-                                        })}
-                                        placeholder={'请输入'+field.label}
-                                        key={field.fieldid+idx2}
-                                        editable={!field.readOnly}
-                                        rows={5}
-                                        count={100}
-                                        />
-                                </div>
 
-                                return textareaField
+                                return <TextareaItem
+                                    {...getFieldProps(field.fieldid, {
+                                        initialValue: field.value
+                                    })}
+                                    key={field.fieldid+idx2}
+                                    title={field.label}
+                                    placeholder={'请输入'+field.label}
+                                    key={field.fieldid+idx2}
+                                    disabled={field.readOnly}
+                                    rows={5}
+                                    count={100}
+                                    />
                             } else if (field.type === 'A') {
 
                             } else if (field.type === 'B') {
@@ -168,6 +167,7 @@ class SectionItems extends React.Component {
                                         initialValue: field.value
                                     })}
                                     checked={field.value}
+                                    disabled={field.readOnly}
                                     onChange={this.onChangeOfValue.bind(this, field)}
                                   />}
                                     >{field.label}</List.Item>
@@ -196,6 +196,7 @@ class SectionItems extends React.Component {
                                     })}
                                     key={field.fieldid+idx2}
                                     extra={field.value.name}
+                                    disabled={field.readOnly}
                                     arrow="horizontal" onClick={()=>{this.props.showLookupModal(field)}}
                                     >{field.label}</List.Item>
                             }
@@ -262,12 +263,11 @@ class Add extends React.Component {
         fieldIdMap: {},
         fieldNameMap: {},
         lookupModal: false,
-        currentLookupField: {}
+        currentLookupField: {},
     }
 
     componentDidMount() {
         this._isMounted = true;
-        document.title = '新增';
 
         //debugger
         let token = localStorage.getItem('__token__');
@@ -284,6 +284,9 @@ class Add extends React.Component {
 
     showLookupModal(field) {
         //console.log(field);
+        if (field.readOnly) {
+            return;
+        }
 
         this.setState({
             lookupModal: true,
@@ -320,6 +323,7 @@ class Add extends React.Component {
 
         let layoutid = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).layoutid;
         let notNeedLogin = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).notNeedLogin;
+        let title = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).title;
 
         let params = {
             objid: this.props.match.params.objid,
@@ -368,6 +372,8 @@ class Add extends React.Component {
                     objid: res.objid
                 });
 
+                document.title = title || this.state.objLabel;
+
                 //used in onload method
                 let page = this;
                 let onLoadMethod = res.events && res.events.onLoad;
@@ -409,7 +415,7 @@ class Add extends React.Component {
                 }
 
                 console.log('saveAdd:');
-                console.log(values)
+                console.log(values);
                 //
                 return saveAdd(values).then(res => {
                     if (res == null) {return;}
@@ -437,6 +443,15 @@ class Add extends React.Component {
                 <div>
                     {lookupModal && <Lookup objid={currentLookupField.lookupObjid} lookupObjShowedFieldid={currentLookupField.lookupObjShowedFieldid} selectLookup={record=>this.selectLookup(record)}/>}
                 </div>
+                <NavBar
+                    mode="dark"
+                    leftContent="Back"
+                    onLeftClick={() => this.props.history.goBack()}
+                    rightContent={[
+                    <Icon key="0" type="search" style={{ marginRight: '16px' }} />,
+                    <Icon key="1" type="ellipsis" />,
+                  ]}
+                    >NavBar</NavBar>
                 <div style={{paddingBottom:'80px'}} ref={ node => this.contentNode = node }>
                     <div className={lookupModal ? 'hide' : 'show'} >
                         <form>

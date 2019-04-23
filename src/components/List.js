@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import qs from 'qs';
 
-import { ListView,WhiteSpace } from 'antd-mobile';
+import { ListView, WhiteSpace, NavBar, Icon } from 'antd-mobile';
 
 import { getList } from '../api/ListAPI';
 import { WEB_CONTEXT, FILE_URL_PREFIX } from '../common/Utils';
@@ -88,10 +88,14 @@ class List extends React.Component {
             this.state.dataBlobs[`${ii}`] = `row - ${ii}`;
         }
 
+        let memberFieldName = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).MEMBER_FIELD_NAME;
+        let title = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).title;
+
         return getList({
             objid: this.props.match.params.objid,
             notNeedLogin: false,
-            current: pIndex + 1
+            current: pIndex + 1,
+            MEMBER_FIELD_NAME: (memberFieldName || '')
         }).then(res => {
             if (res == null || !res) {
                 window.location.href = WEB_CONTEXT + '/#/Login';
@@ -107,10 +111,13 @@ class List extends React.Component {
                     data: data,
                     fields: root.showedFields,
                     objLabel: root.objLabel,
+                    tabLabel: root.tabLabel,
                     objid: root.objid,
                     canAdd: root.canAdd,
                     hasMore: root.records != 0 && data.length < root.total
                 });
+
+                document.title = title || this.state.tabLabel || this.state.objLabel;
             }
 
         });
@@ -158,12 +165,9 @@ class List extends React.Component {
 
             //console.log(record);
             let layoutidOfViewPage = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).layoutidOfViewPage;
-            if (!layoutidOfViewPage) {
-                layoutidOfViewPage = '';
-            }
 
             let url = record.canEdit ? '/#/edit/'+this.state.objid+'/'+record.id
-                : (record.canView ? '/#/view/'+this.state.objid+'/' + record.id + '?layoutid=' + layoutidOfViewPage : '/#');
+                : (record.canView ? '/#/view/'+this.state.objid+'/' + record.id + '?layoutid=' + (layoutidOfViewPage || '') : '/#');
             return (
                 <a href={url} >
                     <div className="weui-form-preview__bd" style={{backgroundColor:'#fff'}} >
@@ -180,6 +184,14 @@ class List extends React.Component {
 
         return (
             <div>
+                <NavBar
+                    mode="dark"
+                    leftContent="Back"
+                    rightContent={[
+                    <Icon key="0" type="search" style={{ marginRight: '16px' }} />,
+                    <Icon key="1" type="ellipsis" />,
+                  ]}
+                    >NavBar</NavBar>
                 <ListView
                     ref={el => this.lv = el}
                     dataSource={this.state.dataSource}

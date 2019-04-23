@@ -1,7 +1,7 @@
 import React from 'react';
 import qs from 'qs';
 
-import {List, Button, InputItem, WingBlank, ImagePicker, Picker, DatePicker, TextareaItem, Switch, Flex} from 'antd-mobile';
+import {List, Button, InputItem, WingBlank, ImagePicker, Picker, DatePicker, TextareaItem, Switch, Flex, NavBar, Icon} from 'antd-mobile';
 
 import { getView } from '../api/ViewAPI';
 import { _callInterface } from '../api/CommonAPI';
@@ -130,6 +130,7 @@ class View extends React.Component {
 
         let layoutid = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).layoutid;
         let notNeedLogin = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).notNeedLogin;
+        let title = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).title;
 
         let params = {
             id: this.props.match.params.id,
@@ -168,6 +169,8 @@ class View extends React.Component {
                     id: res.id
                 });
 
+                document.title = title || this.state.objLabel;
+
                 //used in onLoad method
                 let page = this;
                 let onLoadMethodName = res.onLoadMethodName;
@@ -182,6 +185,15 @@ class View extends React.Component {
 
         return (
             <div style={{paddingBottom:'80px'}}>
+                <NavBar
+                    mode="dark"
+                    leftContent="Back"
+                    onLeftClick={() => this.props.history.goBack()}
+                    rightContent={[
+                    <Icon key="0" type="search" style={{ marginRight: '16px' }} />,
+                    <Icon key="1" type="ellipsis" />,
+                  ]}
+                    >NavBar</NavBar>
                 <SectionItems sections={sections}/>
                 <ButtonItems buttons={buttons} page={this}/>
             </div>
