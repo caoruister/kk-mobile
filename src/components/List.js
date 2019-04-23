@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import qs from 'qs';
 
 import { ListView,WhiteSpace } from 'antd-mobile';
 
 import { getList } from '../api/ListAPI';
-import { WEB_CONTEXT } from '../common/Utils';
+import { WEB_CONTEXT, FILE_URL_PREFIX } from '../common/Utils';
 
 import addImg from '../assets/images/add.png';
 
@@ -27,7 +28,8 @@ function View(props) {
             <div key={field.fieldid+idx} className="weui-form-preview__item">
                 {!field.hideLabel && <div className="weui-form-preview__label">{field.label}:</div>}
                 <div className="weui-form-preview__value">
-                    <span>{record[field.name] || ' '}&nbsp;</span>
+                    {field.type !== 'IMG' && <span>{record[field.name] || ''}&nbsp;</span>}
+                    {field.type === 'IMG' && <img src={FILE_URL_PREFIX + record[field.name][0].thumbnail_url} alt=""></img>}
                 </div>
             </div>
     );
@@ -56,6 +58,7 @@ class List extends React.Component {
             rowIDs: [],
             pageIndex: 0,
             objid: '',
+            canAdd: true
         };
     }
 
@@ -105,6 +108,7 @@ class List extends React.Component {
                     fields: root.showedFields,
                     objLabel: root.objLabel,
                     objid: root.objid,
+                    canAdd: root.canAdd,
                     hasMore: root.records != 0 && data.length < root.total
                 });
             }
@@ -150,14 +154,16 @@ class List extends React.Component {
                 return null;
             }
 
-            //console.log(rowID);
-
             const record = this.state.data[rowID];
 
             //console.log(record);
+            let layoutidOfViewPage = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).layoutidOfViewPage;
+            if (!layoutidOfViewPage) {
+                layoutidOfViewPage = '';
+            }
 
             let url = record.canEdit ? '/#/edit/'+this.state.objid+'/'+record.id
-                : (record.canView ? '/#/view/'+this.state.objid+'/' + record.id + '?layoutid=' + this.props.match.params.layoutidOfViewPage : '#');
+                : (record.canView ? '/#/view/'+this.state.objid+'/' + record.id + '?layoutid=' + layoutidOfViewPage : '/#');
             return (
                 <a href={url} >
                     <div className="weui-form-preview__bd" style={{backgroundColor:'#fff'}} >
@@ -192,7 +198,7 @@ class List extends React.Component {
                     onEndReached={this.onEndReached}
                     />
 
-                {!this.state.canAdd && <div className="weui-footer weui-footer_fixed-bottom">
+                {this.state.canAdd && <div className="weui-footer weui-footer_fixed-bottom">
                     <a href={'/#/Add/'+this.state.objid} style={{float:'right'}}>
                         <img className="weui-grid__icon" style={{width:'100px',height:'100px'}} src={addImg} />
                     </a>

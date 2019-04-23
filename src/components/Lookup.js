@@ -149,7 +149,7 @@ class Lookup extends React.Component {
         }).then((res)=>{
             console.log(res);
 
-            this.props.selectLookupRecord({
+            this.props.selectLookup({
                 id: this.props.lookupObjShowedFieldid,
                 name: res.root.lookupObjShowedFieldValue
             });

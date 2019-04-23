@@ -5,9 +5,7 @@ import { URL_PREFIX } from '../common/Utils';
 
 export const getView = (params) => axios.post(URL_PREFIX + 'record?op=getLayoutForViewing', qs.stringify({
     token: localStorage.getItem('__token__'),
-    id: params.id,
-    objid: params.objid,
-    notNeedLogin: params.notNeedLogin
+    ...params
 }), {
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'

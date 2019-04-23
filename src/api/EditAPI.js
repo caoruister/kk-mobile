@@ -26,6 +26,7 @@ export const getEdit = (params) => axios.post(URL_PREFIX + 'record?op=getLayoutF
 });
 
 export const saveEdit = (params) => axios.post(URL_PREFIX + 'record?op=saveRecord', qs.stringify({
+    token: localStorage.getItem('__token__'),
     ...params
 }), {
     headers: {

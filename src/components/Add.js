@@ -1,12 +1,13 @@
 import React from 'react';
+import qs from 'qs';
 
-import {List, Button, InputItem, WingBlank, ImagePicker, Picker, DatePicker, TextareaItem, Switch, Flex, PickerView} from 'antd-mobile';
+import {List, Button, InputItem, WingBlank, ImagePicker, Picker, DatePicker, TextareaItem, Switch, Flex, PickerView, Radio} from 'antd-mobile';
 import { createForm } from 'rc-form';
 
 import Lookup from './Lookup';
 
 import { getAdd, saveAdd, uploadFile } from '../api/AddAPI';
-import { WEB_CONTEXT, FILE_URL_PREFIX, formatTime } from '../common/Utils';
+import { WEB_CONTEXT, FILE_URL_PREFIX, formatDate } from '../common/Utils';
 
 import '../assets/weui.css';
 
@@ -102,13 +103,28 @@ class SectionItems extends React.Component {
                                     return {"label": option.text, "value": option.value}
                                 });
 
-                                return <Picker
-                                    {...getFieldProps(field.fieldid, {
-                                        initialValue: field.value
-                                    })}
-                                    key={field.fieldid+idx2} extra={'请选择'+field.label} data={data} cols={1} className="forss">
-                                    <List.Item arrow="horizontal">{field.label}</List.Item>
-                                </Picker>
+                                if (field.edittype === '1') {
+                                    return <Picker
+                                        {...getFieldProps(field.fieldid, {
+                                            initialValue: field.value
+                                        })}
+                                        key={field.fieldid+idx2} extra={'请选择'+field.label} data={data} cols={1} className="forss">
+                                        <List.Item arrow="horizontal">{field.label}</List.Item>
+                                    </Picker>
+                                } else if (field.edittype === '2') {
+                                    return <div key={field.fieldid+idx2}>
+                                        <List.Item
+                                            {...getFieldProps(field.fieldid, {
+                                                initialValue: field.value
+                                            })}
+                                            >{field.label}</List.Item>
+                                        {data.map(i => (
+                                            <Radio.RadioItem key={i.value} checked={field.value === i.value} onChange={this.onChangeOfValue.bind(this, field, i.value)}>
+                                                {i.label}
+                                            </Radio.RadioItem>
+                                        ))}
+                                    </div>
+                                }
                             } else if (field.type === 'D') {
                                 return <DatePicker
                                     {...getFieldProps(field.fieldid, {
@@ -185,62 +201,21 @@ class SectionItems extends React.Component {
 }
 
 class ButtonItems extends React.Component {
-    save = (e) => {
-        this.setState({
-            errorMsg: '',
-        });
-        e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            console.log('接收到的表单的值为: ', values);
-            console.log(err);
-            if (!err) {
-                values.objid = this.props.objid;
-                values.layoutid = this.props.layoutid;
-                //
 
-                for (var key in values) {
-                    //
-                    let tempValue = values[key];
-                    if (typeof(tempValue) == 'undefined') { // 如果不处理 值为 undefined 的情况，则 输入框中 清空值时，会导致 不提交 该字段的值（应该提交 空值）
-                        values[key] = null;
-                    } else if (Array.isArray(tempValue)) {
-                        //noop
-                    }
+    onClickHandler(onClick) {
+        let page = this.props.page;
+        console.log(page);
 
-                    let field = this.props.fieldMap[key];
-                    if (field && field.type === 'IMG') {
-                        values[key] = JSON.stringify(tempValue);
-                    } else if (field && field.type === 'D') {
-                        values[key] = formatTime(tempValue).split(' ')[0];
-                    }
-                }
-
-                console.log('saveAdd:' + values);
-                //
-                saveAdd(values).then(res => {
-                    if (res == null) {return;}
-                    //
-                    if (res) {
-                        if (res.errorMsg) {
-                            this.setState({
-                                errorMsg: res.errorMsg,
-                            });
-                        } else {
-                            //this.props.history.goBack();
-                            window.location.href = WEB_CONTEXT + '/#/List/' + this.props.objid;
-                        }
-                    }
-                });
-            }
-        });
+        //debugger
+        eval(onClick);
     }
 
     render() {
         let buttons = '';
-        if (this.props.buttons.length === 0) {
-            buttons = this.props.buttons.map((button, idx)=><Flex.Item key={button.id+idx}><Button type="primary" style={{ marginRight: '4px' }} data-method-name={ button.methodName } onClick={this.onClickOfButton}>{ button.text }</Button></Flex.Item>)
+        if (this.props.buttons.length !== 0) {
+            buttons = this.props.buttons.map((button, idx)=><Flex.Item key={button.id+idx}><Button type="primary" style={{ marginRight: '4px' }} data-method-name={ button.methodName } onClick={()=>{this.onClickHandler(button.events.onClick)}}>{ button.text }</Button></Flex.Item>)
         } else {
-            buttons = <Flex.Item><Button type="primary" style={{ marginRight: '4px' }} onClick={this.save}>确认</Button></Flex.Item>
+            buttons = <Flex.Item><Button type="primary" style={{ marginRight: '4px' }} onClick={()=>{this.props.page.save()}}>确认</Button></Flex.Item>
         }
 
         return (
@@ -256,17 +231,17 @@ class ButtonItems extends React.Component {
 
 class BasicForm extends React.Component {
     render() {
-        const {sections, buttons, objid, layoutid, fieldMap} = this.props.state0;
+        const {sections, buttons, objid, layoutid, fieldIdMap} = this.props.state0;
         return (
             <form>
                 <SectionItems sections={sections} showLookupModal={this.props.showLookupModal} form={this.props.form}/>
-                <ButtonItems buttons={buttons} objid={objid} layoutid={layoutid} fieldMap={fieldMap} form={this.props.form}/>
+                <ButtonItems buttons={buttons} objid={objid} layoutid={layoutid} fieldIdMap={fieldIdMap} form={this.props.form} page={this.props.page}/>
             </form>
         );
     }
 }
 
-const BasicFormWrapper = createForm()(BasicForm);
+//const BasicFormWrapper = createForm()(BasicForm);
 
 class Add extends React.Component {
     _isMounted = false;
@@ -278,7 +253,8 @@ class Add extends React.Component {
         objLabel: '',
         objid: '',
         id: '',
-        fieldMap: {},
+        fieldIdMap: {},
+        fieldNameMap: {},
         lookupModal: false,
         currentLookupField: {}
     }
@@ -309,26 +285,29 @@ class Add extends React.Component {
         });
     }
 
-    selectLookupRecord(record) {
+    selectLookup(field) {
         //console.log(record);
+
+        this.state.currentLookupField.value.id = this.state.currentLookupField.lookupObjShowedFieldid;
+        this.state.currentLookupField.value.name = field.name;
 
         this.setState({
             lookupModal: false,
-            currentLookupField: {
-                value: {
-                    id: this.state.currentLookupField.lookupObjShowedFieldid,
-                    name: record.name
-                }
-            }
         });
     }
 
     getData = () => {
 
-        getAdd({
+        let layoutid = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).layoutid;
+        let notNeedLogin = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).notNeedLogin;
+
+        let params = {
             objid: this.props.match.params.objid,
-            notNeedLogin: true
-        }).then(res => {
+            notNeedLogin: notNeedLogin,
+            layoutid: layoutid,
+        };
+
+        getAdd(params).then(res => {
             if (res == null || !res) {
                 window.location.href = WEB_CONTEXT + '/#/Login';
                 return;
@@ -342,7 +321,9 @@ class Add extends React.Component {
                 let fields = section.fields;
                 for (var k = 0; k < fields.length; k++) {
                     let field = fields[k];
-                    this.state.fieldMap[field.fieldid] = field;
+                    this.state.fieldIdMap[field.fieldid] = field;
+                    this.state.fieldNameMap[field.name] = field;
+
                     if (field.type === "D") {
                         field.value = new Date();
                     } else if (field.type === "L") {
@@ -366,19 +347,81 @@ class Add extends React.Component {
                     objLabel: res.objLabel,
                     objid: res.objid
                 });
+
+                //used in onload method
+                let page = this;
+                let onLoadMethodName = res.onLoadMethodName;
+                console.log(onLoadMethodName);
+                !!onLoadMethodName && eval(onLoadMethodName);
             }
         });
     }
+
+    save = (callback) => {
+        this.setState({
+            errorMsg: '',
+        });
+        //e.preventDefault();
+        //debugger
+        this.props.form.validateFields((err, values) => {
+            console.log('接收到的表单的值为: ', values);
+            console.log(err);
+            if (!err) {
+                values.objid = this.state.objid;
+                values.layoutid = this.state.layoutid;
+                //
+
+                for (var key in values) {
+                    //
+                    let tempValue = values[key];
+                    if (typeof(tempValue) == 'undefined') { // 如果不处理 值为 undefined 的情况，则 输入框中 清空值时，会导致 不提交 该字段的值（应该提交 空值）
+                        values[key] = null;
+                    } else if (Array.isArray(tempValue)) {
+                        //noop
+                    }
+
+                    let field = this.state.fieldIdMap[key];
+                    if (field && field.type === 'IMG') {
+                        values[key] = JSON.stringify(tempValue);
+                    } else if (field && field.type === 'D') {
+                        values[key] = formatDate(tempValue);
+                    }
+                }
+
+                console.log('saveAdd:' + values);
+                //
+                return saveAdd(values).then(res => {
+                    if (res == null) {return;}
+                    //
+                    if (res) {
+                        if (res.errorMsg) {
+                            this.setState({
+                                errorMsg: res.errorMsg,
+                            });
+                        } else {
+                            !!callback ? callback() : this.history.goBack();
+                            //window.location.href = WEB_CONTEXT + '/#/List/' + this.props.objid;
+                        }
+                    }
+                });
+            }
+        });
+    }
+
     render() {
+        let {lookupModal, currentLookupField, sections, buttons} = this.state;
 
         return (
             <div>
                 <div>
-                    {this.state.lookupModal && <Lookup objid={this.state.currentLookupField.lookupObjid} lookupObjShowedFieldid={this.state.currentLookupField.lookupObjShowedFieldid} selectLookupRecord={record=>this.selectLookupRecord(record)}/>}
+                    {lookupModal && <Lookup objid={currentLookupField.lookupObjid} lookupObjShowedFieldid={currentLookupField.lookupObjShowedFieldid} selectLookup={record=>this.selectLookup(record)}/>}
                 </div>
                 <div style={{paddingBottom:'80px'}} ref={ node => this.contentNode = node }>
-                    <div className={this.state.lookupModal ? 'hide' : 'show'} >
-                        <BasicFormWrapper state0={this.state} showLookupModal={field=>this.showLookupModal(field)} />
+                    <div className={lookupModal ? 'hide' : 'show'} >
+                        <form>
+                            <SectionItems sections={sections} showLookupModal={field=>this.showLookupModal(field)} form={this.props.form}/>
+                            <ButtonItems buttons={buttons} page={this}/>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -387,4 +430,4 @@ class Add extends React.Component {
     }
 }
 
-export default Add;
+export default createForm()(Add);
