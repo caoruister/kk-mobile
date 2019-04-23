@@ -4,7 +4,7 @@ import { Toast } from 'antd-mobile';
 import { URL_PREFIX } from '../common/Utils';
 
 export const _callInterface = (apiName, data) => {
-    if (apiName == null || apiName == '') {
+    if (apiName === null || apiName === '') {
         Toast.fail('参数apiName取值为空');
         return;
     }

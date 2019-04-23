@@ -187,13 +187,11 @@ class View extends React.Component {
             <div style={{paddingBottom:'80px'}}>
                 <NavBar
                     mode="dark"
-                    leftContent="Back"
-                    onLeftClick={() => this.props.history.goBack()}
-                    rightContent={[
-                    <Icon key="0" type="search" style={{ marginRight: '16px' }} />,
-                    <Icon key="1" type="ellipsis" />,
+                    leftContent={[
+                    <Icon key="0" type="left"/>,
                   ]}
-                    >NavBar</NavBar>
+                    onLeftClick={() => this.props.history.goBack()}
+                    ></NavBar>
                 <SectionItems sections={sections}/>
                 <ButtonItems buttons={buttons} page={this}/>
             </div>

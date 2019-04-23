@@ -228,7 +228,7 @@ class ButtonItems extends React.Component {
 
     render() {
         let buttons = '';
-        if (this.props.buttons.length === 0) {
+        if (this.props.buttons.length !== 0) {
             buttons = this.props.buttons.map((button, idx)=><Flex.Item key={button.id+idx}><Button type="primary" style={{ marginRight: '4px' }} onClick={()=>{this.onClickHandler(button.events.onClick)}}>{ button.text }</Button></Flex.Item>)
         } else {
             buttons = <Flex.Item><Button type="primary" style={{ marginRight: '4px' }} onClick={()=>{this.props.page.save()}}>确认</Button></Flex.Item>
@@ -426,19 +426,16 @@ class Edit extends React.Component {
                 </div>
                 <NavBar
                     mode="dark"
-                    leftContent="Back"
-                    rightContent={[
-                    <Icon key="0" type="search" style={{ marginRight: '16px' }} />,
-                    <Icon key="1" type="ellipsis" />,
+                    leftContent={[
+                    <Icon key="0" type="left"/>,
                   ]}
-                    >NavBar</NavBar>
+                    onLeftClick={() => this.props.history.goBack()}
+                    ></NavBar>
                 <div style={{paddingBottom:'80px'}}>
                     <div className={this.state.lookupModal ? 'hide' : 'show'} >
                         <form>
                             <SectionItems sections={sections} showLookupModal={field=>this.showLookupModal(field)} form={this.props.form}/>
-                            <WingBlank>
-                                <ButtonItems buttons={buttons} form={this.props.form}/>
-                            </WingBlank>
+                            <ButtonItems buttons={buttons} form={this.props.form}/>
                         </form>
                     </div>
                 </div>

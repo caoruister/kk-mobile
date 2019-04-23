@@ -67,8 +67,8 @@ class BasicInput extends React.Component {
   state = {
     //username: 'admin@kkdev.com',
     //password: '1',
-    username: 'zs',
-    password: '1',
+    username: '',
+    password: '',
   }
   componentDidMount() {
   }
@@ -121,7 +121,7 @@ class BasicInput extends React.Component {
           password: null,
         });
         //
-				window.location.href = WEB_CONTEXT + '/#/My';
+				window.location.href = WEB_CONTEXT + '/#/Home';
       }
     });
   }
@@ -156,7 +156,7 @@ const BasicInputWrapper = createForm()(BasicInput);
 
 class Login extends React.Component {
   componentDidMount() {
-    document.title = '登录H5';
+    document.title = '登录';
   }
   render() {
     return (

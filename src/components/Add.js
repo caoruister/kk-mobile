@@ -445,13 +445,11 @@ class Add extends React.Component {
                 </div>
                 <NavBar
                     mode="dark"
-                    leftContent="Back"
-                    onLeftClick={() => this.props.history.goBack()}
-                    rightContent={[
-                    <Icon key="0" type="search" style={{ marginRight: '16px' }} />,
-                    <Icon key="1" type="ellipsis" />,
+                    leftContent={[
+                    <Icon key="0" type="left"/>,
                   ]}
-                    >NavBar</NavBar>
+                    onLeftClick={() => this.props.history.goBack()}
+                    ></NavBar>
                 <div style={{paddingBottom:'80px'}} ref={ node => this.contentNode = node }>
                     <div className={lookupModal ? 'hide' : 'show'} >
                         <form>

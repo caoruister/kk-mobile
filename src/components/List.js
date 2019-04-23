@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import qs from 'qs';
 
-import { ListView, WhiteSpace, NavBar, Icon } from 'antd-mobile';
+import { ListView, List, WhiteSpace, NavBar, Icon } from 'antd-mobile';
 
 import { getList } from '../api/ListAPI';
 import { WEB_CONTEXT, FILE_URL_PREFIX } from '../common/Utils';
@@ -24,19 +24,25 @@ const  NUM_ROWS = 10;
 
 function View(props) {
     const record = props.record;
-    const fields = props.fields.map((field, idx)=>
-            <div key={field.fieldid+idx} className="weui-form-preview__item">
-                {!field.hideLabel && <div className="weui-form-preview__label">{field.label}:</div>}
-                <div className="weui-form-preview__value">
-                    {field.type !== 'IMG' && <span>{record[field.name] || ''}&nbsp;</span>}
-                    {field.type === 'IMG' && <img src={FILE_URL_PREFIX + record[field.name][0].thumbnail_url} alt=""></img>}
-                </div>
-            </div>
-    );
+    const fields = props.fields.map((field, idx)=> {
+
+        let output = <span>{record[field.name] || ''}&nbsp;</span>;
+        if (field.type === 'IMG') {
+            output = <img src={FILE_URL_PREFIX + record[field.name][0].thumbnail_url} alt=""></img>;
+        } else if (field.type === 'L') {
+            output = <span>{record[field.name][0] || ''}&nbsp;</span>;
+        }
+
+        return (
+
+            <List.Item key={field.fieldid+idx} extra={output}>{!field.hideLabel ? field.label : ''}</List.Item>
+
+        )
+    });
     return fields;
 }
 
-class List extends React.Component {
+class List1 extends React.Component {
     _isMounted = false;
 
     constructor(props) {
@@ -114,7 +120,7 @@ class List extends React.Component {
                     tabLabel: root.tabLabel,
                     objid: root.objid,
                     canAdd: root.canAdd,
-                    hasMore: root.records != 0 && data.length < root.total
+                    hasMore: root.records !== 0 && data.length < root.total
                 });
 
                 document.title = title || this.state.tabLabel || this.state.objLabel;
@@ -170,9 +176,9 @@ class List extends React.Component {
                 : (record.canView ? '/#/view/'+this.state.objid+'/' + record.id + '?layoutid=' + (layoutidOfViewPage || '') : '/#');
             return (
                 <a href={url} >
-                    <div className="weui-form-preview__bd" style={{backgroundColor:'#fff'}} >
+                    <List>
                         <View record={record} fields={this.state.fields}/>
-                    </div>
+                    </List>
                 </a>
 
             );
@@ -186,17 +192,16 @@ class List extends React.Component {
             <div>
                 <NavBar
                     mode="dark"
-                    leftContent="Back"
-                    rightContent={[
-                    <Icon key="0" type="search" style={{ marginRight: '16px' }} />,
-                    <Icon key="1" type="ellipsis" />,
+                    leftContent={[
+                    <Icon key="0" type="left"/>,
                   ]}
-                    >NavBar</NavBar>
+                    onLeftClick={() => this.props.history.goBack()}
+                    ></NavBar>
                 <ListView
                     ref={el => this.lv = el}
                     dataSource={this.state.dataSource}
                     renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
-              {this.state.isLoading ? 'Loading...' : ''}
+              {this.state.isLoading ? '加载中...' : ''}
             </div>)}
                     renderBodyComponent={() => <MyBody />}
                     renderRow={row}
@@ -212,7 +217,7 @@ class List extends React.Component {
 
                 {this.state.canAdd && <div className="weui-footer weui-footer_fixed-bottom">
                     <a href={'/#/Add/'+this.state.objid} style={{float:'right'}}>
-                        <img className="weui-grid__icon" style={{width:'100px',height:'100px'}} src={addImg} />
+                        <img className="weui-grid__icon" style={{width:'100px',height:'100px'}} src={addImg} alt=""/>
                     </a>
                 </div>}
 
@@ -221,4 +226,4 @@ class List extends React.Component {
     }
 }
 
-export default List;
+export default List1;

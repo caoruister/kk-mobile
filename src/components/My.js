@@ -21,16 +21,18 @@ class My extends React.Component {
 			]
 		},
 	}
+
   componentDidMount() {
     document.title = '我的';
 
 		let token = localStorage.getItem('__token__');
-		if (token == null || token == '') {
-		  window.location.href = WEB_CONTEXT + '/#/Login';
+		if (token === null || token === '') {
+		  	window.location.href = WEB_CONTEXT + '/#/Login';
 		} else {
-				this.getData();
+			this.getData();
 		}
   }
+
 	getData = () => {
 		getMy().then(res => {
 			if (res == null || !res) {
@@ -45,6 +47,7 @@ class My extends React.Component {
 				})
 		});
 	}
+
 	logout = () => {
 		logout().then(res => {
 			if (res == null || !res) {
@@ -60,6 +63,7 @@ class My extends React.Component {
 		localStorage.removeItem('__orgid__');
 		window.location.href = WEB_CONTEXT + '/#/Login';
 	}
+
   render() {
 		let userInfo = this.state.userInfo;
 		//

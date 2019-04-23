@@ -104,7 +104,7 @@ class Lookup extends React.Component {
                     fields: root.showedFields,
                     objLabel: root.objLabel,
                     objid: root.objid,
-                    hasMore: root.records != 0 && data.length < root.total
+                    hasMore: root.records !== 0 && data.length < root.total
                 });
             }
 
