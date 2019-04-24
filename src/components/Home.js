@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Grid, WhiteSpace} from 'antd-mobile';
+import {Grid, WhiteSpace, Card} from 'antd-mobile';
 
 import BottomTabBar from './BottomTabBar';
 import Swiper from './Swiper';
@@ -49,14 +49,17 @@ class Section extends React.Component {
         return (
             this.props.showSection &&
             <div>
-                <div className="weui-panel">
-                    {this.props.showTitle && <div className="weui-panel__hd">{this.props.title}</div>}
-                    <div className="weui-panel__bd">
+                <Card>
+                    {this.props.showTitle && <Card.Header
+                        title={this.props.title}
+                        />}
+                    <Card.Body>
                         {template}
-                    </div>
-                </div>
+                    </Card.Body>
+                </Card>
                 <WhiteSpace size="lg" />
             </div>
+
         );
     }
 }

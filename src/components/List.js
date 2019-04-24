@@ -26,11 +26,16 @@ function View(props) {
     const record = props.record;
     const fields = props.fields.map((field, idx)=> {
 
-        let output = <span>{record[field.name] || ''}&nbsp;</span>;
-        if (field.type === 'IMG') {
-            output = <img src={FILE_URL_PREFIX + record[field.name][0].thumbnail_url} alt=""></img>;
-        } else if (field.type === 'L') {
-            output = <span>{record[field.name] && record[field.name][0] || ''}&nbsp;</span>;
+        let value = record[field.name];
+        let output = '';
+        if (!value) {
+            output = <span>&nbsp;</span>;
+        } else if (field.type === 'IMG') {
+            output = <img src={FILE_URL_PREFIX + (record[field.name][0].thumbnail_url)} alt=""></img>;
+        } else if (field.type === 'Y') {
+            output = <span>{record[field.name].name || ''}&nbsp;</span>;
+        } else {
+            output = <span>{value}&nbsp;</span>;
         }
 
         return (

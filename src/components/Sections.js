@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {List, InputItem, WingBlank, ImagePicker, Picker, DatePicker, TextareaItem, Switch, Flex, NavBar, Icon} from 'antd-mobile';
+import {List, InputItem, WingBlank, ImagePicker, Picker, DatePicker, TextareaItem, Switch, Radio, Flex} from 'antd-mobile';
 
 import { uploadFile } from '../api/EditAPI';
 import { WEB_CONTEXT, FILE_URL_PREFIX, formatDate } from '../common/Utils';
@@ -33,7 +33,6 @@ class Sections extends React.Component {
                  img.url = FILE_URL_PREFIX + img.url;
                  return img;
                  });*/
-
                 field.value = [...field.value, ...res];
                 this.setState({});
             });
@@ -126,21 +125,38 @@ class Sections extends React.Component {
                                     return {"label": option.text, "value": option.value}
                                 });
 
-                                return <Picker
-                                    {...getFieldProps(field.fieldid, {
-                                        initialValue: field.value
-                                    })}
-                                    disabled={field.readOnly}
-                                    onChange={this.onChangeOfValue.bind(this, field)}
-                                    key={field.fieldid+idx2} extra={'请输入'+field.label} data={data} cols={1}>
-                                    <List.Item arrow="horizontal">{field.label}</List.Item>
-                                </Picker>
-                            } else if (field.type === 'D') {
+                                if (field.edittype === '1') {
+                                    return <Picker
+                                        {...getFieldProps(field.fieldid, {
+                                            initialValue: field.value
+                                        })}
+                                        disabled={field.readOnly}
+                                        onChange={this.onChangeOfValue.bind(this, field)}
+                                        key={field.fieldid+idx2} extra={'请输入'+field.label} data={data} cols={1}>
+                                        <List.Item arrow="horizontal">{field.label}</List.Item>
+                                    </Picker>
+                                } else if (field.edittype === '2') {
+                                    return <div key={field.fieldid+idx2}>
+                                        <List.Item
+                                            {...getFieldProps(field.fieldid, {
+                                                initialValue: field.value
+                                            })}
+                                            >{field.label}</List.Item>
+                                        {data.map(i => (
+                                            <Radio.RadioItem key={i.value} checked={field.value === i.value} disabled={field.readOnly} onChange={this.onChangeOfValue.bind(this, field, i.value)}>
+                                                {i.label}
+                                            </Radio.RadioItem>
+                                        ))}
+                                    </div>
+                                }
+                            } else if (field.type === 'D' || field.type === 'F') {
+                                let mode = field.type === 'D' ? 'date' : 'datetime';
+
                                 return <DatePicker
                                     {...getFieldProps(field.fieldid, {
                                         initialValue: field.value
                                     })}
-                                    mode="date"
+                                    mode={mode}
                                     disabled={field.readOnly}
                                     key={field.fieldid+idx2} extra={'请输入'+field.label}
                                     onChange={this.onChangeOfValue.bind(this, field)}
@@ -171,6 +187,7 @@ class Sections extends React.Component {
                                      {...getFieldProps(field.fieldid, {
                                         initialValue: field.value
                                     })}
+                                    color="#108ee9"
                                     disabled={field.readOnly}
                                     checked={field.value}
                                     onChange={this.onChangeOfValue.bind(this, field)}

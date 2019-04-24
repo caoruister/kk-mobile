@@ -10,7 +10,7 @@ import Sections from './Sections';
 
 import { getEdit, saveEdit, uploadFile } from '../api/EditAPI';
 import { _callInterface } from '../api/CommonAPI';
-import { WEB_CONTEXT, FILE_URL_PREFIX, formatDate } from '../common/Utils';
+import { WEB_CONTEXT, FILE_URL_PREFIX, formatDate, formatTime } from '../common/Utils';
 
 import '../assets/weui.css';
 
@@ -108,8 +108,13 @@ class Edit extends React.Component {
                     if (field.type === "D" && field.value) {
                         let dateStr = field.value.replace(/-/g,"/");
                         field.value = new Date(dateStr);
-                    } else if (field.type === "L" && field.value) {
-                        field.value = [field.value];
+                    } else if (field.type === "F" && field.value) {
+                        let dateStr = field.value.replace(/-/g,"/");
+                        field.value = new Date(dateStr);
+                    } else if (field.type === "L") {
+                        field.value = field.value ? [field.value] : [];
+                    } else if (field.type === "IMG") {
+                        field.value = field.value ? field.value : [];
                     }
                 }
             }
@@ -146,32 +151,39 @@ class Edit extends React.Component {
             console.log('接收到的表单的值为: ', values);
             console.log(err);
             if (!err) {
-                values.objid = this.state.objid;
-                values.layoutid = this.state.layoutid;
-                values.id = this.state.id;
                 //
+                let fieldValue = {};
+                fieldValue.objid = this.state.objid;
+                fieldValue.layoutid = this.state.layoutid;
+                fieldValue.id = this.state.id;
 
                 for (var key in values) {
                     //
                     let tempValue = values[key];
                     if (typeof(tempValue) == 'undefined') { // 如果不处理 值为 undefined 的情况，则 输入框中 清空值时，会导致 不提交 该字段的值（应该提交 空值）
-                        values[key] = null;
-                    } else if (Array.isArray(tempValue)) {
-                        //noop
-                    }
+                        fieldValue[key] = null;
+                    } else {
+                        //
+                        let field = this.state.fieldIdMap[key];
 
-                    let field = this.state.fieldIdMap[key];
-                    if (field && field.type === 'IMG') {
-                        values[key] = JSON.stringify(tempValue);
-                    } else if (field && field.type === 'D') {
-                        values[key] = formatDate(tempValue);
+                        if (field.type === 'IMG') {
+                            fieldValue[key] = JSON.stringify(tempValue);
+                        } else if (field.type === 'D') {
+                            fieldValue[key] = formatDate(tempValue);
+                        } else if (field.type === 'F') {
+                            fieldValue[key] = formatTime(tempValue);
+                        } else if (field.type === 'L') {
+                            fieldValue[key] = tempValue.length > 0 ? tempValue[0] : null
+                        } else {
+                            fieldValue[key] = tempValue;
+                        }
                     }
                 }
 
                 console.log('saveEdit:');
-                console.log(values);
+                console.log(fieldValue);
                 //
-                saveEdit(values).then(res => {
+                saveEdit(fieldValue).then(res => {
                     if (res == null) {return;}
                     //
                     if (res) {
