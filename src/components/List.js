@@ -30,7 +30,7 @@ function View(props) {
         if (field.type === 'IMG') {
             output = <img src={FILE_URL_PREFIX + record[field.name][0].thumbnail_url} alt=""></img>;
         } else if (field.type === 'L') {
-            output = <span>{record[field.name][0] || ''}&nbsp;</span>;
+            output = <span>{record[field.name] && record[field.name][0] || ''}&nbsp;</span>;
         }
 
         return (
@@ -64,7 +64,9 @@ class List1 extends React.Component {
             rowIDs: [],
             pageIndex: 0,
             objid: '',
-            canAdd: true
+            canAdd: true,
+            tabLabel: '',
+            navTitle: ''
         };
     }
 
@@ -120,10 +122,11 @@ class List1 extends React.Component {
                     tabLabel: root.tabLabel,
                     objid: root.objid,
                     canAdd: root.canAdd,
-                    hasMore: root.records !== 0 && data.length < root.total
+                    hasMore: root.records !== 0 && data.length < root.total,
+                    navTitle: title || root.tabLabel || root.layoutName
                 });
 
-                document.title = title || this.state.tabLabel || this.state.objLabel;
+                document.title = this.state.navTitle;
             }
 
         });
@@ -193,10 +196,10 @@ class List1 extends React.Component {
                 <NavBar
                     mode="dark"
                     leftContent={[
-                    <Icon key="0" type="left"/>,
+                    <Icon key="0" type="left" size="lg"/>,
                   ]}
                     onLeftClick={() => this.props.history.goBack()}
-                    ></NavBar>
+                    >{this.state.navTitle}</NavBar>
                 <ListView
                     ref={el => this.lv = el}
                     dataSource={this.state.dataSource}
@@ -215,7 +218,7 @@ class List1 extends React.Component {
                     onEndReached={this.onEndReached}
                     />
 
-                {this.state.canAdd && <div className="weui-footer weui-footer_fixed-bottom">
+                {this.state.canAdd && <div className="weui-footer weui-footer_fixed-bottom" style={{zIndex:'3'}}>
                     <a href={'/#/Add/'+this.state.objid} style={{float:'right'}}>
                         <img className="weui-grid__icon" style={{width:'100px',height:'100px'}} src={addImg} alt=""/>
                     </a>

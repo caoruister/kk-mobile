@@ -3,6 +3,8 @@ import qs from 'qs';
 
 import {List, Button, InputItem, WingBlank, ImagePicker, Picker, DatePicker, TextareaItem, Switch, Flex, NavBar, Icon} from 'antd-mobile';
 
+import ButtonSection from './ButtonSection';
+
 import { getView } from '../api/ViewAPI';
 import { _callInterface } from '../api/CommonAPI';
 import { WEB_CONTEXT, FILE_URL_PREFIX } from '../common/Utils';
@@ -40,33 +42,6 @@ class SectionItems extends React.Component {
     }
 }
 
-class ButtonItems extends React.Component {
-
-    onClickHandler(onClick) {
-        let page = this.props.page;
-        console.log(onClick);
-
-        //debugger
-        eval(onClick);
-    }
-
-    render() {
-        let buttons = '';
-        if (this.props.buttons.length !== 0) {
-            buttons = this.props.buttons.map((button, idx)=><Flex.Item key={button.id+idx}><Button type="primary" style={{ marginRight: '4px' }} onClick={()=>{this.onClickHandler(button.events.onClick)}}>{ button.text }</Button></Flex.Item>)
-        }
-
-        return (
-            <WingBlank>
-                <Flex>
-                    {buttons}
-                </Flex>
-            </WingBlank>
-        )
-    }
-
-}
-
 class View extends React.Component {
     _isMounted = false;
 
@@ -74,16 +49,17 @@ class View extends React.Component {
         sections: [],
         buttons: [],
         layoutid: '',
+        layoutName: '',
         objLabel: '',
         objid: '',
         id: '',
         fieldIdMap: {},
         fieldNameMap: {},
+        navTitle: ''
     }
 
     componentDidMount() {
         this._isMounted = true;
-        document.title = '查看';
 
         //debugger
         let token = localStorage.getItem('__token__');
@@ -165,11 +141,13 @@ class View extends React.Component {
                     buttons: res.buttons || [],
                     layoutid: res.layoutid,
                     objLabel: res.objLabel,
+                    layoutName: res.layoutName,
                     objid: res.objid,
-                    id: res.id
+                    id: res.id,
+                    navTitle: title || res.layoutName
                 });
 
-                document.title = title || this.state.objLabel;
+                document.title = this.state.navTitle;
 
                 //used in onLoad method
                 let page = this;
@@ -181,19 +159,19 @@ class View extends React.Component {
     }
 
     render() {
-        const {sections, buttons} = this.state;
+        const {sections, buttons, navTitle} = this.state;
 
         return (
             <div style={{paddingBottom:'80px'}}>
                 <NavBar
                     mode="dark"
                     leftContent={[
-                    <Icon key="0" type="left"/>,
+                    <Icon key="0" type="left" size="lg"/>,
                   ]}
                     onLeftClick={() => this.props.history.goBack()}
-                    ></NavBar>
+                    >{navTitle}</NavBar>
                 <SectionItems sections={sections}/>
-                <ButtonItems buttons={buttons} page={this}/>
+                <ButtonSection buttons={buttons} page={this} useDefault={false}/>
             </div>
         );
     }

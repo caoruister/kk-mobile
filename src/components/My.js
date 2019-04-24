@@ -96,7 +96,7 @@ class My extends React.Component {
 					</div>
 
 					<div className="userinfo-barcode">
-						<img src={ FILE_URL_PREFIX + this.state.userInfo.headIcon[0].thumbnail_url } mode="scaleToFill"></img>
+						<img src={ FILE_URL_PREFIX  } mode="scaleToFill"></img>
 					</div>
 
 				</div>

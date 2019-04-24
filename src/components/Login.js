@@ -146,7 +146,7 @@ class BasicInput extends React.Component {
             id='idOfPassword'
           ><img className="weui-grid__icon" src={password} /></InputItem>
         </List>
-        <Button type='primary' style={{marginTop:'10px'}} onClick={this.handleOk}>登录H5</Button>
+        <Button type='primary' style={{marginTop:'10px'}} onClick={this.handleOk}>登录</Button>
       </WingBlank>
     );
   }

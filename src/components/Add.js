@@ -5,250 +5,15 @@ import {List, Button, InputItem, WingBlank, ImagePicker, Picker, DatePicker, Tex
 import { createForm } from 'rc-form';
 
 import Lookup from './Lookup';
+import ButtonSection from './ButtonSection';
+import Sections from './Sections';
+
 import { getAdd, saveAdd, uploadFile } from '../api/AddAPI';
 import { _callInterface } from '../api/CommonAPI';
 
 import { WEB_CONTEXT, FILE_URL_PREFIX, formatDate, } from '../common/Utils';
 
 import '../assets/weui.css';
-
-class SectionItems extends React.Component {
-
-    onChangeOfValue(field, value) {
-        console.log(field.fieldid + ':' + value);
-        field.value = value;
-        this.setState({});
-    }
-
-    onChangeOfFileValue(field, values, operationType) {
-        //console.log(operationType);
-        //console.log(values);
-
-        if (operationType === 'add'){
-            let formdata = new FormData();
-            let orgid= localStorage.getItem('__orgid__');
-            formdata.append("orgid", orgid);
-
-            values && values.forEach((val, idx)=>{
-                formdata.append("file", val.file);
-            });
-
-            uploadFile(formdata).then((res) => {
-
-                res && res.map((img, idx)=>{
-                    img.url = FILE_URL_PREFIX + img.url;
-                    return img;
-                });
-
-                field.value = [...field.value, ...res];
-                this.setState({});
-            });
-        } else if (operationType === 'remove') {
-            field.value = values;
-            this.setState({});
-        }
-        //console.log(field);
-    }
-
-    render() {
-
-        const { getFieldProps } = this.props.form;
-
-        return this.props.sections.map((section, idx1)=>
-                <List key={section.key+idx1} renderHeader={section.title}>
-                    {
-                        section.fields.map((field, idx2)=> {
-                            if (field.type === 'S') {
-                                return <InputItem
-                                    {...getFieldProps(field.fieldid, {
-                                        initialValue: field.value
-                                    })}
-                                    key={field.fieldid+idx2}
-                                    placeholder={'请输入'+field.label}
-                                    type="text"
-                                    disabled={field.readOnly}
-                                    maxLength={field.length}
-                                    id={field.fieldid}
-                                    >{field.label}</InputItem>
-                            } else if (field.type === 'N') {
-                                return <InputItem
-                                    {...getFieldProps(field.fieldid, {
-                                        initialValue: field.value
-                                    })}
-                                    key={field.fieldid+idx2}
-                                    placeholder={'请输入'+field.label}
-                                    type="number"
-                                    disabled={field.readOnly}
-                                    maxLength={field.length}
-                                    >{field.label}</InputItem>
-                            } else if (field.type === 'H') {
-                                return <InputItem
-                                    {...getFieldProps(field.fieldid, {
-                                        initialValue: field.value
-                                    })}
-                                    key={field.fieldid+idx2}
-                                    placeholder={'请输入'+field.label}
-                                    type="phone"
-                                    disabled={field.readOnly}
-                                    maxLength={field.length}
-                                    >{field.label}</InputItem>
-                            } else if (field.type === 'enc') {
-                                return <InputItem
-                                    {...getFieldProps(field.fieldid, {
-                                        initialValue: field.value
-                                    })}
-                                    key={field.fieldid+idx2}
-                                    placeholder={'请输入'+field.label}
-                                    type="password"
-                                    disabled={field.readOnly}
-                                    maxLength={field.length}
-                                    >{field.label}</InputItem>
-                            } else if (field.type === 'L') {
-                                let data = field.options.map((option)=> {
-                                    return {"label": option.text, "value": option.value}
-                                });
-
-                                if (field.edittype === '1') {
-                                    return <Picker
-                                        {...getFieldProps(field.fieldid, {
-                                            initialValue: field.value
-                                        })}
-                                        disabled={field.readOnly}
-                                        key={field.fieldid+idx2} extra={'请选择'+field.label} data={data} cols={1} className="forss">
-                                        <List.Item arrow="horizontal">{field.label}</List.Item>
-                                    </Picker>
-                                } else if (field.edittype === '2') {
-                                    return <div key={field.fieldid+idx2}>
-                                        <List.Item
-                                            {...getFieldProps(field.fieldid, {
-                                                initialValue: field.value
-                                            })}
-                                            >{field.label}</List.Item>
-                                        {data.map(i => (
-                                            <Radio.RadioItem key={i.value} checked={field.value === i.value} disabled={field.readOnly} onChange={this.onChangeOfValue.bind(this, field, i.value)}>
-                                                {i.label}
-                                            </Radio.RadioItem>
-                                        ))}
-                                    </div>
-                                }
-                            } else if (field.type === 'D') {
-                                return <DatePicker
-                                    {...getFieldProps(field.fieldid, {
-                                        initialValue: field.value
-                                    })}
-                                    mode="date"
-                                    disabled={field.readOnly}
-                                    key={field.fieldid+idx2} extra={'请选择'+field.label}
-                                    onChange={this.onChangeOfValue.bind(this, field)}
-                                    >
-                                    <List.Item arrow="horizontal">{field.label}</List.Item>
-                                </DatePicker>
-                            } else if (field.type === 'X') {
-
-                                return <TextareaItem
-                                    {...getFieldProps(field.fieldid, {
-                                        initialValue: field.value
-                                    })}
-                                    key={field.fieldid+idx2}
-                                    title={field.label}
-                                    placeholder={'请输入'+field.label}
-                                    key={field.fieldid+idx2}
-                                    disabled={field.readOnly}
-                                    rows={5}
-                                    count={100}
-                                    />
-                            } else if (field.type === 'A') {
-
-                            } else if (field.type === 'B') {
-                                return <List.Item
-                                    key={field.fieldid+idx2}
-                                    extra={<Switch
-                                    {...getFieldProps(field.fieldid, {
-                                        initialValue: field.value
-                                    })}
-                                    checked={field.value}
-                                    disabled={field.readOnly}
-                                    onChange={this.onChangeOfValue.bind(this, field)}
-                                  />}
-                                    >{field.label}</List.Item>
-
-                            } else if (field.type === 'IMG') {
-
-                                let imageField = <div key={field.fieldid+idx2}>
-                                    <List.Item
-                                        >{field.label}</List.Item>
-                                    <ImagePicker
-                                        {...getFieldProps(field.fieldid, {
-                                            initialValue: field.value
-                                        })}
-                                        files={field.value}
-                                        onChange={this.onChangeOfFileValue.bind(this, field)}
-                                        onImageClick={(index, fs) => console.log(index, fs)}
-                                        selectable={field.length < 7}
-                                        multiple={false}
-                                        />
-                                </div>;
-                                return imageField
-                            } else if (field.type === 'Y') {
-                                return <List.Item
-                                    {...getFieldProps(field.fieldid, {
-                                        initialValue: field.value
-                                    })}
-                                    key={field.fieldid+idx2}
-                                    extra={field.value.name}
-                                    disabled={field.readOnly}
-                                    arrow="horizontal" onClick={()=>{this.props.showLookupModal(field)}}
-                                    >{field.label}</List.Item>
-                            }
-                        })
-                    }
-                </List>
-        )
-    }
-}
-
-class ButtonItems extends React.Component {
-
-    onClickHandler(onClick) {
-        let page = this.props.page;
-        console.log(onClick);
-
-        //debugger
-        eval(onClick);
-    }
-
-    render() {
-        let buttons = '';
-        if (this.props.buttons.length !== 0) {
-            buttons = this.props.buttons.map((button, idx)=><Flex.Item key={button.id+idx}><Button type="primary" style={{ marginRight: '4px' }} data-method-name={ button.methodName } onClick={()=>{this.onClickHandler(button.events.onClick)}}>{ button.text }</Button></Flex.Item>)
-        } else {
-            buttons = <Flex.Item><Button type="primary" style={{ marginRight: '4px' }} onClick={()=>{this.props.page.save()}}>确认</Button></Flex.Item>
-        }
-
-        return (
-            <WingBlank>
-                <Flex>
-                    {buttons}
-                </Flex>
-            </WingBlank>
-        )
-    }
-
-}
-
-class BasicForm extends React.Component {
-    render() {
-        const {sections, buttons, objid, layoutid, fieldIdMap} = this.props.state0;
-        return (
-            <form>
-                <SectionItems sections={sections} showLookupModal={this.props.showLookupModal} form={this.props.form}/>
-                <ButtonItems buttons={buttons} objid={objid} layoutid={layoutid} fieldIdMap={fieldIdMap} form={this.props.form} page={this.props.page}/>
-            </form>
-        );
-    }
-}
-
-//const BasicFormWrapper = createForm()(BasicForm);
 
 class Add extends React.Component {
     _isMounted = false;
@@ -257,6 +22,7 @@ class Add extends React.Component {
         sections: [],
         buttons: [],
         layoutid: '',
+        layoutName: '',
         objLabel: '',
         objid: '',
         id: '',
@@ -264,6 +30,7 @@ class Add extends React.Component {
         fieldNameMap: {},
         lookupModal: false,
         currentLookupField: {},
+        navTitle: ''
     }
 
     componentDidMount() {
@@ -368,11 +135,13 @@ class Add extends React.Component {
                     sections: res.sections || [],
                     buttons: res.buttons || [],
                     layoutid: res.layoutid,
+                    layoutName: res.layoutName,
                     objLabel: res.objLabel,
-                    objid: res.objid
+                    objid: res.objid,
+                    navTitle: title || res.layoutName
                 });
 
-                document.title = title || this.state.objLabel;
+                document.title = this.state.navTitle;
 
                 //used in onload method
                 let page = this;
@@ -426,7 +195,11 @@ class Add extends React.Component {
                                 errorMsg: res.errorMsg,
                             });
                         } else {
-                            !!callback ? callback(res.id) : this.props.history.goBack();
+                            let navigateBackDelta = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).navigateBackDelta;
+                            let back = ~navigateBackDelta+1;
+                            console.log('goback:' + back);
+
+                            !!callback ? callback(res.id) : this.props.history.go(back !== 0 ? back : -1);
                             //window.location.href = WEB_CONTEXT + '/#/List/' + this.props.objid;
                         }
                     }
@@ -436,7 +209,7 @@ class Add extends React.Component {
     }
 
     render() {
-        let {lookupModal, currentLookupField, sections, buttons} = this.state;
+        let {lookupModal, currentLookupField, sections, buttons, navTitle} = this.state;
 
         return (
             <div>
@@ -446,15 +219,15 @@ class Add extends React.Component {
                 <NavBar
                     mode="dark"
                     leftContent={[
-                    <Icon key="0" type="left"/>,
+                    <Icon key="0" type="left" size="lg"/>,
                   ]}
                     onLeftClick={() => this.props.history.goBack()}
-                    ></NavBar>
+                    >{navTitle}</NavBar>
                 <div style={{paddingBottom:'80px'}} ref={ node => this.contentNode = node }>
                     <div className={lookupModal ? 'hide' : 'show'} >
                         <form>
-                            <SectionItems sections={sections} showLookupModal={field=>this.showLookupModal(field)} form={this.props.form}/>
-                            <ButtonItems buttons={buttons} page={this}/>
+                            <Sections sections={sections} showLookupModal={field=>this.showLookupModal(field)} form={this.props.form}/>
+                            <ButtonSection buttons={buttons} page={this} useDefault={true}/>
                         </form>
                     </div>
                 </div>
