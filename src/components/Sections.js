@@ -70,6 +70,7 @@ class Sections extends React.Component {
                 <List key={section.key+idx1} renderHeader={section.title}>
                     {
                         section.fields.map((field, idx2)=> {
+
                             if (field.type === 'S') {
                                 return <InputItem
                                     {...getFieldProps(field.fieldid, {
@@ -125,6 +126,7 @@ class Sections extends React.Component {
                                     return {"label": option.text, "value": option.value}
                                 });
 
+                                //console.log(field);
                                 if (field.edittype === '1') {
                                     return <Picker
                                         {...getFieldProps(field.fieldid, {

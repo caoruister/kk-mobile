@@ -111,8 +111,8 @@ class Edit extends React.Component {
                     } else if (field.type === "F" && field.value) {
                         let dateStr = field.value.replace(/-/g,"/");
                         field.value = new Date(dateStr);
-                    } else if (field.type === "L") {
-                        field.value = field.value ? [field.value] : [];
+                    } else if (field.type === "L" && field.edittype === '1') {
+                        field.value = field.value != null ? [field.value] : [];
                     } else if (field.type === "IMG") {
                         field.value = field.value ? field.value : [];
                     }
@@ -213,15 +213,15 @@ class Edit extends React.Component {
                 <div>
                     {lookupModal && <Lookup objid={currentLookupField.lookupObjid} lookupObjShowedFieldid={currentLookupField.lookupObjShowedFieldid} selectLookup={field=>this.selectLookup(field)}/>}
                 </div>
-                <NavBar
-                    mode="dark"
-                    leftContent={[
+                <div style={{paddingBottom:'80px'}} className={this.state.lookupModal ? 'hide' : 'show'}>
+                    <NavBar
+                        mode="dark"
+                        leftContent={[
                     <Icon key="0" type="left" size="lg"/>,
                   ]}
-                    onLeftClick={() => this.props.history.goBack()}
-                    >{navTitle}</NavBar>
-                <div style={{paddingBottom:'80px'}}>
-                    <div className={this.state.lookupModal ? 'hide' : 'show'} >
+                        onLeftClick={() => this.props.history.goBack()}
+                        >{navTitle}</NavBar>
+                    <div>
                         <form>
                             <Sections sections={sections} showLookupModal={field=>this.showLookupModal(field)} form={this.props.form}/>
                             <ButtonSection buttons={buttons} page={this} useDefault={true}/>

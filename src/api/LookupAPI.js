@@ -5,8 +5,7 @@ import { URL_PREFIX } from '../common/Utils';
 
 export const getLookup = (params) => axios.post(URL_PREFIX + 'record?op=searchRecordsForLookupWindow', qs.stringify({
     token: localStorage.getItem('__token__'),
-    objid: params.objid,
-    MEMBER_FIELD_NAME: 'auto'
+    ...params
 }), {
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -27,9 +26,7 @@ export const getLookup = (params) => axios.post(URL_PREFIX + 'record?op=searchRe
 
 export const getSelectedFieldValue = (params) => axios.post(URL_PREFIX + 'record?op=getlookupObjShowedFieldValue', qs.stringify({
     token: localStorage.getItem('__token__'),
-    objid: params.objid,
-    id: params.id,
-    lookupObjShowedFieldid: params.lookupObjShowedFieldid,
+    ...params
 }), {
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'

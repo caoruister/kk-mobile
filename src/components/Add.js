@@ -224,15 +224,16 @@ class Add extends React.Component {
                 <div>
                     {lookupModal && <Lookup objid={currentLookupField.lookupObjid} lookupObjShowedFieldid={currentLookupField.lookupObjShowedFieldid} selectLookup={record=>this.selectLookup(record)}/>}
                 </div>
-                <NavBar
-                    mode="dark"
-                    leftContent={[
+
+                <div style={{paddingBottom:'80px'}} className={lookupModal ? 'hide' : 'show'} >
+                    <NavBar
+                        mode="dark"
+                        leftContent={[
                     <Icon key="0" type="left" size="lg"/>,
                   ]}
-                    onLeftClick={() => this.props.history.goBack()}
-                    >{navTitle}</NavBar>
-                <div style={{paddingBottom:'80px'}} ref={ node => this.contentNode = node }>
-                    <div className={lookupModal ? 'hide' : 'show'} >
+                        onLeftClick={() => this.props.history.goBack()}
+                        >{navTitle}</NavBar>
+                    <div >
                         <form>
                             <Sections sections={sections} showLookupModal={field=>this.showLookupModal(field)} form={this.props.form}/>
                             <ButtonSection buttons={buttons} page={this} useDefault={true}/>
