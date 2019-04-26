@@ -219,6 +219,7 @@ class Sections extends React.Component {
                                     })}
                                     key={field.fieldid+idx2}
                                     extra={field.value.name}
+                                    disabled={field.readOnly}
                                     arrow="horizontal" onClick={()=>{this.props.showLookupModal(field)}}
                                     >{field.label}</List.Item>
                             }
