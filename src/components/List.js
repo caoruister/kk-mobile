@@ -9,8 +9,6 @@ import { WEB_CONTEXT, FILE_URL_PREFIX } from '../common/Utils';
 
 import addImg from '../assets/images/add.png';
 
-import '../assets/weui.css';
-
 function MyBody(props) {
     return (
         <div class1="am-list-body my-body">

@@ -12,8 +12,6 @@ import { getEdit, saveEdit, uploadFile } from '../api/EditAPI';
 import { _callInterface } from '../api/CommonAPI';
 import { WEB_CONTEXT, FILE_URL_PREFIX, formatDate, formatTime } from '../common/Utils';
 
-import '../assets/weui.css';
-
 class Edit extends React.Component {
     _isMounted = false;
 

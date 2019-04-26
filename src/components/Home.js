@@ -9,14 +9,13 @@ import { WEB_CONTEXT } from '../common/Utils';
 
 import { getHome } from '../api/HomeAPI'
 
-import '../assets/weui.css';
-
 function GridItems(props) {
     return <Grid data={props.data}
                  columnNum={props.columnNum}
+                 square={false}
                  renderItem={dataItem => (
                                              <a href={dataItem.path} className='am-grid-item-inner-content'>
-                                              <img src={dataItem.icon} alt="" className='am-grid-icon'/>
+                                              <img src={dataItem.icon} alt="" className='am-grid-icon' style={{width:'60px',height:'60px'}}/>
                                               <div className='am-grid-text'>
                                                 <span>{dataItem.label}</span>
                                               </div>

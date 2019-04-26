@@ -9,8 +9,6 @@ import { getView } from '../api/ViewAPI';
 import { _callInterface } from '../api/CommonAPI';
 import { WEB_CONTEXT, FILE_URL_PREFIX } from '../common/Utils';
 
-import '../assets/weui.css';
-
 class SectionItems extends React.Component {
 
     render() {

@@ -10,8 +10,6 @@ import loginImg from '../assets/images/login.png';
 import mobile from '../assets/images/mobile.png';
 import password from '../assets/images/password.png';
 
-import '../assets/weui.css';
-
 function Base64() {
 	// private property
 	this._keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
@@ -137,7 +135,7 @@ class BasicInput extends React.Component {
             onChange={ this.onChangeOfUsername }
             value={this.state.username}
             id='idOfUsername'
-          ><img className="weui-grid__icon" src={mobile} /></InputItem>
+          ><img style={{margin:'0 auto', display:'block'}} src={mobile} /></InputItem>
           <InputItem
             {...getFieldProps('password')}
             type="password"
@@ -145,7 +143,7 @@ class BasicInput extends React.Component {
             onChange={ this.onChangeOfPassword }
             value={this.state.password}
             id='idOfPassword'
-          ><img className="weui-grid__icon" src={password} /></InputItem>
+          ><img style={{margin:'0 auto', display:'block'}} src={password} /></InputItem>
         </List>
         <Button type='primary' style={{marginTop:'10px'}} onClick={this.handleOk}>登录</Button>
 

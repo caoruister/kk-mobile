@@ -9,8 +9,6 @@ import Add from '../components/Add';
 import Edit from '../components/Edit';
 import View from '../components/View';
 
-//import '../assets/weui.css';
-
 export const MyRoute = () => (
   <main>
     <Switch>

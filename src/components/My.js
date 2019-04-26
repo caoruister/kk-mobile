@@ -6,8 +6,6 @@ import { logout } from '../api/LoginAPI';
 import { getMy } from '../api/MyAPI';
 import { WEB_CONTEXT, FILE_URL_PREFIX } from '../common/Utils';
 
-import '../assets/weui.css';
-
 const Item = List.Item;
 
 class My extends React.Component {
@@ -118,6 +116,7 @@ class My extends React.Component {
 
                 <Grid data={stats}
                       columnNum={3}
+                      square={false}
                       renderItem={dataItem => (
                                              <div className='am-grid-item-inner-content'>
                                                   <div className='am-grid-text'>
