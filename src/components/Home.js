@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Grid, WhiteSpace, Card} from 'antd-mobile';
+import {Grid, WhiteSpace, Flex} from 'antd-mobile';
 
 import BottomTabBar from './BottomTabBar';
 import Swiper from './Swiper';
@@ -49,14 +49,8 @@ class Section extends React.Component {
         return (
             this.props.showSection &&
             <div>
-                <Card>
-                    {this.props.showTitle && <Card.Header
-                        title={this.props.title}
-                        />}
-                    <Card.Body>
-                        {template}
-                    </Card.Body>
-                </Card>
+                <div className="sub-title">{this.props.title}</div>
+                {template}
                 <WhiteSpace size="lg" />
             </div>
 
@@ -75,12 +69,7 @@ class Home extends React.Component {
         document.title = '首页';
         this._isMounted = true;
 
-        let token = localStorage.getItem('__token__');
-        if (token === null || token === '') {
-            window.location.href = WEB_CONTEXT + '/#/Login';
-        } else {
-             this.getData(token);
-        }
+        this.getData();
     }
 
     componentWillUnmount() {

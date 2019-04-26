@@ -166,7 +166,6 @@ class Sections extends React.Component {
                                     <List.Item arrow="horizontal">{field.label}</List.Item>
                                 </DatePicker>
                             } else if (field.type === 'X') {
-
                                 return <TextareaItem
                                     {...getFieldProps(field.fieldid, {
                                         initialValue: field.value
@@ -181,7 +180,13 @@ class Sections extends React.Component {
                                     count={100}
                                     />
                             } else if (field.type === 'A') {
-
+                                //富文本
+                                if (field.readOnly) {
+                                    return <div
+                                        dangerouslySetInnerHTML={{ __html: field.value}}
+                                        />
+                                }
+                                return null;
                             } else if (field.type === 'B') {
                                 return <List.Item
                                     key={field.fieldid+idx2}

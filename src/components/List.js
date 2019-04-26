@@ -34,6 +34,10 @@ function View(props) {
             output = <img src={FILE_URL_PREFIX + (record[field.name][0].thumbnail_url)} alt=""></img>;
         } else if (field.type === 'Y') {
             output = <span>{record[field.name].name || ''}&nbsp;</span>;
+        } else if (field.type === 'A') {
+            output = <div
+                dangerouslySetInnerHTML={{ __html: record[field.name]}}
+                />
         } else {
             output = <span>{value}&nbsp;</span>;
         }
@@ -77,7 +81,6 @@ class List1 extends React.Component {
 
     componentDidMount() {
         this._isMounted = true;
-        document.title = '列表';
         // you can scroll to the specified position
         // setTimeout(() => this.lv.scrollTo(0, 120), 800);
 

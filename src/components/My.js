@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { List, Icon, Button, WingBlank } from 'antd-mobile';
+import { List, Icon, Button, WingBlank, WhiteSpace, Grid } from 'antd-mobile';
 import BottomTabBar from './BottomTabBar';
 import { logout } from '../api/LoginAPI';
 import { getMy } from '../api/MyAPI';
@@ -22,6 +22,12 @@ class My extends React.Component {
                 }
             ]
         },
+
+        stats: Array.from(new Array(3)).map((_val, i) => ({
+            label: '统计'+i,
+            text: `32${i}`,
+            style: {color:'#fea33a',fontSize:'36px'}
+        }))
     }
 
     componentDidMount() {
@@ -75,9 +81,8 @@ class My extends React.Component {
     }
 
     render() {
-        let userInfo = this.state.userInfo;
+        const {userInfo, list, stats} = this.state;
         //
-        let list = this.state.list;
         let listItems = [];
         for (var i = 0; i < list.length; i++) {
             let item = list[i];
@@ -93,9 +98,8 @@ class My extends React.Component {
             );
         }
         return (
-            <div className="page">
-
-                <div className="page__hd userinfo">
+            <div style={{paddingBottom:'80px'}}>
+                <div className="userinfo">
                     <div className='userinfo-avatar'>
                         <img src={ FILE_URL_PREFIX + this.state.userInfo.headIcon[0].thumbnail_url }
                              mode="scaleToFill"></img>
@@ -112,47 +116,32 @@ class My extends React.Component {
 
                 </div>
 
-                <div className="page__bd" style={{paddingBottom:'80px'}}>
-                    <div className="weui-panel">
-                        <div className="weui-panel__bd">
-                            <div className="weui-grids">
-                                <div className="weui-grid">
-                                    <div className="title">
-                                        <div className="weui-grid__icon">{userInfo.label1}</div>
-                                        <div className="weui-grid__label"
-                                             style={{color:'#f55b34'}}>{userInfo.text1}</div>
-                                    </div>
-                                </div>
-                                <div className="weui-grid">
-                                    <div className="title">
-                                        <div className="weui-grid__icon">{userInfo.label2}</div>
-                                        <div className="weui-grid__label"
-                                             style={{color:'#3d8de9'}}>{userInfo.text2}</div>
-                                    </div>
-                                </div>
-                                <div className="weui-grid">
-                                    <div className="weui-grid__icon">{userInfo.label3}</div>
-                                    <div className="weui-grid__label" style={{color:'#fea33a'}}>{userInfo.text3}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <Grid data={stats}
+                      columnNum={3}
+                      renderItem={dataItem => (
+                                             <div className='am-grid-item-inner-content'>
+                                                  <div className='am-grid-text'>
+                                                    <span style={{fontSize:'14px', color:'#d9d9d9'}}>{dataItem.label}</span>
+                                                  </div>
+                                                  <div className='am-grid-text'>
+                                                    <span style={dataItem.style}>{dataItem.text}</span>
+                                                  </div>
+                                              </div>
+                                          )}
+                    />
 
-                    <div className="weui-panel">
-                        <div className="weui-panel__bd">
-                            <List>
-                                {listItems}
-                            </List>
-                        </div>
-                    </div>
+                <WhiteSpace size="lg" />
+                <List>
+                    {listItems}
+                </List>
 
-                    <WingBlank>
-                        <Button type="primary" onClick={this.logout}>退出</Button>
-                    </WingBlank>
+                <WhiteSpace size="lg" />
+                <WingBlank>
+                    <Button type="primary" onClick={this.logout}>退出</Button>
+                </WingBlank>
 
-                    <div>
-                        <BottomTabBar selectedTab='my'/>
-                    </div>
+                <div>
+                    <BottomTabBar selectedTab='my'/>
                 </div>
             </div>
         );

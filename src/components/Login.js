@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Link, NavLink } from "react-router-dom";
 
-import { Toast, InputItem, Button, List, WingBlank } from 'antd-mobile';
+import { Toast, InputItem, Button, List, WingBlank, Flex, WhiteSpace } from 'antd-mobile';
 import { createForm } from 'rc-form';
 import { login } from '../api/LoginAPI';
 import { WEB_CONTEXT } from '../common/Utils';
@@ -147,6 +148,13 @@ class BasicInput extends React.Component {
           ><img className="weui-grid__icon" src={password} /></InputItem>
         </List>
         <Button type='primary' style={{marginTop:'10px'}} onClick={this.handleOk}>登录</Button>
+
+        <WhiteSpace size="md" />
+        <Flex justify="between">
+          <a href="/#/Add/register?notNeedLogin=true" className="inline">注册</a>
+          <a href="/#/Home?notNeedLogin=true" className="inline">我是游客</a>
+        </Flex>
+
       </WingBlank>
     );
   }
@@ -160,13 +168,11 @@ class Login extends React.Component {
   }
   render() {
     return (
-      <div className="page">
-        <div className="page__hd" style={{textAlign:'center',padding:'40px'}}>
-          <img className="weui-grid__icon" style={{height:'80px', width:'80px'}} src={loginImg} />
+      <div>
+        <div style={{textAlign:'center',padding:'40px'}}>
+          <img style={{height:'80px', width:'80px'}} src={loginImg} />
         </div>
-        <div className="page__bd page__bd_spacing">
-          <BasicInputWrapper />
-        </div>
+        <BasicInputWrapper />
       </div>
     );
   }

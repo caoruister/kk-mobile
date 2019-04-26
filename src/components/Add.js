@@ -35,14 +35,8 @@ class Add extends React.Component {
 
     componentDidMount() {
         this._isMounted = true;
-
         //debugger
-        let token = localStorage.getItem('__token__');
-        if (token === null || token === '') {
-            window.location.href = WEB_CONTEXT + '/#/Login';
-        } else {
-             this.getData();
-        }
+        this.getData();
     }
 
     componentWillUnmount() {

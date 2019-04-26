@@ -62,12 +62,7 @@ class View extends React.Component {
         this._isMounted = true;
 
         //debugger
-        let token = localStorage.getItem('__token__');
-        if (token === null || token === '') {
-            window.location.href = WEB_CONTEXT + '/#/Login';
-        } else {
-             this.getData(token);
-        }
+        this.getData();
     }
 
     componentWillUnmount() {
