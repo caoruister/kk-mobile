@@ -30,7 +30,8 @@ class Add extends React.Component {
         fieldNameMap: {},
         lookupModal: false,
         currentLookupField: {},
-        navTitle: ''
+        navTitle: '',
+        errorMsg: []
     }
 
     componentDidMount() {
@@ -206,12 +207,16 @@ class Add extends React.Component {
                         }
                     }
                 });
+            } else {
+                this.setState({
+                    errorMsg: err,
+                });
             }
         });
     }
 
     render() {
-        let {lookupModal, currentLookupField, sections, buttons, navTitle} = this.state;
+        let {lookupModal, currentLookupField, sections, buttons, navTitle, errorMsg} = this.state;
 
         return (
             <div>
@@ -229,6 +234,9 @@ class Add extends React.Component {
                         >{navTitle}</NavBar>
                     <div >
                         <form>
+                            <div style={{ color: 'red' }}>
+                                {errorMsg[0]}
+                            </div>
                             <Sections sections={sections} showLookupModal={field=>this.showLookupModal(field)} form={this.props.form}/>
                             <ButtonSection buttons={buttons} page={this} useDefault={true}/>
                         </form>

@@ -149,8 +149,8 @@ class BasicInput extends React.Component {
 
         <WhiteSpace size="md" />
         <Flex justify="between">
-          <a href="/#/Add/register?notNeedLogin=true" className="inline">注册</a>
-          <a href="/#/Home?notNeedLogin=true" className="inline">我是游客</a>
+          <Link to="/Add/register?notNeedLogin=true" className="inline">注册</Link>
+          <Link to="/Home?notNeedLogin=true" className="inline">我是游客</Link>
         </Flex>
 
       </WingBlank>

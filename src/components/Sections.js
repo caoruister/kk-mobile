@@ -74,7 +74,10 @@ class Sections extends React.Component {
                             if (field.type === 'S') {
                                 return <InputItem
                                     {...getFieldProps(field.fieldid, {
-                                        initialValue: field.value
+                                        initialValue: field.value,
+                                        rules: [
+                                            { required: true, message: 'Please input account' },
+                                        ],
                                     })}
                                     key={field.fieldid+idx2}
                                     placeholder={'请输入'+field.label}
@@ -83,7 +86,7 @@ class Sections extends React.Component {
                                     disabled={field.readOnly}
                                     onChange={this.onChangeOfValue.bind(this, field)}
                                     id={field.fieldid}
-                                    >{field.label}</InputItem>
+                                    ><span style={{color:'red'}}>*</span>{field.label}</InputItem>
                             } else if (field.type === 'N') {
                                 return <InputItem
                                     {...getFieldProps(field.fieldid, {

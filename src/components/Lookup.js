@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { ListView,WhiteSpace } from 'antd-mobile';
+import { ListView, WhiteSpace, List } from 'antd-mobile';
 
 import { getLookup, getSelectedFieldValue } from '../api/LookupAPI';
-import { WEB_CONTEXT } from '../common/Utils';
+import { WEB_CONTEXT, FILE_URL_PREFIX } from '../common/Utils';
 
 import '../assets/weui.css';
 
@@ -21,14 +21,30 @@ const  NUM_ROWS = 10;
 
 function View(props) {
     const record = props.record;
-    const fields = props.fields.map((field, idx)=>
-            <div key={field.fieldid+idx} className="weui-form-preview__item">
-                {!field.hideLabel && <div className="weui-form-preview__label">{field.label}:</div>}
-                <div className="weui-form-preview__value">
-                    <span>{record[field.name] || ' '}&nbsp;</span>
-                </div>
-            </div>
-    );
+    const fields = props.fields.map((field, idx)=> {
+
+        let value = record[field.name];
+        let output = '';
+        if (!value) {
+            output = <span>&nbsp;</span>;
+        } else if (field.type === 'IMG') {
+            output = <img src={FILE_URL_PREFIX + (record[field.name][0].thumbnail_url)} alt=""></img>;
+        } else if (field.type === 'Y') {
+            output = <span>{record[field.name].name || ''}&nbsp;</span>;
+        } else if (field.type === 'A') {
+            output = <div
+                dangerouslySetInnerHTML={{ __html: record[field.name]}}
+                />
+        } else {
+            output = <span>{value}&nbsp;</span>;
+        }
+
+        return (
+
+            <List.Item key={field.fieldid+idx} extra={output}>{!field.hideLabel ? field.label : ''}</List.Item>
+
+        )
+    });
     return fields;
 }
 
@@ -174,9 +190,9 @@ class Lookup extends React.Component {
             //    : (record.canView ? '/#/view/'+this.state.objid+'/' + record.id + '?layoutid=' + this.props.match.params.layoutidOfViewPage : '#');
             return (
                 <a href={'javascript:;'} onClick={()=>{this.selectRecord(record)}}>
-                    <div className="weui-form-preview__bd" style={{backgroundColor:'#fff'}} >
+                    <List>
                         <View record={record} fields={this.state.fields} />
-                    </div>
+                    </List>
                 </a>
 
             );
@@ -192,15 +208,12 @@ class Lookup extends React.Component {
                     ref={el => this.lv = el}
                     dataSource={this.state.dataSource}
                     renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
-              {this.state.isLoading ? 'Loading...' : ''}
+              {this.state.isLoading ? '加载中...' : ''}
             </div>)}
                     renderBodyComponent={() => <MyBody />}
                     renderRow={row}
                     renderSeparator={separator}
-                    style={{
-              height: this.state.height,
-              overflow: 'auto',
-            }}
+                    useBodyScroll={true}
                     pageSize={10}
                     scrollRenderAheadDistance={500}
                     onEndReached={this.onEndReached}
