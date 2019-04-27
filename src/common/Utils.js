@@ -2,7 +2,7 @@
 
 //export const URL_PREFIX = 'https://kkdev.kz-info.cn:9243/kkdev-xcx2c/';
 //export const FILE_URL_PREFIX = 'https://kkdev.kz-info.cn:9243/kkdev-file/';
-export const URL_PREFIX = 'https://h109208.kz-info.cn:9243/xcx2c/';
+export const URL_PREFIX = 'https://h109208.kz-info.cn:9243/h5-to-client/';
 export const FILE_URL_PREFIX = 'https://h109208.kz-info.cn:9243/file/';
 //export const URL_PREFIX = 'http://192.168.3.56:8080/h5-to-client/';
 
