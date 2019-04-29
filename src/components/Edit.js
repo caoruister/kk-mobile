@@ -1,8 +1,8 @@
 import React from 'react';
 import qs from 'qs';
 
-import {List, Button, InputItem, WingBlank, ImagePicker, Picker, DatePicker, TextareaItem, Switch, Flex, NavBar, Icon} from 'antd-mobile';
-import { createForm } from 'rc-form';
+import {List, Button, InputItem, WingBlank, ImagePicker, Picker, DatePicker, TextareaItem, Switch, Flex, NavBar, Icon, Toast} from 'antd-mobile';
+import { createForm, formShape } from 'rc-form';
 
 import Lookup from './Lookup';
 import ButtonSection from './ButtonSection';
@@ -27,7 +27,8 @@ class Edit extends React.Component {
         fieldNameMap: {},
         lookupModal: false,
         currentLookupField: {},
-        navTitle: ''
+        navTitle: '',
+        errorMsg: {}
     }
 
     componentDidMount() {
@@ -153,13 +154,17 @@ class Edit extends React.Component {
                 for (var key in values) {
                     //
                     let tempValue = values[key];
-                    if (typeof(tempValue) == 'undefined') { // 如果不处理 值为 undefined 的情况，则 输入框中 清空值时，会导致 不提交 该字段的值（应该提交 空值）
+                    if (!tempValue || typeof(tempValue) == 'undefined') { // 如果不处理 值为 undefined 的情况，则 输入框中 清空值时，会导致 不提交 该字段的值（应该提交 空值）
                         fieldValue[key] = null;
                     } else {
                         //
                         let field = this.state.fieldIdMap[key];
-
                         if (field.type === 'IMG') {
+                            //handle file prefix in the url
+                            tempValue = tempValue.map(value=> {
+                                value.url = value.url.replace(FILE_URL_PREFIX, '');
+                                return value;
+                            });
                             fieldValue[key] = JSON.stringify(tempValue);
                         } else if (field.type === 'D') {
                             fieldValue[key] = formatDate(tempValue);
@@ -177,7 +182,9 @@ class Edit extends React.Component {
                 console.log(fieldValue);
                 //
                 saveEdit(fieldValue).then(res => {
-                    if (res == null) {return;}
+                    if (res == null) {
+                        return;
+                    }
                     //
                     if (res) {
                         if (res.errorMsg) {
@@ -185,8 +192,8 @@ class Edit extends React.Component {
                                 errorMsg: res.errorMsg,
                             });
                         } else {
-                            let navigateBackDelta = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).navigateBackDelta;
-                            let back = ~navigateBackDelta+1;
+                            let navigateBackDelta = qs.parse(this.props.location.search, {ignoreQueryPrefix: true}).navigateBackDelta;
+                            let back = ~navigateBackDelta + 1;
                             console.log('goback:' + back);
 
                             !!callback ? callback(res.id) : this.props.history.go(back !== 0 ? back : -1);
@@ -194,8 +201,15 @@ class Edit extends React.Component {
                         }
                     }
                 });
+            } else {
+                for(var key in err){
+                    if(err[key].errors.length > 0 ){
+                        Toast.info(err[key].errors[0].message, 1);
+                        return;
+                    }
+                }
             }
-        });
+        })
     }
 
     render() {
@@ -216,7 +230,7 @@ class Edit extends React.Component {
                         >{navTitle}</NavBar>
                     <div>
                         <form>
-                            <Sections sections={sections} showLookupModal={field=>this.showLookupModal(field)} form={this.props.form}/>
+                            <Sections sections={sections} showLookupModal={field=>this.showLookupModal(field)} form={this.props.form} page={this}/>
                             <ButtonSection buttons={buttons} page={this} useDefault={true}/>
                         </form>
                     </div>

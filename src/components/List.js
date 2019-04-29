@@ -25,11 +25,15 @@ function View(props) {
     const fields = props.fields.map((field, idx)=> {
 
         let value = record[field.name];
+
+
         let output = '';
-        if (!value) {
+        if (!value || value.length == 0) {
             output = <span>&nbsp;</span>;
         } else if (field.type === 'IMG') {
-            output = <img src={FILE_URL_PREFIX + (record[field.name][0].thumbnail_url)} alt=""></img>;
+            output = record[field.name].map(img=>{
+                return <img key={img.uid} src={FILE_URL_PREFIX + (img.url)} alt="" style={{marginLeft:'5px'}}></img>;
+            });
         } else if (field.type === 'Y') {
             output = <span>{record[field.name].name || ''}&nbsp;</span>;
         } else if (field.type === 'A') {
