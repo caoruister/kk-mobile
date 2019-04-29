@@ -31,8 +31,8 @@ function View(props) {
         if (!value || value.length == 0) {
             output = <span>&nbsp;</span>;
         } else if (field.type === 'IMG') {
-            output = record[field.name].map(img=>{
-                return <img key={img.uid} src={FILE_URL_PREFIX + (img.url)} alt="" style={{marginLeft:'5px'}}></img>;
+            output = record[field.name].map((img, idx)=>{
+                return <img key={img.url + idx} src={FILE_URL_PREFIX + (img.url)} alt="" style={{marginLeft:'5px'}}></img>;
             });
         } else if (field.type === 'Y') {
             output = <span>{record[field.name].name || ''}&nbsp;</span>;

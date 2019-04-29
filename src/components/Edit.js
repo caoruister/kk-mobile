@@ -52,9 +52,8 @@ class Edit extends React.Component {
     }
 
     selectLookup(field) {
-        //console.log(record);
 
-        this.state.currentLookupField.value.id = this.state.currentLookupField.lookupObjShowedFieldid;
+        this.state.currentLookupField.value.id = field.id;
         this.state.currentLookupField.value.name = field.name;
 
         this.setState({

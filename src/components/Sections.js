@@ -20,9 +20,9 @@ class Sections extends React.Component {
             let valueObj = {}
             valueObj[field.fieldid] = value;
             this.props.form.setFieldsValue(valueObj);
+        } else {
+            this.props.page.setState({});
         }
-
-        this.props.page.setState({});
     }
 
     onChangeOfFileValue(field, values, operationType) {
@@ -40,21 +40,26 @@ class Sections extends React.Component {
             });
 
             uploadFile(formdata).then((res) => {
+                //console.log(res);
                 /*
                  res && res.map((img, idx)=>{
                  img.url = FILE_URL_PREFIX + img.url;
                  return img;
                  });*/
                 field.value = [...field.value, ...res];
+
+                let valueObj = {};
+                valueObj[field.fieldid] = field.value;
+                this.props.form.setFieldsValue(valueObj);
+
+                //this.props.page.setState({});
             });
+
         } else if (operationType === 'remove') {
             field.value = values;
+            this.props.page.setState({});
         }
-
-        let valueObj = {}
-        valueObj[field.fieldid] = field.value;
-        this.props.form.setFieldsValue(valueObj);
-        this.props.page.setState({});
+        console.log(field);
     }
 
     getImages(images) {
@@ -70,14 +75,16 @@ class Sections extends React.Component {
     }
 
     render() {
+        //console.log('test render');
+
         const { getFieldProps, getFieldDecorator } = this.props.form;
 
         return this.props.sections.map((section, idx1)=>
                 <List key={section.key+idx1} renderHeader={section.title}>
                     {
                         section.fields.map((field, idx2)=> {
-                            field.hideLabel = true;
-                            field.required = true;
+                            //field.hideLabel = true;
+                            //field.required = true;
 
                             let placeholderJSX = '请输入' + field.label + ((field.hideLabel && field.required) ? ' (必填)' : '');
                             let requiredJSX = field.required ? <span style={{color:'red'}}>*</span> : null;
