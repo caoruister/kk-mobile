@@ -67,6 +67,7 @@ class Sections extends React.Component {
 
             let url = img.url;
             if (img.url.match(/^file\?getfile.*/g) ) {
+                console.log(img);
                 img.url = FILE_URL_PREFIX + url;
             }
         });

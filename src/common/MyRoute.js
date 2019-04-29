@@ -9,6 +9,7 @@ import List from '../components/List';
 import Add from '../components/Add';
 import Edit from '../components/Edit';
 import View from '../components/View';
+import DynamicPage from '../components/DynamicPage';
 
 export const MyRoute = () => {
   let otherRoutes = [];
@@ -23,10 +24,11 @@ export const MyRoute = () => {
 		  <Route path='/Login' component={Login}/>
 		  <Route path='/My' component={My}/>
 		  <Route path='/Home' component={Home}/>
-		  <Route path='/List/:objid/' component={List}/>
+		  <Route path='/List/:objid' component={List}/>
 		  <Route path='/Add/:objid' component={Add}/>
 		  <Route path='/Edit/:objid/:id' component={Edit}/>
 		  <Route path='/View/:objid/:id' component={View}/>
+          <Route path='/Dynamic/:pageName' component={DynamicPage}/>
           { otherRoutes }
 		</Switch>
     </main>

@@ -120,7 +120,7 @@ class BasicInput extends React.Component {
           password: null,
         });
         //
-				window.location.href = WEB_CONTEXT + '/#/Home';
+				window.location.href = WEB_CONTEXT + '/#/My';
       }
     });
   }

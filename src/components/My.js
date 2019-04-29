@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 
 import { List, Icon, Button, WingBlank, WhiteSpace, Grid } from 'antd-mobile';
+
 import BottomTabBar from './BottomTabBar';
+import MessagesSection from './MessagesSection';
+import UserInfo from './UserInfo';
+
 import { logout } from '../api/LoginAPI';
 import { getMy } from '../api/MyAPI';
 import { WEB_CONTEXT, FILE_URL_PREFIX } from '../common/Utils';
@@ -32,12 +36,7 @@ class My extends React.Component {
         document.title = '我的';
         this._isMounted = true;
 
-        let token = localStorage.getItem('__token__');
-        if (token === null || token === '') {
-            window.location.href = WEB_CONTEXT + '/#/Login';
-        } else {
-            this.getData();
-        }
+        this.getData();
     }
 
     componentWillUnmount() {
@@ -81,58 +80,13 @@ class My extends React.Component {
     render() {
         const {userInfo, list, stats} = this.state;
         //
-        let listItems = [];
-        for (var i = 0; i < list.length; i++) {
-            let item = list[i];
-            //
-            listItems.push(
-                <Item
-                    arrow="horizontal"
-                    key={('listItem-' + i)}
-                    thumb={item.icon}
-                    onClick={() => {
-						window.location.href = WEB_CONTEXT + item.path;
-					}}>{item.label}</Item>
-            );
-        }
         return (
             <div style={{paddingBottom:'80px'}}>
-                <div className="userinfo">
-                    <div className='userinfo-avatar'>
-                        <img src={ FILE_URL_PREFIX + this.state.userInfo.headIcon[0].thumbnail_url }
-                             mode="scaleToFill"></img>
-                    </div>
 
-                    <div className="userinfo-nickname">
-                        <div className="nickname">{userInfo.name}</div>
-                        <div className="desc">{userInfo.desc}</div>
-                    </div>
-
-                    <div className="userinfo-barcode">
-                        <img src={ FILE_URL_PREFIX  } mode="scaleToFill"></img>
-                    </div>
-
-                </div>
-
-                <Grid data={stats}
-                      columnNum={3}
-                      square={false}
-                      renderItem={dataItem => (
-                                             <div className='am-grid-item-inner-content'>
-                                                  <div className='am-grid-text'>
-                                                    <span style={{fontSize:'14px', color:'#d9d9d9'}}>{dataItem.label}</span>
-                                                  </div>
-                                                  <div className='am-grid-text'>
-                                                    <span style={dataItem.style}>{dataItem.text}</span>
-                                                  </div>
-                                              </div>
-                                          )}
-                    />
+                <UserInfo userInfo={userInfo} stats={stats}/>
 
                 <WhiteSpace size="lg" />
-                <List>
-                    {listItems}
-                </List>
+                <MessagesSection data={list} />
 
                 <WhiteSpace size="lg" />
                 <WingBlank>

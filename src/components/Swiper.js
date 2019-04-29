@@ -6,7 +6,7 @@ import './Swiper.css';
 
 class Swiper extends React.Component {
     state = {
-        imgHeight: '176',
+        imgHeight: '100',
     }
 
     componentDidMount() {
@@ -17,7 +17,7 @@ class Swiper extends React.Component {
             <a
                 key={val}
                 href={val.webviewUrl}
-                style={{ display: 'inline-block', width: '100%'}}
+                style={{ display: 'inline-block', width: '100%', height: this.state.imgHeight }}
                 >
                 <img
                     src={val.imageUrl}
@@ -26,23 +26,21 @@ class Swiper extends React.Component {
                     onLoad={() => {
                       // fire window resize event to change height
                       window.dispatchEvent(new Event('resize'));
-                      this.setState({ imgHeight: 'auto' });
+                      //this.setState({ imgHeight: 'auto' });
                     }}
                     />
             </a>
         ));
 
         return (
-            <WingBlank>
-                <Carousel
-                    autoplay={true}
-                    infinite={true}
-                    beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}
-                    afterChange={index => console.log('slide to', index)}
-                    >
-                    {imgHtml}
-                </Carousel>
-            </WingBlank>
+            <Carousel
+                autoplay={true}
+                infinite={true}
+                beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}
+                afterChange={index => console.log('slide to', index)}
+                >
+                {imgHtml}
+            </Carousel>
         );
     }
 }

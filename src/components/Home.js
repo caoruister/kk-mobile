@@ -13,6 +13,7 @@ function GridItems(props) {
     return <Grid data={props.data}
                  columnNum={props.columnNum}
                  square={false}
+                 hasLine={false}
                  renderItem={dataItem => (
                                              <a href={dataItem.path} className='am-grid-item-inner-content'>
                                               <img src={dataItem.icon} alt="" className='am-grid-icon' style={{width:'60px',height:'60px'}}/>
@@ -48,9 +49,9 @@ class Section extends React.Component {
         return (
             this.props.showSection &&
             <div>
-                <div className="sub-title">{this.props.title}</div>
+                { this.props.title && <div className="sub-title">{this.props.title}</div>}
                 {template}
-                <WhiteSpace size="lg" />
+                <WhiteSpace size="sm" />
             </div>
 
         );
@@ -76,7 +77,9 @@ class Home extends React.Component {
     }
 
     getData = () => {
-        getHome({}).then(res => {
+        getHome({
+            pageName: 'HOME'
+        }).then(res => {
             if (res == null || !res) {
                 window.location.href = WEB_CONTEXT + '/#/Login';
                 return;

@@ -15,8 +15,6 @@ class App extends React.Component {
     let token = localStorage.getItem('__token__');
     if (token === null || token === '') {
       window.location.href = WEB_CONTEXT + '/#/Login';
-    } else {
-      window.location.href = WEB_CONTEXT + '/#/Home';
     }
   }
 

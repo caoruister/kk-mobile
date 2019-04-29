@@ -3,8 +3,9 @@ import qs from 'qs';
 import { Toast } from 'antd-mobile';
 import { URL_PREFIX } from '../common/Utils';
 
-export const getHome = (params) => axios.post(URL_PREFIX + 'page?op=getPage&pageName=HOME', qs.stringify({
+export const getHome = (params) => axios.post(URL_PREFIX + 'page?op=getPage', qs.stringify({
     token: localStorage.getItem('__token__'),
+    ...params
 }), {
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
