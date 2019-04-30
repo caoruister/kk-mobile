@@ -10,6 +10,7 @@ import Add from '../components/Add';
 import Edit from '../components/Edit';
 import View from '../components/View';
 import DynamicPage from '../components/DynamicPage';
+import EmptyContent from '../components/EmptyContent';
 
 export const MyRoute = () => {
   let otherRoutes = [];
@@ -21,6 +22,7 @@ export const MyRoute = () => {
   return (
     <main>
 		<Switch>
+          <Route exact path="/" component={Home} />
 		  <Route path='/Login' component={Login}/>
 		  <Route path='/My' component={My}/>
 		  <Route path='/Home' component={Home}/>
@@ -29,6 +31,7 @@ export const MyRoute = () => {
 		  <Route path='/Edit/:objid/:id' component={Edit}/>
 		  <Route path='/View/:objid/:id' component={View}/>
           <Route path='/Dynamic/:pageName' component={DynamicPage}/>
+          <Route component={EmptyContent} />
           { otherRoutes }
 		</Switch>
     </main>

@@ -9,26 +9,66 @@ import iconfontHomeActive from '../assets/images/iconfont-home-active.png';
 
 import { WEB_CONTEXT } from '../common/Utils';
 
+import { getTabBar } from '../api/BottomTabBarAPI'
+
 class BottomTabBar extends React.Component {
+  _isMounted = false;
+
   state = {
-    selectedTab: null,
-  }
+    selectedTab: this.props.selectedTab || 'home',
+    tabBar: []
+  };
+
   constructor(props) {
     super(props);
-    let selectedTab = this.props.selectedTab;
-    if (selectedTab == null) {
-      selectedTab = 'home';
-    }
-    this.state = {
-      selectedTab: selectedTab,
-    };
   }
 
   componentDidMount() {
+    this._isMounted = true;
+    this.getData();
+  }
 
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  getData = () => {
+    getTabBar({}).then(res => {
+      if (res == null || !res) {
+        window.location.href = WEB_CONTEXT + '/#/Login';
+        return;
+      }
+      //
+      console.log(res);
+
+      if (this._isMounted) {
+        this.setState({
+          tabBar: res.tabBar || [],
+        });
+      }
+    });
   }
 
   render() {
+    const { tabBar } = this.state;
+
+    let tabBarJSX = tabBar.map(tab=>
+        <TabBar.Item
+          icon={<img style={{width:'22px', height:'22px'}} src={tab.icon} />}
+          selectedIcon={<img style={{width:'22px', height:'22px'}} src={tab.selectedIcon} />}
+          title={tab.title}
+          key={tab.key}
+          selected={this.state.selectedTab === tab.key}
+          onPress={() => {
+                this.setState({
+                  selectedTab: tab.key,
+                });
+
+                window.location.href = WEB_CONTEXT + tab.path;
+              }}
+          >
+      </TabBar.Item>);
+
     return (
       <div style={{ zIndex:2, position: 'fixed', width: '100%', bottom:0 }}>
         <TabBar
@@ -37,36 +77,7 @@ class BottomTabBar extends React.Component {
           barTintColor="white"
           tabBarPosition="bottom"
         >
-          <TabBar.Item
-            icon={<img style={{width:'22px', height:'22px'}} src={iconfontHome} />}
-            selectedIcon={<img style={{width:'22px', height:'22px'}} src={iconfontHomeActive} />}
-            title="首页"
-            key="home"
-            selected={this.state.selectedTab === 'home'}
-            onPress={() => {
-              this.setState({
-                selectedTab: 'home',
-              });
-              window.location.href = WEB_CONTEXT + '/#/Home';
-            }}
-          >
-
-          </TabBar.Item>
-          <TabBar.Item
-            icon={<img style={{width:'22px', height:'22px'}} src={iconfontUser} />}
-            selectedIcon={<img style={{width:'22px', height:'22px'}} src={iconfontUserActive} />}
-            title="我的"
-            key="my"
-            selected={this.state.selectedTab === 'my'}
-            onPress={() => {
-              this.setState({
-                selectedTab: 'my',
-              });
-               window.location.href = WEB_CONTEXT + '/#/My';
-            }}
-          >
-
-          </TabBar.Item>
+          {tabBarJSX}
         </TabBar>
       </div>
     );

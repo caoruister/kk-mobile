@@ -58,6 +58,7 @@ class DynamicPage extends React.Component {
 
     state = {
         items: [],
+        selectedTab: '',
         navTitle: ''
     }
 
@@ -103,7 +104,7 @@ class DynamicPage extends React.Component {
     }
 
     render() {
-        const {items} = this.state;
+        const {items, selectedTab} = this.state;
 
         let sectionsJSX = items.map((section, idx) =>
                 <Section key={section.templateType+idx} type={section.templateType} showSection={section.show} title={section.sectionTitle} showTitle={!section.hideSectionTitle} columnNum={section.columnCount}  data={section.data} />
@@ -111,16 +112,17 @@ class DynamicPage extends React.Component {
 
         return (
             <div>
-                <NavBar
+                {!selectedTab && <NavBar
                     mode="dark"
                     leftContent={[
                     <Icon key="0" type="left" size="lg"/>,
                   ]}
                     onLeftClick={() => this.props.history.goBack()}
-                    >{this.state.navTitle}</NavBar>
+                    >{this.state.navTitle}</NavBar>}
                 <div style={{paddingBottom:'80px'}}>
                     {sectionsJSX}
                 </div>
+                {selectedTab && <BottomTabBar selectedTab={selectedTab}/>}
             </div>
         );
     }

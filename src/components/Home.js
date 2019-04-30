@@ -94,6 +94,7 @@ class Home extends React.Component {
             }
         });
     }
+
     render() {
         const {items} = this.state;
 
