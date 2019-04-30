@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 import {Grid, WhiteSpace, Flex} from 'antd-mobile';
 
@@ -15,12 +16,12 @@ function GridItems(props) {
                  square={false}
                  hasLine={false}
                  renderItem={dataItem => (
-                                             <a href={dataItem.path} className='am-grid-item-inner-content'>
+                                             <Link to={dataItem.path} className='am-grid-item-inner-content'>
                                               <img src={dataItem.icon} alt="" className='am-grid-icon' style={{width:'60px',height:'60px'}}/>
                                               <div className='am-grid-text'>
                                                 <span>{dataItem.label}</span>
                                               </div>
-                                            </a>
+                                            </Link>
                                           )}
         />
 }
@@ -103,7 +104,7 @@ class Home extends React.Component {
                 <div style={{paddingBottom:'80px'}}>
                     <SectionItems sections={items}/>
                 </div>
-                <BottomTabBar selectedTab='home'/>
+                <BottomTabBar selectedTab='home' history={this.props.history}/>
             </div>
         );
     }

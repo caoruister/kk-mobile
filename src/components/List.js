@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Link } from "react-router-dom";
 import qs from 'qs';
 
 import { ListView, List, WhiteSpace, NavBar, Icon } from 'antd-mobile';
@@ -32,7 +33,7 @@ function View(props) {
             output = <span>&nbsp;</span>;
         } else if (field.type === 'IMG') {
             output = record[field.name].map((img, idx)=>{
-                return <img key={img.url + idx} src={FILE_URL_PREFIX + (img.url)} alt="" style={{marginLeft:'5px'}}></img>;
+                return <img key={img.url + idx} src={ img.url } alt="" style={{marginLeft:'5px'}}></img>;
             });
         } else if (field.type === 'Y') {
             output = <span>{record[field.name].name || ''}&nbsp;</span>;
@@ -75,7 +76,7 @@ class List1 extends React.Component {
             rowIDs: [],
             pageIndex: 0,
             objid: '',
-            canAdd: true,
+            canAdd: false,
             tabLabel: '',
             navTitle: ''
         };
@@ -173,26 +174,27 @@ class List1 extends React.Component {
     }
 
     render() {
+        const {data, fields, navTitle, dataSource, isLoading, canAdd, objid} = this.state;
 
-        let length = this.state.data.length - 1;
+        let length = data.length - 1;
         let row = (rowData, sectionID, rowID) => {
             if (rowID > length) {
                 return null;
             }
 
-            const record = this.state.data[rowID];
+            const record = data[rowID];
 
             //console.log(record);
             let layoutidOfViewPage = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).layoutidOfViewPage;
 
-            let url = record.canEdit ? '/#/edit/'+this.state.objid+'/'+record.id
-                : (record.canView ? '/#/view/'+this.state.objid+'/' + record.id + '?layoutid=' + (layoutidOfViewPage || '') : '/#');
+            let url = record.canEdit ? '/edit/'+this.state.objid+'/'+record.id
+                : (record.canView ? '/view/'+this.state.objid+'/' + record.id + '?layoutid=' + (layoutidOfViewPage || '') : '/#');
             return (
-                <a href={url} >
+                <Link to={url} >
                     <List>
-                        <View record={record} fields={this.state.fields}/>
+                        <View record={record} fields={fields}/>
                     </List>
-                </a>
+                </Link>
 
             );
         }
@@ -209,12 +211,12 @@ class List1 extends React.Component {
                     <Icon key="0" type="left" size="lg"/>,
                   ]}
                     onLeftClick={() => this.props.history.goBack()}
-                    >{this.state.navTitle}</NavBar>
+                    >{navTitle}</NavBar>
                 <ListView
                     ref={el => this.lv = el}
-                    dataSource={this.state.dataSource}
+                    dataSource={dataSource}
                     renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
-              {this.state.isLoading ? '加载中...' : ''}
+              {isLoading ? '加载中...' : ''}
             </div>)}
                     renderBodyComponent={() => <MyBody />}
                     renderRow={row}
@@ -225,10 +227,10 @@ class List1 extends React.Component {
                     onEndReached={this.onEndReached}
                     />
 
-                {this.state.canAdd && <div className="weui-footer weui-footer_fixed-bottom" style={{zIndex:'3'}}>
-                    <a href={'/#/Add/'+this.state.objid} style={{float:'right'}}>
+                {canAdd && <div className="weui-footer weui-footer_fixed-bottom" style={{zIndex:'3'}}>
+                    <Link to={'/Add/'+objid} style={{float:'right'}}>
                         <img className="weui-grid__icon" style={{width:'100px',height:'100px'}} src={addImg} alt=""/>
-                    </a>
+                    </Link>
                 </div>}
 
             </div>

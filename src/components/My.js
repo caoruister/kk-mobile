@@ -93,9 +93,7 @@ class My extends React.Component {
                     <Button type="primary" onClick={this.logout}>退出</Button>
                 </WingBlank>
 
-                <div>
-                    <BottomTabBar selectedTab='my'/>
-                </div>
+                <BottomTabBar selectedTab='my' history={this.props.history}/>
             </div>
         );
     }

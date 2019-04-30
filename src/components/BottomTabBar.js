@@ -51,6 +51,7 @@ class BottomTabBar extends React.Component {
 
   render() {
     const { tabBar } = this.state;
+    let _this = this;
 
     let tabBarJSX = tabBar.map(tab=>
         <TabBar.Item
@@ -60,11 +61,11 @@ class BottomTabBar extends React.Component {
           key={tab.key}
           selected={this.state.selectedTab === tab.key}
           onPress={() => {
-                this.setState({
+                _this.setState({
                   selectedTab: tab.key,
                 });
 
-                window.location.href = WEB_CONTEXT + tab.path;
+                _this.props.history.push(tab.path);
               }}
           >
       </TabBar.Item>);

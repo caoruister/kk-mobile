@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import qs from 'qs';
 
 import {Grid, WhiteSpace, Flex, WingBlank, NavBar, Icon} from 'antd-mobile';
@@ -6,28 +7,11 @@ import {Grid, WhiteSpace, Flex, WingBlank, NavBar, Icon} from 'antd-mobile';
 import BottomTabBar from './BottomTabBar';
 import Swiper from './Swiper';
 import GridSection from './GridSection';
+import ImagesSection from './ImagesSection';
+import MessagesSection from './MessagesSection';
 
 import { WEB_CONTEXT, FILE_URL_PREFIX } from '../common/Utils';
-
 import { getHome } from '../api/HomeAPI'
-
-class ImageSection extends React.Component {
-
-    render() {
-        const {data} = this.props;
-
-        let imageJSX = data.map((img, idx)=>{
-            return <a key={idx} href={img.path}>
-                        <img src={img.imageUrl} style={{width:img.width, height:img.height}}></img>
-                    </a>
-        });
-
-        return <div>
-                    <WingBlank>{imageJSX}</WingBlank>
-               </div>
-
-    }
-}
 
 class Section extends React.Component {
 
@@ -38,7 +22,9 @@ class Section extends React.Component {
         } else if (this.props.type === 'swiper') {
             template = <Swiper data={this.props.data}/>;
         } else if (this.props.type === 'images') {
-            template = <ImageSection data={this.props.data}/>;
+            template = <ImagesSection data={this.props.data}/>;
+        } else if (this.props.type === 'messages') {
+            template = <MessagesSection data={this.props.data}/>;
         }
 
         return (
@@ -97,6 +83,7 @@ class DynamicPage extends React.Component {
             if (this._isMounted) {
                 this.setState({
                     items: res.items || [],
+                    selectedTab: res.selectedTabKey,
                     navTitle: title || res.tabLabel || res.layoutName
                 });
             }
@@ -122,7 +109,7 @@ class DynamicPage extends React.Component {
                 <div style={{paddingBottom:'80px'}}>
                     {sectionsJSX}
                 </div>
-                {selectedTab && <BottomTabBar selectedTab={selectedTab}/>}
+                {selectedTab && <BottomTabBar selectedTab={selectedTab} history={this.props.history}/>}
             </div>
         );
     }

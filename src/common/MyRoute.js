@@ -22,10 +22,10 @@ export const MyRoute = () => {
   return (
     <main>
 		<Switch>
-          <Route exact path="/" component={Home} />
+          <Route exact path="/" component={DynamicPage} />
 		  <Route path='/Login' component={Login}/>
 		  <Route path='/My' component={My}/>
-		  <Route path='/Home' component={Home}/>
+		  <Route path='/Home' component={DynamicPage}/>
 		  <Route path='/List/:objid' component={List}/>
 		  <Route path='/Add/:objid' component={Add}/>
 		  <Route path='/Edit/:objid/:id' component={Edit}/>
