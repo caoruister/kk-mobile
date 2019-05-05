@@ -13,8 +13,6 @@ import { _callInterface } from '../api/CommonAPI';
 
 import { WEB_CONTEXT, FILE_URL_PREFIX, formatDate, formatTime } from '../common/Utils';
 
-import '../assets/weui.css';
-
 class Add extends React.Component {
     static propTypes = {
         form: formShape,
@@ -98,7 +96,8 @@ class Add extends React.Component {
 
         getAdd(params).then(res => {
             if (res == null || !res) {
-                window.location.href = WEB_CONTEXT + '/#/Login';
+                //window.location.href = WEB_CONTEXT + '/#/Login';
+                this.props.history.push('/Login');
                 return;
             }
             //
@@ -209,7 +208,6 @@ class Add extends React.Component {
                             console.log('goback:' + back);
 
                             !!callback ? callback(res.id) : this.props.history.go(back !== 0 ? back : -1);
-                            //window.location.href = WEB_CONTEXT + '/#/List/' + this.props.objid;
                         }
                     }
                 });

@@ -2,8 +2,6 @@ import React from 'react';
 
 import { ImagePicker, WingBlank } from 'antd-mobile';
 
-import './Image.css';
-
 function FieldRequired(props) {
     if (props.field.required) {
         return <div className="required">*</div>

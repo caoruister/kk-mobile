@@ -2,8 +2,6 @@ import React from 'react';
 
 import { Carousel, WingBlank } from 'antd-mobile';
 
-import './Swiper.css';
-
 class Swiper extends React.Component {
     state = {
         imgHeight: '100',

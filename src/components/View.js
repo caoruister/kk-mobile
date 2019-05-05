@@ -111,7 +111,7 @@ class View extends React.Component {
         getView(params).then(res => {
             if (res == null || !res) {
                 //window.location.href = WEB_CONTEXT + '/#/Login';
-                this.props.history.push('/Login', null);
+                this.props.history.push('Login');
                 return;
             }
             //

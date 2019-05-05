@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { HashRouter } from 'react-router-dom';
+import { HashRouter, withRouter } from 'react-router-dom';
 import { LocaleProvider } from 'antd-mobile';
 
 import zhCN from 'antd-mobile/lib/locale-provider/en_US';

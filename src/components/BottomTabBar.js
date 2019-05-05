@@ -35,7 +35,7 @@ class BottomTabBar extends React.Component {
   getData = () => {
     getTabBar({}).then(res => {
       if (res == null || !res) {
-        window.location.href = WEB_CONTEXT + '/#/Login';
+        this.props.history.push('Login');
         return;
       }
       //

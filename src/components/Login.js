@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link, NavLink } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, NavLink, withRouter } from "react-router-dom";
 
 import { Toast, InputItem, Button, List, WingBlank, Flex, WhiteSpace } from 'antd-mobile';
 import { createForm } from 'rc-form';
@@ -120,7 +120,8 @@ class BasicInput extends React.Component {
           password: null,
         });
         //
-				window.location.href = WEB_CONTEXT + '/#/My';
+			//	window.location.href = WEB_CONTEXT + '/#/My';
+        this.props.history.push('My');
       }
     });
   }
@@ -158,7 +159,7 @@ class BasicInput extends React.Component {
   }
 }
 
-const BasicInputWrapper = createForm()(BasicInput);
+const BasicInputWrapper = createForm()(withRouter(BasicInput));
 
 class Login extends React.Component {
   componentDidMount() {
