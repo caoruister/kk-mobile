@@ -10,7 +10,6 @@ import { MyRoute } from './common/MyRoute';
 import { WEB_CONTEXT } from './common/Utils';
 
 class App extends React.Component {
-
   componentDidMount() {
     let token = localStorage.getItem('__token__');
     if (token === null || token === '') {
@@ -21,9 +20,9 @@ class App extends React.Component {
   render() {
     return (
       <LocaleProvider locale={zhCN}>
-      <HashRouter>
-        <MyRoute />
-      </HashRouter>
+        <HashRouter>
+          <MyRoute />
+        </HashRouter>
       </LocaleProvider>
     );
   }

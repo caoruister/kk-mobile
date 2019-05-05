@@ -13,90 +13,91 @@ import { WEB_CONTEXT, FILE_URL_PREFIX } from '../common/Utils';
 const Item = List.Item;
 
 class My extends React.Component {
-    _isMounted = false;
+  _isMounted = false;
 
-    state = {
-        list: [],
-        userInfo: {
-            headIcon: [
-                {
-                    thumbnail_url: ''
-                }
-            ]
-        },
+  state = {
+    list: [],
+    userInfo: {
+      headIcon: [
+        {
+          thumbnail_url: ''
+        }
+      ]
+    },
 
-        stats: Array.from(new Array(3)).map((_val, i) => ({
-            label: '统计'+i,
-            text: `32${i}`,
-            style: {color:'#fea33a',fontSize:'36px'}
-        }))
-    }
+    stats: Array.from(new Array(3)).map((_val, i) => ({
+      label: '统计' + i,
+      text: `32${i}`,
+      style: { color: '#fea33a', fontSize: '36px' }
+    }))
+  };
 
-    componentDidMount() {
-        document.title = '我的';
-        this._isMounted = true;
+  componentDidMount() {
+    document.title = '我的';
+    this._isMounted = true;
 
-        this.getData();
-    }
+    this.getData();
+  }
 
-    componentWillUnmount() {
-        this._isMounted = false;
-    }
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
-    getData = () => {
-        getMy().then(res => {
-            if (res == null || !res) {
-                window.location.href = WEB_CONTEXT + '/#/Login';
-                return;
-            }
-            //
-            console.log(res);
-
-            if (this._isMounted) {
-                this.setState({
-                    list: (res.list == null ? [] : res.list),
-                    userInfo: (res.userInfo == null ? {} : res.userInfo),
-                })
-            }
-        });
-    }
-
-    logout = () => {
-        logout().then(res => {
-            if (res == null || !res) {
-                window.location.href = WEB_CONTEXT + '/#/Login';
-                return;
-            }
-            //
-            console.log(res);
-        });
-        //
-        localStorage.removeItem('__token__');
-        localStorage.removeItem('__token__userName');
-        localStorage.removeItem('__orgid__');
+  getData = () => {
+    getMy().then(res => {
+      if (res == null || !res) {
         window.location.href = WEB_CONTEXT + '/#/Login';
-    }
+        return;
+      }
+      //
+      console.log(res);
 
-    render() {
-        const {userInfo, list, stats} = this.state;
-        //
-        return (
-            <div style={{paddingBottom:'80px'}}>
+      if (this._isMounted) {
+        this.setState({
+          list: res.list == null ? [] : res.list,
+          userInfo: res.userInfo == null ? {} : res.userInfo
+        });
+      }
+    });
+  };
 
-                <UserInfo userInfo={userInfo} stats={stats}/>
+  logout = () => {
+    logout().then(res => {
+      if (res == null || !res) {
+        window.location.href = WEB_CONTEXT + '/#/Login';
+        return;
+      }
+      //
+      console.log(res);
+    });
+    //
+    localStorage.removeItem('__token__');
+    localStorage.removeItem('__token__userName');
+    localStorage.removeItem('__orgid__');
+    window.location.href = WEB_CONTEXT + '/#/Login';
+  };
 
-                <WhiteSpace size="lg" />
-                <MessagesSection data={list} />
+  render() {
+    const { userInfo, list, stats } = this.state;
+    //
+    return (
+      <div style={{ paddingBottom: '80px' }}>
+        <UserInfo userInfo={userInfo} stats={stats} />
 
-                <WhiteSpace size="lg" />
-                <WingBlank>
-                    <Button type="primary" onClick={this.logout}>退出</Button>
-                </WingBlank>
+        <WhiteSpace size="lg" />
+        <MessagesSection data={list} />
 
-                <BottomTabBar selectedTab='my' history={this.props.history}/>
-            </div>
-        );
-    }
+        <WhiteSpace size="lg" />
+        <WingBlank>
+          <Button type="primary" onClick={this.logout}>
+            退出
+          </Button>
+        </WingBlank>
+
+        <BottomTabBar selectedTab="my" history={this.props.history} />
+      </div>
+    );
+  }
 }
 
 export default My;

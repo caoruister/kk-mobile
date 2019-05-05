@@ -9,7 +9,7 @@ import iconfontHomeActive from '../assets/images/iconfont-home-active.png';
 
 import { WEB_CONTEXT } from '../common/Utils';
 
-import { getTabBar } from '../api/BottomTabBarAPI'
+import { getTabBar } from '../api/BottomTabBarAPI';
 
 class BottomTabBar extends React.Component {
   _isMounted = false;
@@ -43,35 +43,40 @@ class BottomTabBar extends React.Component {
 
       if (this._isMounted) {
         this.setState({
-          tabBar: res.tabBar || [],
+          tabBar: res.tabBar || []
         });
       }
     });
-  }
+  };
 
   render() {
     const { tabBar } = this.state;
     let _this = this;
 
-    let tabBarJSX = tabBar.map(tab=>
-        <TabBar.Item
-          icon={<img style={{width:'22px', height:'22px'}} src={tab.icon} />}
-          selectedIcon={<img style={{width:'22px', height:'22px'}} src={tab.selectedIcon} />}
-          title={tab.title}
-          key={tab.key}
-          selected={this.state.selectedTab === tab.key}
-          onPress={() => {
-                _this.setState({
-                  selectedTab: tab.key,
-                });
+    let tabBarJSX = tabBar.map(tab => (
+      <TabBar.Item
+        icon={<img style={{ width: '22px', height: '22px' }} src={tab.icon} />}
+        selectedIcon={
+          <img
+            style={{ width: '22px', height: '22px' }}
+            src={tab.selectedIcon}
+          />
+        }
+        title={tab.title}
+        key={tab.key}
+        selected={this.state.selectedTab === tab.key}
+        onPress={() => {
+          _this.setState({
+            selectedTab: tab.key
+          });
 
-                _this.props.history.push(tab.path);
-              }}
-          >
-      </TabBar.Item>);
+          _this.props.history.push(tab.path);
+        }}
+      />
+    ));
 
     return (
-      <div style={{ zIndex:2, position: 'fixed', width: '100%', bottom:0 }}>
+      <div style={{ zIndex: 2, position: 'fixed', width: '100%', bottom: 0 }}>
         <TabBar
           unselectedTintColor="#949494"
           tintColor="#33A3F4"

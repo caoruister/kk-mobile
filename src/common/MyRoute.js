@@ -16,24 +16,30 @@ export const MyRoute = () => {
   let otherRoutes = [];
   for (var i = 0; i < customPageRoutes.length; i++) {
     let customPageRoute = customPageRoutes[i];
-    otherRoutes.push(<Route key={i} path={customPageRoute.path} component={customPageRoute.component} />)
+    otherRoutes.push(
+      <Route
+        key={i}
+        path={customPageRoute.path}
+        component={customPageRoute.component}
+      />
+    );
   }
   //
   return (
     <main>
-		<Switch>
-          <Route exact path="/" component={DynamicPage} />
-		  <Route path='/Login' component={Login}/>
-		  <Route path='/My' component={My}/>
-		  <Route path='/Home' component={DynamicPage}/>
-		  <Route path='/List/:objid' component={List}/>
-		  <Route path='/Add/:objid' component={Add}/>
-		  <Route path='/Edit/:objid/:id' component={Edit}/>
-		  <Route path='/View/:objid/:id' component={View}/>
-          <Route path='/Dynamic/:pageName' component={DynamicPage}/>
-          <Route component={EmptyContent} />
-          { otherRoutes }
-		</Switch>
+      <Switch>
+        <Route exact path="/" component={DynamicPage} />
+        <Route path="/Login" component={Login} />
+        <Route path="/My" component={My} />
+        <Route path="/Home" component={DynamicPage} />
+        <Route path="/List/:objid" component={List} />
+        <Route path="/Add/:objid" component={Add} />
+        <Route path="/Edit/:objid/:id" component={Edit} />
+        <Route path="/View/:objid/:id" component={View} />
+        <Route path="/Dynamic/:pageName" component={DynamicPage} />
+        <Route component={EmptyContent} />
+        {otherRoutes}
+      </Switch>
     </main>
-  )
-}
+  );
+};

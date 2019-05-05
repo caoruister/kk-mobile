@@ -1,2 +1,1 @@
-export const customPageRoutes = [
-]
+export const customPageRoutes = [];
