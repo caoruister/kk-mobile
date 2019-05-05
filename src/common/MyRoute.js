@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { customPageRoutes } from './CustomPageRoutersConfig';
+import { customPageRoutes } from '../custom/CustomPageRoutersConfig';
 
 import Login from '../components/Login';
 import My from '../components/My';
