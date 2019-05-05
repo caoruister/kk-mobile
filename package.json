@@ -14,7 +14,7 @@
     "react-scripts": "2.1.8"
   },
   "scripts": {
-    "start": "PORT=8443 react-app-rewired start",
+    "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject"
