@@ -16,12 +16,12 @@ function GridItems(props) {
                  square={false}
                  hasLine={false}
                  renderItem={dataItem => (
-                                             <Link to={dataItem.path} className='am-grid-item-inner-content'>
+                                             <a href={dataItem.path} className='am-grid-item-inner-content'>
                                               <img src={dataItem.icon} alt="" className='am-grid-icon' style={{width:'60px',height:'60px'}}/>
                                               <div className='am-grid-text'>
                                                 <span>{dataItem.label}</span>
                                               </div>
-                                            </Link>
+                                            </a>
                                           )}
         />
 }

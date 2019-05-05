@@ -9,9 +9,9 @@ class ImagesSection extends React.Component {
         const {data} = this.props;
 
         let imageJSX = data.map((img, idx)=>{
-            return <Link key={idx} to={img.path || ''}>
+            return <a key={idx} href={img.path || ''}>
                         <img src={img.imageUrl} style={{width:img.width || '100%', height:img.height}}></img>
-                    </Link>
+                    </a>
         });
 
         return <div>

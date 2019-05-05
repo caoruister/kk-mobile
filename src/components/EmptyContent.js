@@ -12,12 +12,7 @@ export class EmptyContent extends React.Component {
         return (
             <div className="empty-content">
                 <div style={styles.exceptionContent} className="exception-content">
-                    <img
-                        src={require('../assets/images/404.png')}
-                        style={styles.image}
-                        className="imgException"
-                        alt="empty"
-                        />
+
                     <div style={styles.prompt}>
                         <h3 style={styles.title} className="title">
                             页面暂无内容

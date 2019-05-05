@@ -187,14 +187,14 @@ class List1 extends React.Component {
             //console.log(record);
             let layoutidOfViewPage = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).layoutidOfViewPage;
 
-            let url = record.canEdit ? '/edit/'+this.state.objid+'/'+record.id
-                : (record.canView ? '/view/'+this.state.objid+'/' + record.id + '?layoutid=' + (layoutidOfViewPage || '') : '/#');
+            let url = record.canEdit ? '/#/edit/'+this.state.objid+'/'+record.id
+                : (record.canView ? '/#/view/'+this.state.objid+'/' + record.id + '?layoutid=' + (layoutidOfViewPage || '') : '/#');
             return (
-                <Link to={url} >
+                <a href={url} >
                     <List>
                         <View record={record} fields={fields}/>
                     </List>
-                </Link>
+                </a>
 
             );
         }
@@ -228,9 +228,9 @@ class List1 extends React.Component {
                     />
 
                 {canAdd && <div className="weui-footer weui-footer_fixed-bottom" style={{zIndex:'3'}}>
-                    <Link to={'/Add/'+objid} style={{float:'right'}}>
+                    <a href={'/#/Add/'+objid} style={{float:'right'}}>
                         <img className="weui-grid__icon" style={{width:'100px',height:'100px'}} src={addImg} alt=""/>
-                    </Link>
+                    </a>
                 </div>}
 
             </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import qs from 'qs';
 
-import {List, Button, InputItem, WingBlank, ImagePicker, Picker, DatePicker, TextareaItem, Switch, Flex, PickerView, Radio, NavBar, Icon, Toast} from 'antd-mobile';
+import {List, Button, InputItem, WingBlank, WhiteSpace, ImagePicker, Picker, DatePicker, TextareaItem, Switch, Flex, PickerView, Radio, NavBar, Icon, Toast} from 'antd-mobile';
 import { createForm, formShape } from 'rc-form';
 
 import Lookup from './Lookup';
@@ -242,6 +242,7 @@ class Add extends React.Component {
                     <div >
                         <form>
                             <Sections sections={sections} showLookupModal={field=>this.showLookupModal(field)} form={this.props.form} page={this}/>
+                            <WhiteSpace size="lg" />
                             <ButtonSection buttons={buttons} page={this} useDefault={true}/>
                         </form>
                     </div>
