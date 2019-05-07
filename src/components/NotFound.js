@@ -1,6 +1,6 @@
 import React from 'react';
 
-export class EmptyContent extends React.Component {
+export class NotFound extends React.Component {
   static displayName = 'EmptyContent';
 
   constructor(props) {
@@ -17,7 +17,7 @@ export class EmptyContent extends React.Component {
               页面暂无内容
             </h3>
             <p style={styles.description} className="description">
-              抱歉，页面暂无内容，请看看其他页面
+              抱歉，页面暂无内容，请看看<a href="/#/Home">其他页面</a>
             </p>
           </div>
         </div>
@@ -40,4 +40,4 @@ const styles = {
   }
 };
 
-export default EmptyContent;
+export default NotFound;

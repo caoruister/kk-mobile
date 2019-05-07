@@ -18,7 +18,7 @@ class ButtonSection extends React.Component {
         <Flex.Item key={button.id + idx}>
           <Button
             type="primary"
-            style={{ marginRight: '4px' }}
+            style={{ marginRight: '4px', background: '#4182e6' }}
             onClick={() => {
               this.onClickHandler(button.events && button.events.onClick);
             }}
@@ -32,7 +32,7 @@ class ButtonSection extends React.Component {
         <Flex.Item>
           <Button
             type="primary"
-            style={{ marginRight: '4px' }}
+            style={{ marginRight: '4px', background: '#4182e6' }}
             onClick={() => {
               this.props.page.save();
             }}

@@ -32,7 +32,8 @@ import {
   WEB_CONTEXT,
   FILE_URL_PREFIX,
   formatDate,
-  formatTime
+  formatTime,
+  setTitle
 } from '../common/Utils';
 
 class Add extends React.Component {
@@ -62,6 +63,7 @@ class Add extends React.Component {
     this._isMounted = true;
     //debugger
     this.getData();
+    //setTitle('tianjia ');
   }
 
   componentWillUnmount() {
@@ -169,8 +171,6 @@ class Add extends React.Component {
           navTitle: title || res.layoutName
         });
 
-        document.title = this.state.navTitle;
-
         //used in onload method
         let page = this;
         let onLoadMethod = res.events && res.events.onLoad;
@@ -266,8 +266,7 @@ class Add extends React.Component {
       currentLookupField,
       sections,
       buttons,
-      navTitle,
-      errorMsg
+      navTitle
     } = this.state;
 
     return (
@@ -288,6 +287,7 @@ class Add extends React.Component {
         >
           <NavBar
             mode="dark"
+            style={{ background: '#4182e6' }}
             leftContent={[<Icon key="0" type="left" size="lg" />]}
             onLeftClick={() => this.props.history.goBack()}
           >

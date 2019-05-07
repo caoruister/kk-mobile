@@ -8,7 +8,7 @@ import UserInfo from './UserInfo';
 
 import { logout } from '../api/LoginAPI';
 import { getMy } from '../api/MyAPI';
-import { WEB_CONTEXT, FILE_URL_PREFIX } from '../common/Utils';
+import { WEB_CONTEXT, FILE_URL_PREFIX, isWeiXinEnv } from '../common/Utils';
 
 const Item = List.Item;
 
@@ -35,7 +35,6 @@ class My extends React.Component {
   componentDidMount() {
     document.title = '我的';
     this._isMounted = true;
-
     this.getData();
   }
 
@@ -89,7 +88,11 @@ class My extends React.Component {
 
         <WhiteSpace size="lg" />
         <WingBlank>
-          <Button type="primary" onClick={this.logout}>
+          <Button
+            type="primary"
+            style={{ background: '#4182e6' }}
+            onClick={this.logout}
+          >
             退出
           </Button>
         </WingBlank>

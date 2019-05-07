@@ -315,7 +315,7 @@ class Sections extends React.Component {
                     {...getFieldProps(field.fieldid, {
                       initialValue: field.value
                     })}
-                    color="#108ee9"
+                    color="#4182e6"
                     disabled={field.readOnly}
                     checked={field.value}
                     onChange={this.onChangeOfValue.bind(this, field)}

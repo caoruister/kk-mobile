@@ -156,7 +156,7 @@ class BasicInput extends React.Component {
         });
         //
         //	window.location.href = WEB_CONTEXT + '/#/My';
-        this.props.history.push('My');
+        this.props.history.push('/My');
       }
     });
   };

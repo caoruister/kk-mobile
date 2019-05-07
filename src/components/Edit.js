@@ -29,7 +29,8 @@ import {
   WEB_CONTEXT,
   FILE_URL_PREFIX,
   formatDate,
-  formatTime
+  formatTime,
+  setTitle
 } from '../common/Utils';
 
 class Edit extends React.Component {
@@ -53,9 +54,9 @@ class Edit extends React.Component {
 
   componentDidMount() {
     this._isMounted = true;
-
     //debugger
     this.getData();
+    setTitle(this.state.navTitle);
   }
 
   componentWillUnmount() {
@@ -149,8 +150,6 @@ class Edit extends React.Component {
           id: res.id,
           navTitle: title || res.layoutName
         });
-
-        document.title = this.state.navTitle;
 
         //used in onload method
         let page = this;
@@ -268,6 +267,7 @@ class Edit extends React.Component {
         >
           <NavBar
             mode="dark"
+            style={{ background: '#4182e6' }}
             leftContent={[<Icon key="0" type="left" size="lg" />]}
             onLeftClick={() => this.props.history.goBack()}
           >

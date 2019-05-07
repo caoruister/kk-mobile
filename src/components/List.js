@@ -6,7 +6,7 @@ import qs from 'qs';
 import { ListView, List, WhiteSpace, NavBar, Icon } from 'antd-mobile';
 
 import { getList } from '../api/ListAPI';
-import { WEB_CONTEXT, FILE_URL_PREFIX } from '../common/Utils';
+import { WEB_CONTEXT, FILE_URL_PREFIX, setTitle } from '../common/Utils';
 
 import addImg from '../assets/images/add.png';
 
@@ -102,6 +102,8 @@ class List1 extends React.Component {
         });
       }
     });
+
+    setTitle(this.state.navTitle);
   }
 
   genData(pIndex = 0) {
@@ -143,8 +145,6 @@ class List1 extends React.Component {
           hasMore: root.records !== 0 && data.length < root.total,
           navTitle: title || root.tabLabel || root.layoutName
         });
-
-        document.title = this.state.navTitle;
       }
     });
   }
@@ -230,6 +230,7 @@ class List1 extends React.Component {
       <div>
         <NavBar
           mode="dark"
+          style={{ background: '#4182e6' }}
           leftContent={[<Icon key="0" type="left" size="lg" />]}
           onLeftClick={() => this.props.history.goBack()}
         >

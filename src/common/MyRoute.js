@@ -10,7 +10,7 @@ import Add from '../components/Add';
 import Edit from '../components/Edit';
 import View from '../components/View';
 import DynamicPage from '../components/DynamicPage';
-import EmptyContent from '../components/EmptyContent';
+import NotFound from '../components/NotFound';
 
 export const MyRoute = () => {
   let otherRoutes = [];
@@ -37,7 +37,7 @@ export const MyRoute = () => {
         <Route path="/Edit/:objid/:id" component={Edit} />
         <Route path="/View/:objid/:id" component={View} />
         <Route path="/Dynamic/:pageName" component={DynamicPage} />
-        <Route component={EmptyContent} />
+        <Route component={NotFound} />
         {otherRoutes}
       </Switch>
     </main>

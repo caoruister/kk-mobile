@@ -6,6 +6,7 @@ import {
   Button,
   InputItem,
   WingBlank,
+  WhiteSpace,
   ImagePicker,
   Picker,
   DatePicker,
@@ -13,14 +14,15 @@ import {
   Switch,
   Flex,
   NavBar,
-  Icon
+  Icon,
+  Toast
 } from 'antd-mobile';
 
 import ButtonSection from './ButtonSection';
 
 import { getView } from '../api/ViewAPI';
 import { _callInterface } from '../api/CommonAPI';
-import { WEB_CONTEXT, FILE_URL_PREFIX } from '../common/Utils';
+import { WEB_CONTEXT, FILE_URL_PREFIX, setTitle } from '../common/Utils';
 
 class SectionItems extends React.Component {
   render() {
@@ -87,9 +89,10 @@ class View extends React.Component {
 
   componentDidMount() {
     this._isMounted = true;
-
     //debugger
     this.getData();
+
+    setTitle(this.state.navTitle);
   }
 
   componentWillUnmount() {
@@ -151,7 +154,7 @@ class View extends React.Component {
     getView(params).then(res => {
       if (res == null || !res) {
         //window.location.href = WEB_CONTEXT + '/#/Login';
-        this.props.history.push('Login');
+        this.props.history.push('/Login');
         return;
       }
       //
@@ -180,8 +183,6 @@ class View extends React.Component {
           navTitle: title || res.layoutName
         });
 
-        document.title = this.state.navTitle;
-
         //used in onLoad method
         let page = this;
         let onLoadMethodName = res.onLoadMethodName;
@@ -198,12 +199,14 @@ class View extends React.Component {
       <div style={{ paddingBottom: '80px' }}>
         <NavBar
           mode="dark"
+          style={{ background: '#4182e6' }}
           leftContent={[<Icon key="0" type="left" size="lg" />]}
           onLeftClick={() => this.props.history.goBack()}
         >
           {navTitle}
         </NavBar>
         <SectionItems sections={sections} />
+        <WhiteSpace size="lg" />
         <ButtonSection buttons={buttons} page={this} useDefault={false} />
       </div>
     );

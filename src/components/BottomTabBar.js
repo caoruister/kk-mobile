@@ -7,7 +7,7 @@ import iconfontUserActive from '../assets/images/iconfont-user-active.png';
 import iconfontHome from '../assets/images/iconfont-home.png';
 import iconfontHomeActive from '../assets/images/iconfont-home-active.png';
 
-import { WEB_CONTEXT } from '../common/Utils';
+import { WEB_CONTEXT, isWeiXinEnv } from '../common/Utils';
 
 import { getTabBar } from '../api/BottomTabBarAPI';
 
@@ -16,7 +16,8 @@ class BottomTabBar extends React.Component {
 
   state = {
     selectedTab: this.props.selectedTab || 'home',
-    tabBar: []
+    tabBar: [],
+    tabTitle: ''
   };
 
   constructor(props) {
@@ -26,6 +27,7 @@ class BottomTabBar extends React.Component {
   componentDidMount() {
     this._isMounted = true;
     this.getData();
+    //document.title = this.state.tabTitle;
   }
 
   componentWillUnmount() {
@@ -35,7 +37,7 @@ class BottomTabBar extends React.Component {
   getData = () => {
     getTabBar({}).then(res => {
       if (res == null || !res) {
-        this.props.history.push('Login');
+        this.props.history.push('/Login');
         return;
       }
       //
@@ -53,33 +55,42 @@ class BottomTabBar extends React.Component {
     const { tabBar } = this.state;
     let _this = this;
 
-    let tabBarJSX = tabBar.map(tab => (
-      <TabBar.Item
-        icon={<img style={{ width: '22px', height: '22px' }} src={tab.icon} />}
-        selectedIcon={
-          <img
-            style={{ width: '22px', height: '22px' }}
-            src={tab.selectedIcon}
-          />
-        }
-        title={tab.title}
-        key={tab.key}
-        selected={this.state.selectedTab === tab.key}
-        onPress={() => {
-          _this.setState({
-            selectedTab: tab.key
-          });
+    let tabBarJSX = tabBar.map(tab => {
+      let selectedTab = this.state.selectedTab === tab.key;
 
-          _this.props.history.push(tab.path);
-        }}
-      />
-    ));
+      let tabBarJSX = (
+        <TabBar.Item
+          icon={
+            <img style={{ width: '22px', height: '22px' }} src={tab.icon} />
+          }
+          selectedIcon={
+            <img
+              style={{ width: '22px', height: '22px' }}
+              src={tab.selectedIcon}
+            />
+          }
+          title={tab.title}
+          key={tab.key}
+          selected={selectedTab}
+          onPress={() => {
+            _this.setState({
+              selectedTab: tab.key
+            });
+
+            document.title = tab.title;
+            _this.props.history.push(tab.path);
+          }}
+        />
+      );
+
+      return tabBarJSX;
+    });
 
     return (
       <div style={{ zIndex: 2, position: 'fixed', width: '100%', bottom: 0 }}>
         <TabBar
           unselectedTintColor="#949494"
-          tintColor="#33A3F4"
+          tintColor="#4182e6"
           barTintColor="white"
           tabBarPosition="bottom"
         >

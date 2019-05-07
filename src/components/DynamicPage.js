@@ -10,7 +10,12 @@ import GridSection from './GridSection';
 import ImagesSection from './ImagesSection';
 import MessagesSection from './MessagesSection';
 
-import { WEB_CONTEXT, FILE_URL_PREFIX } from '../common/Utils';
+import {
+  WEB_CONTEXT,
+  FILE_URL_PREFIX,
+  isWeiXinEnv,
+  setTitle
+} from '../common/Utils';
 import { getHome } from '../api/HomeAPI';
 
 class Section extends React.Component {
@@ -87,6 +92,8 @@ class DynamicPage extends React.Component {
           selectedTab: res.selectedTabKey,
           navTitle: title || res.tabLabel || res.layoutName
         });
+
+        !this.state.selectedTab && setTitle(this.state.navTitle);
       }
     });
   };
@@ -108,9 +115,10 @@ class DynamicPage extends React.Component {
 
     return (
       <div>
-        {!selectedTab && (
+        {!selectedTab && !isWeiXinEnv() && (
           <NavBar
             mode="dark"
+            style={{ background: '#4182e6' }}
             leftContent={[<Icon key="0" type="left" size="lg" />]}
             onLeftClick={() => this.props.history.goBack()}
           >
