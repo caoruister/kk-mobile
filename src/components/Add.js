@@ -63,7 +63,7 @@ class Add extends React.Component {
     this._isMounted = true;
     //debugger
     this.getData();
-    //setTitle('tianjia ');
+    setTitle(this.state.navTitle);
   }
 
   componentWillUnmount() {
@@ -170,6 +170,8 @@ class Add extends React.Component {
           objid: res.objid,
           navTitle: title || res.layoutName
         });
+
+        setTitle(this.state.navTitle);
 
         //used in onload method
         let page = this;

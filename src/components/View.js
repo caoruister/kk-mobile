@@ -91,7 +91,6 @@ class View extends React.Component {
     this._isMounted = true;
     //debugger
     this.getData();
-
     setTitle(this.state.navTitle);
   }
 
@@ -182,6 +181,8 @@ class View extends React.Component {
           id: res.id,
           navTitle: title || res.layoutName
         });
+
+        setTitle(this.state.navTitle);
 
         //used in onLoad method
         let page = this;

@@ -1,3 +1,5 @@
+import wx from 'weixin-js-sdk';
+
 //export const URL_PREFIX = 'http://api.kz-info.cn:9002/kkdev-xcx/';
 
 //export const URL_PREFIX = 'https://kkdev.kz-info.cn:9243/kkdev-xcx2c/';
@@ -99,14 +101,10 @@ export const isWeiXinEnv = () => {
   return window.__wxjs_environment === 'miniprogram';
 };
 
-export const setTitle = title => {
-  console.log(title);
-  if (isWeiXinEnv()) {
-    debugger;
-    window.wx.ready(() => {
-      document.title = '当前页面';
-    });
-    //document.title = title;
+export const setTitle = (title, isTabBar) => {
+  console.log('setTitle:' + title);
+  if (!isTabBar && isWeiXinEnv()) {
+    document.title = '';
   } else {
     document.title = title;
   }

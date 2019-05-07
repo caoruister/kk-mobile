@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
 import { Icon, TabBar } from 'antd-mobile';
 
@@ -16,8 +17,7 @@ class BottomTabBar extends React.Component {
 
   state = {
     selectedTab: this.props.selectedTab || 'home',
-    tabBar: [],
-    tabTitle: ''
+    tabBar: []
   };
 
   constructor(props) {
@@ -27,7 +27,6 @@ class BottomTabBar extends React.Component {
   componentDidMount() {
     this._isMounted = true;
     this.getData();
-    //document.title = this.state.tabTitle;
   }
 
   componentWillUnmount() {
@@ -46,6 +45,17 @@ class BottomTabBar extends React.Component {
       if (this._isMounted) {
         this.setState({
           tabBar: res.tabBar || []
+        });
+
+        this.state.tabBar.forEach(tab => {
+          let selectedTab = this.state.selectedTab === tab.key;
+
+          if (selectedTab) {
+            this.props.page.setState({
+              navTitle: tab.title
+            });
+            document.title = tab.title;
+          }
         });
       }
     });
@@ -101,4 +111,4 @@ class BottomTabBar extends React.Component {
   }
 }
 
-export default BottomTabBar;
+export default withRouter(BottomTabBar);

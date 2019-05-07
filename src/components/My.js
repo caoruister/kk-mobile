@@ -97,7 +97,7 @@ class My extends React.Component {
           </Button>
         </WingBlank>
 
-        <BottomTabBar selectedTab="my" history={this.props.history} />
+        <BottomTabBar selectedTab="my" state0={this.state} />
       </div>
     );
   }

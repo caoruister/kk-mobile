@@ -9,6 +9,7 @@ import Swiper from './Swiper';
 import GridSection from './GridSection';
 import ImagesSection from './ImagesSection';
 import MessagesSection from './MessagesSection';
+import DynamicSection from './../custom/DynamicSection';
 
 import {
   WEB_CONTEXT,
@@ -31,6 +32,8 @@ class Section extends React.Component {
       template = <ImagesSection data={this.props.data} />;
     } else if (this.props.type === 'messages') {
       template = <MessagesSection data={this.props.data} />;
+    } else if (this.props.type === 'dynamic') {
+      template = <DynamicSection sectionName={this.props.data.sectionName} />;
     }
 
     return (
@@ -90,10 +93,11 @@ class DynamicPage extends React.Component {
         this.setState({
           items: res.items || [],
           selectedTab: res.selectedTabKey,
-          navTitle: title || res.tabLabel || res.layoutName
+          navTitle: title || res.tabLabel || res.layoutName || ''
         });
 
-        !this.state.selectedTab && setTitle(this.state.navTitle);
+        debugger;
+        setTitle(this.state.navTitle, !!this.state.selectedTab);
       }
     });
   };
@@ -115,7 +119,7 @@ class DynamicPage extends React.Component {
 
     return (
       <div>
-        {!selectedTab && !isWeiXinEnv() && (
+        {selectedTab && (
           <NavBar
             mode="dark"
             style={{ background: '#4182e6' }}
@@ -126,12 +130,7 @@ class DynamicPage extends React.Component {
           </NavBar>
         )}
         <div style={{ paddingBottom: '80px' }}>{sectionsJSX}</div>
-        {selectedTab && (
-          <BottomTabBar
-            selectedTab={selectedTab}
-            history={this.props.history}
-          />
-        )}
+        {selectedTab && <BottomTabBar selectedTab={selectedTab} page={this} />}
       </div>
     );
   }

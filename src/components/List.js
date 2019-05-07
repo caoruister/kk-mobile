@@ -87,6 +87,7 @@ class List1 extends React.Component {
 
   componentDidMount() {
     this._isMounted = true;
+    setTitle(this.state.navTitle);
     // you can scroll to the specified position
     // setTimeout(() => this.lv.scrollTo(0, 120), 800);
 
@@ -145,6 +146,8 @@ class List1 extends React.Component {
           hasMore: root.records !== 0 && data.length < root.total,
           navTitle: title || root.tabLabel || root.layoutName
         });
+
+        setTitle(this.state.navTitle);
       }
     });
   }

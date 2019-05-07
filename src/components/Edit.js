@@ -151,6 +151,8 @@ class Edit extends React.Component {
           navTitle: title || res.layoutName
         });
 
+        setTitle(this.state.navTitle);
+
         //used in onload method
         let page = this;
         let onLoadMethod = res.events && res.events.onLoad;

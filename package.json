@@ -15,7 +15,8 @@
     "react-app-polyfill": "^1.0.0",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "2.1.8"
+    "react-scripts": "2.1.8",
+    "weixin-js-sdk": "^1.4.0-test"
   },
   "scripts": {
     "start": "react-app-rewired start",
@@ -38,10 +39,10 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-       "prettier --single-quote --write",
-       "git add"
-     ]
-   },
+      "prettier --single-quote --write",
+      "git add"
+    ]
+  },
   "devDependencies": {
     "babel-plugin-import": "^1.11.0",
     "customize-cra": "^0.2.12",
