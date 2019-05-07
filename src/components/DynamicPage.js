@@ -96,7 +96,7 @@ class DynamicPage extends React.Component {
           navTitle: title || res.tabLabel || res.layoutName || ''
         });
 
-        debugger;
+        //debugger;
         setTitle(this.state.navTitle, !!this.state.selectedTab);
       }
     });
