@@ -22,6 +22,7 @@ import { createForm, formShape } from 'rc-form';
 import Lookup from './Lookup';
 import ButtonSection from './ButtonSection';
 import Sections from './Sections';
+import CustomNavBar from './CustomNavBar';
 
 import { getEdit, saveEdit, uploadFile } from '../api/EditAPI';
 import { _callInterface } from '../api/CommonAPI';
@@ -267,14 +268,7 @@ class Edit extends React.Component {
           style={{ paddingBottom: '80px' }}
           className={this.state.lookupModal ? 'hide' : 'show'}
         >
-          <NavBar
-            mode="dark"
-            style={{ background: '#4182e6' }}
-            leftContent={[<Icon key="0" type="left" size="lg" />]}
-            onLeftClick={() => this.props.history.goBack()}
-          >
-            {navTitle}
-          </NavBar>
+          <CustomNavBar navTitle={navTitle} />
           <div>
             <form>
               <Sections

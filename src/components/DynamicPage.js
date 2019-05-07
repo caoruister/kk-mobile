@@ -10,6 +10,7 @@ import GridSection from './GridSection';
 import ImagesSection from './ImagesSection';
 import MessagesSection from './MessagesSection';
 import DynamicSection from './../custom/DynamicSection';
+import CustomNavBar from './CustomNavBar';
 
 import {
   WEB_CONTEXT,
@@ -103,7 +104,7 @@ class DynamicPage extends React.Component {
   };
 
   render() {
-    const { items, selectedTab } = this.state;
+    const { items, selectedTab, navTitle } = this.state;
 
     let sectionsJSX = items.map((section, idx) => (
       <Section
@@ -119,16 +120,7 @@ class DynamicPage extends React.Component {
 
     return (
       <div>
-        {!selectedTab && (
-          <NavBar
-            mode="dark"
-            style={{ background: '#4182e6' }}
-            leftContent={[<Icon key="0" type="left" size="lg" />]}
-            onLeftClick={() => this.props.history.goBack()}
-          >
-            {this.state.navTitle}
-          </NavBar>
-        )}
+        {!selectedTab && <CustomNavBar navTitle={navTitle} />}
         <div style={{ paddingBottom: '80px' }}>{sectionsJSX}</div>
         {selectedTab && <BottomTabBar selectedTab={selectedTab} page={this} />}
       </div>
