@@ -5,6 +5,7 @@ import qs from 'qs';
 
 import { ListView, List, WhiteSpace, NavBar, Icon } from 'antd-mobile';
 
+import CustomNavBar from './CustomNavBar';
 import { getList } from '../api/ListAPI';
 import { WEB_CONTEXT, FILE_URL_PREFIX, setTitle } from '../common/Utils';
 
@@ -231,14 +232,7 @@ class List1 extends React.Component {
 
     return (
       <div>
-        <NavBar
-          mode="dark"
-          style={{ background: '#4182e6' }}
-          leftContent={[<Icon key="0" type="left" size="lg" />]}
-          onLeftClick={() => this.props.history.goBack()}
-        >
-          {navTitle}
-        </NavBar>
+        <CustomNavBar navTitle={navTitle} />
         <ListView
           ref={el => (this.lv = el)}
           dataSource={dataSource}

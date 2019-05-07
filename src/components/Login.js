@@ -190,7 +190,7 @@ class BasicInput extends React.Component {
         </List>
         <Button
           type="primary"
-          style={{ marginTop: '10px' }}
+          style={{ marginTop: '10px', background: '#4182e6' }}
           onClick={this.handleOk}
         >
           登录
@@ -198,12 +198,12 @@ class BasicInput extends React.Component {
 
         <WhiteSpace size="md" />
         <Flex justify="between">
-          <Link to="/Add/register?notNeedLogin=true" className="inline">
+          <a href="/#/Add/register?notNeedLogin=true" className="inline">
             注册
-          </Link>
-          <Link to="/Home?notNeedLogin=true" className="inline">
+          </a>
+          <a href="/#/Home?notNeedLogin=true" className="inline">
             我是游客
-          </Link>
+          </a>
         </Flex>
       </WingBlank>
     );

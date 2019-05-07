@@ -19,6 +19,7 @@ import {
 } from 'antd-mobile';
 
 import ButtonSection from './ButtonSection';
+import CustomNavBar from './CustomNavBar';
 
 import { getView } from '../api/ViewAPI';
 import { _callInterface } from '../api/CommonAPI';
@@ -198,14 +199,7 @@ class View extends React.Component {
 
     return (
       <div style={{ paddingBottom: '80px' }}>
-        <NavBar
-          mode="dark"
-          style={{ background: '#4182e6' }}
-          leftContent={[<Icon key="0" type="left" size="lg" />]}
-          onLeftClick={() => this.props.history.goBack()}
-        >
-          {navTitle}
-        </NavBar>
+        <CustomNavBar navTitle={navTitle} />
         <SectionItems sections={sections} />
         <WhiteSpace size="lg" />
         <ButtonSection buttons={buttons} page={this} useDefault={false} />
