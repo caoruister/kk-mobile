@@ -119,7 +119,7 @@ class DynamicPage extends React.Component {
 
     return (
       <div>
-        {selectedTab && (
+        {!selectedTab && (
           <NavBar
             mode="dark"
             style={{ background: '#4182e6' }}
