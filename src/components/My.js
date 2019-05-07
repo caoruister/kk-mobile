@@ -33,7 +33,6 @@ class My extends React.Component {
   };
 
   componentDidMount() {
-    document.title = '我的';
     this._isMounted = true;
     this.getData();
   }
@@ -97,7 +96,7 @@ class My extends React.Component {
           </Button>
         </WingBlank>
 
-        <BottomTabBar selectedTab="my" state0={this.state} />
+        <BottomTabBar selectedTab="my" page={this} />
       </div>
     );
   }
