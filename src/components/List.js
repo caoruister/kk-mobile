@@ -244,7 +244,11 @@ class List1 extends React.Component {
           renderBodyComponent={() => <MyBody />}
           renderRow={row}
           renderSeparator={separator}
-          useBodyScroll={true}
+          useBodyScroll={false}
+          style={{
+            height: this.state.height,
+            overflow: 'auto'
+          }}
           pageSize={10}
           scrollRenderAheadDistance={500}
           onEndReached={this.onEndReached}

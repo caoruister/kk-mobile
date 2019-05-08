@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "antd-mobile": "^2.2.11",
+    "antd-mobile": "^2.2.13",
     "axios": "^0.18.0",
     "customize-cra": "^0.2.12",
     "husky": "^2.2.0",
