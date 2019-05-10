@@ -9,7 +9,7 @@ import Swiper from './Swiper';
 import GridSection from './GridSection';
 import ImagesSection from './ImagesSection';
 import MessagesSection from './MessagesSection';
-import DynamicSection from './../custom/DynamicSection';
+import DynamicSection from '../custom/DynamicSection';
 import CustomNavBar from './CustomNavBar';
 
 import {
@@ -35,6 +35,10 @@ class Section extends React.Component {
       template = <MessagesSection data={this.props.data} />;
     } else if (this.props.type === 'dynamic') {
       template = <DynamicSection sectionName={this.props.data.sectionName} />;
+    } else if (this.props.type === 'customItems') {
+      template = (
+        <GridSection data={this.props.data} columnNum={this.props.columnNum} />
+      );
     }
 
     return (

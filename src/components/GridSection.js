@@ -26,7 +26,7 @@ class GridSection extends React.Component {
     return (
       <Grid
         data={data}
-        columnNum={columnNum}
+        columnNum={columnNum || 3}
         square={false}
         hasLine={false}
         renderItem={renderItem}
