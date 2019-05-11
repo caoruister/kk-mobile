@@ -4,8 +4,6 @@ import { Grid } from 'antd-mobile';
 
 import { WEB_CONTEXT, FILE_URL_PREFIX } from '../common/Utils';
 
-import styles from './UserInfo.module.css';
-
 class UserInfo extends React.Component {
   render() {
     const { userInfo, stats } = this.props;
@@ -27,20 +25,20 @@ class UserInfo extends React.Component {
 
     return (
       <div>
-        <div className={styles.userinfo}>
-          <div className={styles.userinfoAvatar}>
+        <div className="userinfo">
+          <div className="userinfo-avatar">
             <img
               src={FILE_URL_PREFIX + userInfo.headIcon[0].thumbnail_url}
               mode="scaleToFill"
             />
           </div>
 
-          <div className={styles.userinfoNickname}>
-            <div className={styles.nickname}>{userInfo.name}</div>
-            <div className={styles.desc}>{userInfo.desc}</div>
+          <div className="userinfo-nickname">
+            <div className="nickname">{userInfo.name}</div>
+            <div className="desc">{userInfo.desc}</div>
           </div>
 
-          <div className={styles.userinfoBarcode}>
+          <div className="userinfo-barcode">
             <img src={FILE_URL_PREFIX} mode="scaleToFill" />
           </div>
         </div>
