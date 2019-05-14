@@ -18,7 +18,7 @@ import styles from './List.module.css';
 function MyBody(props) {
   return (
     <div className="my-body">
-      {props.children.length != 0 && props.data.length == 0 && (
+      {!props.isLoading && props.data.length == 0 && (
         <NotFound title="当前没有数据" />
       )}
       {props.children}
@@ -109,13 +109,7 @@ class List1 extends React.Component {
     setTitle(this.state.navTitle);
   }
 
-  componentDidUpdate() {
-    if (this.state.useBodyScroll) {
-      document.body.style.overflow = 'auto';
-    } else {
-      //document.body.style.overflow = 'hidden';
-    }
-  }
+  componentDidUpdate() {}
 
   genData(pIndex = 0) {
     let memberFieldName = qs.parse(this.props.location.search, {
@@ -245,7 +239,9 @@ class List1 extends React.Component {
               {isLoading ? '加载中...' : ''}
             </div>
           )}
-          renderBodyComponent={() => <MyBody data={data} />}
+          renderBodyComponent={() => (
+            <MyBody data={data} isLoading={isLoading} />
+          )}
           renderRow={row}
           renderSeparator={separator}
           useBodyScroll={this.state.useBodyScroll}
@@ -253,7 +249,8 @@ class List1 extends React.Component {
             this.state.useBodyScroll
               ? {}
               : {
-                  height: this.state.height
+                  height: this.state.height,
+                  overflow: 'auto'
                 }
           }
           pageSize={10}
