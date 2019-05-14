@@ -14,19 +14,22 @@ class ButtonSection extends React.Component {
   render() {
     let buttons = '';
     if (this.props.buttons.length !== 0) {
-      buttons = this.props.buttons.map((button, idx) => (
-        <Flex.Item key={button.id + idx}>
-          <Button
-            type="primary"
-            style={{ marginRight: '4px', background: '#4182e6' }}
-            onClick={() => {
-              this.onClickHandler(button.events && button.events.onClick);
-            }}
-          >
-            {button.text}
-          </Button>
-        </Flex.Item>
-      ));
+      buttons = this.props.buttons.map(
+        (button, idx) =>
+          button.visible && (
+            <Flex.Item key={button.id + idx}>
+              <Button
+                type="primary"
+                style={{ marginRight: '4px', background: '#4182e6' }}
+                onClick={() => {
+                  this.onClickHandler(button.events && button.events.onClick);
+                }}
+              >
+                {button.text}
+              </Button>
+            </Flex.Item>
+          )
+      );
     } else if (this.props.useDefault) {
       buttons = (
         <Flex.Item>

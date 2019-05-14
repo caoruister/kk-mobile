@@ -4,62 +4,18 @@ export const URL_PREFIX = process.env.REACT_APP_URL_PREFIX;
 export const FILE_URL_PREFIX = process.env.REACT_APP_FILE_URL_PREFIX;
 export const WEB_CONTEXT = process.env.REACT_APP_WEB_CONTEXT;
 
-export const setFieldValue = function(fieldName, value, pageInstance) {
-  var sections = pageInstance.state.sections;
-  for (var i = 0; i < sections.length; i++) {
-    let section = sections[i];
-    let fields = section.fields;
-    for (var k = 0; k < fields.length; k++) {
-      let field = fields[k];
+export const _setButtonVisible = function(buttonName, isVisible, pageInstance) {
+  var buttons = pageInstance.state.buttons;
+  buttons &&
+    buttons.forEach(button => {
+      if (buttonName == button.name) {
+        button.visible = isVisible;
 
-      if (field.name == fieldName) {
-        console.log(value);
-        if (field.type == 'Y') {
-          field.value2 = value != null ? value.name : null;
-        } else if (field.type == 'IMG') {
-          let tempValue = JSON.parse(value);
-          //
-          if (tempValue.length > 0) {
-            let temp = tempValue[0];
-            let item = null;
-            if (typeof temp == 'string') {
-              item = JSON.parse(temp);
-            } else {
-              item = temp;
-            }
-            //
-            let thumbnail_url = FILE_URL_PREFIX + item.thumbnail_url;
-            field.thumbnail_url = thumbnail_url;
-          }
-        }
-        //
-        field.value = value;
-        //
-        let fieldValues = pageInstance.data.fieldValues;
-        fieldValues[field.fieldid] = value;
-        //
-        pageInstance.setData({
-          fieldValues: fieldValues,
-          sections: sections
+        pageInstance.setState({
+          buttons: buttons
         });
       }
-    }
-  }
-};
-
-export const getFieldValue = function(fieldName, pageInstance) {
-  var sections = pageInstance.state.sections;
-  for (var i = 0; i < sections.length; i++) {
-    let section = sections[i];
-    let fields = section.fields;
-    for (var k = 0; k < fields.length; k++) {
-      let field = fields[k];
-
-      if (field.name == fieldName) {
-        return field.value; //
-      }
-    }
-  }
+    });
 };
 
 export const formatDate = date => {
@@ -102,14 +58,14 @@ export const setTitle = (title, isTabBar) => {
   }
 };
 
-export const success = (content, duration = 1) => {
+export const _success = (content, duration = 1) => {
   Toast.success(content, duration);
 };
 
-export const fail = (content, duration = 1) => {
+export const _fail = (content, duration = 1) => {
   Toast.fail(content, duration);
 };
 
-export const info = (content, duration = 1) => {
+export const _info = (content, duration = 1) => {
   Toast.info(content, duration);
 };

@@ -27,9 +27,10 @@ import {
   WEB_CONTEXT,
   FILE_URL_PREFIX,
   setTitle,
-  success,
-  fail,
-  info
+  _success,
+  _fail,
+  _info,
+  _setButtonVisible
 } from '../common/Utils';
 
 class SectionItems extends React.Component {
@@ -84,6 +85,16 @@ class SectionItems extends React.Component {
                   </List.Item>
                 </div>
               );
+            } else if (field.type === 'Y') {
+              return (
+                <div key={field.fieldid + idx2}>
+                  <List.Item
+                    extra={(field.value && field.value.name) || field.value2}
+                  >
+                    {labelJSX}
+                  </List.Item>
+                </div>
+              );
             } else {
               return (
                 <List.Item
@@ -119,13 +130,12 @@ class View extends React.Component {
 
   componentDidMount() {
     this._isMounted = true;
-    //debugger
     this.getData();
     setTitle(this.state.navTitle);
 
-    this.success = success;
-    this.fail = fail;
-    this.info = info;
+    this.success = _success;
+    this.fail = _fail;
+    this.info = _info;
   }
 
   componentWillUnmount() {
@@ -135,10 +145,9 @@ class View extends React.Component {
   componentDidUpdate(prevProps) {
     //debugger
     // 上面步骤3，通过参数更新数据
-    //let oldId = prevProps.params.invoiceId
-    //let newId = this.props.params.invoiceId
-    //if (newId !== oldId)
-    //    this.fetchInvoice()
+    let oldId = prevProps.match.path;
+    let newId = this.props.match.path;
+    if (newId !== oldId) this.getData();
   }
 
   callInterface = (apiName, data, callback) => {
@@ -160,6 +169,10 @@ class View extends React.Component {
       this.setState({});
   };
 
+  setButtonVisible = (buttonName, isVisible) => {
+    _setButtonVisible(buttonName, isVisible, this);
+  };
+
   getId = () => {
     return this.state.id;
   };
@@ -167,6 +180,7 @@ class View extends React.Component {
   getData = () => {
     //console.log(this.props)
 
+    //debugger
     let layoutid = qs.parse(this.props.location.search, {
       ignoreQueryPrefix: true
     }).layoutid;
@@ -220,9 +234,9 @@ class View extends React.Component {
 
         //used in onLoad method
         let page = this;
-        let onLoadMethodName = res.onLoadMethodName;
-        console.log(onLoadMethodName);
-        !!onLoadMethodName && eval(onLoadMethodName);
+        let onLoadMethod = res.events && res.events.onLoad;
+        console.log(onLoadMethod);
+        !!onLoadMethod && eval(onLoadMethod);
       }
     });
   };

@@ -33,9 +33,10 @@ import {
   formatDate,
   formatTime,
   setTitle,
-  success,
-  fail,
-  info
+  _success,
+  _fail,
+  _info,
+  _setButtonVisible
 } from '../common/Utils';
 
 class Edit extends React.Component {
@@ -63,9 +64,9 @@ class Edit extends React.Component {
     this.getData();
     setTitle(this.state.navTitle);
 
-    this.success = success;
-    this.fail = fail;
-    this.info = info;
+    this.success = _success;
+    this.fail = _fail;
+    this.info = _info;
   }
 
   componentWillUnmount() {
@@ -107,6 +108,10 @@ class Edit extends React.Component {
     _callInterface(apiName, data).then(res => {
       !!callback && callback(res);
     });
+  };
+
+  setButtonVisible = (buttonName, isVisible) => {
+    _setButtonVisible(buttonName, isVisible, this);
   };
 
   getData = () => {

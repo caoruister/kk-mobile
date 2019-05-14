@@ -36,6 +36,7 @@ export const MyRoute = () => {
         <Route path="/Add/:objid" component={Add} />
         <Route path="/Edit/:objid/:id" component={Edit} />
         <Route path="/View/:objid/:id" component={View} />
+        <Route path="/ViewToLayout/:objid/:id" component={View} />
         <Route path="/Dynamic/:pageName" component={DynamicPage} />
         {otherRoutes}
         <Route component={NotFound} />
