@@ -9,17 +9,25 @@ export class NotFound extends React.Component {
   }
 
   render() {
+    let { title, description } = this.props;
+
+    if (!title) {
+      title = '页面暂无内容';
+    }
+
+    if (!description) {
+      description = (
+        <span>
+          抱歉，页面暂无内容，请看看<a href="/#/Home">其他页面</a>
+        </span>
+      );
+    }
+
     return (
-      <div className="empty-content">
-        <div style={styles.exceptionContent} className="exception-content">
-          <div style={styles.prompt}>
-            <h3 style={styles.title} className="title">
-              页面暂无内容
-            </h3>
-            <p style={styles.description} className="description">
-              抱歉，页面暂无内容，请看看<a href="/#/Home">其他页面</a>
-            </p>
-          </div>
+      <div style={styles.exceptionContent}>
+        <div style={styles.prompt}>
+          <h3 style={styles.title}>{title}</h3>
+          <p style={styles.description}>{description}</p>
         </div>
       </div>
     );

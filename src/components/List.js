@@ -6,21 +6,25 @@ import qs from 'qs';
 import { ListView, List, WhiteSpace, NavBar, Icon } from 'antd-mobile';
 
 import CustomNavBar from './CustomNavBar';
+import NotFound from './NotFound';
+
 import { getList } from '../api/ListAPI';
 import { WEB_CONTEXT, FILE_URL_PREFIX, setTitle } from '../common/Utils';
 
 import addImg from '../assets/images/add.png';
 
+import styles from './List.module.css';
+
 function MyBody(props) {
   return (
-    <div class1="am-list-body my-body">
-      <span style={{ display: 'none' }}>you can custom body wrap element</span>
+    <div className="my-body">
+      {props.children.length != 0 && props.data.length == 0 && (
+        <NotFound title="当前没有数据" />
+      )}
       {props.children}
     </div>
   );
 }
-
-const NUM_ROWS = 10;
 
 function View(props) {
   const record = props.record;
@@ -65,8 +69,7 @@ class List1 extends React.Component {
     super(props);
 
     const dataSource = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 !== row2,
-      sectionHeaderHasChanged: (s1, s2) => s1 !== s2
+      rowHasChanged: (row1, row2) => row1 !== row2
     });
 
     this.state = {
@@ -74,10 +77,8 @@ class List1 extends React.Component {
       data: [],
       fields: [],
       isLoading: true,
+      useBodyScroll: false,
       height: (document.documentElement.clientHeight * 3) / 4,
-      dataBlobs: {},
-      sectionIDs: [],
-      rowIDs: [],
       pageIndex: 0,
       objid: '',
       canAdd: false,
@@ -98,7 +99,7 @@ class List1 extends React.Component {
     this.genData().then(() => {
       if (this._isMounted) {
         this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(this.state.dataBlobs),
+          dataSource: this.state.dataSource.cloneWithRows(this.state.data),
           isLoading: false,
           height: hei
         });
@@ -108,12 +109,15 @@ class List1 extends React.Component {
     setTitle(this.state.navTitle);
   }
 
-  genData(pIndex = 0) {
-    for (let i = 0; i < NUM_ROWS; i++) {
-      const ii = pIndex * NUM_ROWS + i;
-      this.state.dataBlobs[`${ii}`] = `row - ${ii}`;
+  componentDidUpdate() {
+    if (this.state.useBodyScroll) {
+      document.body.style.overflow = 'auto';
+    } else {
+      //document.body.style.overflow = 'hidden';
     }
+  }
 
+  genData(pIndex = 0) {
     let memberFieldName = qs.parse(this.props.location.search, {
       ignoreQueryPrefix: true
     }).MEMBER_FIELD_NAME;
@@ -177,7 +181,7 @@ class List1 extends React.Component {
     //this.setState({ isLoading: true });
     this.genData(++this.state.pageIndex).then(() => {
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(this.state.dataBlobs),
+        dataSource: this.state.dataSource.cloneWithRows(this.state.data),
         isLoading: false
       });
     });
@@ -241,31 +245,28 @@ class List1 extends React.Component {
               {isLoading ? '加载中...' : ''}
             </div>
           )}
-          renderBodyComponent={() => <MyBody />}
+          renderBodyComponent={() => <MyBody data={data} />}
           renderRow={row}
           renderSeparator={separator}
-          useBodyScroll={false}
-          style={{
-            height: this.state.height,
-            overflow: 'auto'
-          }}
+          useBodyScroll={this.state.useBodyScroll}
+          style={
+            this.state.useBodyScroll
+              ? {}
+              : {
+                  height: this.state.height
+                }
+          }
           pageSize={10}
           scrollRenderAheadDistance={500}
           onEndReached={this.onEndReached}
         />
-
         {canAdd && (
           <div
-            className="weui-footer weui-footer_fixed-bottom"
+            className={styles.footer + ' ' + styles.fixedBottom}
             style={{ zIndex: '3' }}
           >
             <a href={'/#/Add/' + objid} style={{ float: 'right' }}>
-              <img
-                className="weui-grid__icon"
-                style={{ width: '100px', height: '100px' }}
-                src={addImg}
-                alt=""
-              />
+              <img className={styles.addIcon} src={addImg} alt="" />
             </a>
           </div>
         )}
