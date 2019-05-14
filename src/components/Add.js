@@ -34,7 +34,10 @@ import {
   FILE_URL_PREFIX,
   formatDate,
   formatTime,
-  setTitle
+  setTitle,
+  success,
+  fail,
+  info
 } from '../common/Utils';
 
 class Add extends React.Component {
@@ -65,6 +68,10 @@ class Add extends React.Component {
     //debugger
     this.getData();
     setTitle(this.state.navTitle);
+
+    this.success = success;
+    this.fail = fail;
+    this.info = info;
   }
 
   componentWillUnmount() {

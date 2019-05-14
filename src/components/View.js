@@ -23,52 +23,81 @@ import CustomNavBar from './CustomNavBar';
 
 import { getView } from '../api/ViewAPI';
 import { _callInterface } from '../api/CommonAPI';
-import { WEB_CONTEXT, FILE_URL_PREFIX, setTitle } from '../common/Utils';
+import {
+  WEB_CONTEXT,
+  FILE_URL_PREFIX,
+  setTitle,
+  success,
+  fail,
+  info
+} from '../common/Utils';
 
 class SectionItems extends React.Component {
   render() {
-    return this.props.sections.map((section, idx1) => (
-      <List key={section.key + idx1} renderHeader={section.title}>
-        {section.fields.map((field, idx2) => {
-          if (field.type === 'B') {
-            return (
-              <List.Item key={field.fieldid + idx2} extra={field.value}>
-                {field.label}
-              </List.Item>
-            );
-          } else if (field.type === 'IMG') {
-            return (
-              <List.Item
-                key={field.fieldid + idx2}
-                extra={
-                  <img
-                    src={FILE_URL_PREFIX + field.value[0].thumbnail_url}
-                    alt=""
-                  />
-                }
-              >
-                {field.label}
-              </List.Item>
-            );
-          } else if (field.type === 'X') {
-            return (
-              <div key={field.fieldid + idx2}>
-                <List.Item extra={field.value}>{field.label}</List.Item>
+    return this.props.sections.map((section, idx1) => {
+      let title = section.title;
+      if (!section.titleShowedInDetailPage) {
+        title = null;
+      }
+
+      return (
+        <List key={section.key + idx1} renderHeader={title}>
+          {section.fields.map((field, idx2) => {
+            let labelJSX = !field.hideLabel ? (
+              <div>
+                <span>{field.label}</span>
               </div>
-            );
-          } else {
-            return (
-              <List.Item
-                key={field.fieldid + idx2}
-                extra={field.value || field.value2}
-              >
-                {field.label}
-              </List.Item>
-            );
-          }
-        })}
-      </List>
-    ));
+            ) : null;
+
+            if (field.type === 'B') {
+              return (
+                <List.Item key={field.fieldid + idx2} extra={field.value}>
+                  {labelJSX}
+                </List.Item>
+              );
+            } else if (field.type === 'IMG') {
+              return (
+                <List.Item
+                  key={field.fieldid + idx2}
+                  extra={
+                    <img
+                      src={FILE_URL_PREFIX + field.value[0].thumbnail_url}
+                      alt=""
+                    />
+                  }
+                >
+                  {labelJSX}
+                </List.Item>
+              );
+            } else if (field.type === 'X') {
+              return (
+                <div key={field.fieldid + idx2}>
+                  <List.Item extra={field.value}>{labelJSX}</List.Item>
+                </div>
+              );
+            } else if (field.type === 'A') {
+              return (
+                <div key={field.fieldid + idx2}>
+                  <List.Item wrap>
+                    {labelJSX}
+                    <div dangerouslySetInnerHTML={{ __html: field.value }} />
+                  </List.Item>
+                </div>
+              );
+            } else {
+              return (
+                <List.Item
+                  key={field.fieldid + idx2}
+                  extra={field.value || field.value2}
+                >
+                  {labelJSX}
+                </List.Item>
+              );
+            }
+          })}
+        </List>
+      );
+    });
   }
 }
 
@@ -93,6 +122,10 @@ class View extends React.Component {
     //debugger
     this.getData();
     setTitle(this.state.navTitle);
+
+    this.success = success;
+    this.fail = fail;
+    this.info = info;
   }
 
   componentWillUnmount() {

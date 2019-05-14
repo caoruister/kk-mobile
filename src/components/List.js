@@ -39,7 +39,7 @@ function View(props) {
         return (
           <img
             key={img.url + idx}
-            src={img.url}
+            src={FILE_URL_PREFIX + img.url}
             alt=""
             style={{ marginLeft: '5px' }}
           />

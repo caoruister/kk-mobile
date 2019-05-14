@@ -26,12 +26,16 @@ import CustomNavBar from './CustomNavBar';
 
 import { getEdit, saveEdit, uploadFile } from '../api/EditAPI';
 import { _callInterface } from '../api/CommonAPI';
+
 import {
   WEB_CONTEXT,
   FILE_URL_PREFIX,
   formatDate,
   formatTime,
-  setTitle
+  setTitle,
+  success,
+  fail,
+  info
 } from '../common/Utils';
 
 class Edit extends React.Component {
@@ -58,6 +62,10 @@ class Edit extends React.Component {
     //debugger
     this.getData();
     setTitle(this.state.navTitle);
+
+    this.success = success;
+    this.fail = fail;
+    this.info = info;
   }
 
   componentWillUnmount() {

@@ -1,3 +1,5 @@
+import { Toast } from 'antd-mobile';
+
 export const URL_PREFIX = process.env.REACT_APP_URL_PREFIX;
 export const FILE_URL_PREFIX = process.env.REACT_APP_FILE_URL_PREFIX;
 export const WEB_CONTEXT = process.env.REACT_APP_WEB_CONTEXT;
@@ -98,4 +100,16 @@ export const setTitle = (title, isTabBar) => {
   } else {
     document.title = title;
   }
+};
+
+export const success = (content, duration = 1) => {
+  Toast.success(content, duration);
+};
+
+export const fail = (content, duration = 1) => {
+  Toast.fail(content, duration);
+};
+
+export const info = (content, duration = 1) => {
+  Toast.info(content, duration);
 };

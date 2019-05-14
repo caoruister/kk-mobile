@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, WingBlank, Flex } from 'antd-mobile';
+import { Button, WingBlank, Flex, Toast } from 'antd-mobile';
 
 class ButtonSection extends React.Component {
   onClickHandler(onClick) {
