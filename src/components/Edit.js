@@ -211,7 +211,7 @@ class Edit extends React.Component {
               fieldValue[key] = formatDate(tempValue);
             } else if (field.type === 'F') {
               fieldValue[key] = formatTime(tempValue);
-            } else if (field.type === 'L') {
+            } else if (field.type === 'L' && field.edittype === '1') {
               fieldValue[key] = tempValue.length > 0 ? tempValue[0] : null;
             } else {
               fieldValue[key] = tempValue;
