@@ -190,7 +190,7 @@ class Edit extends React.Component {
     });
     //e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      debugger;
+      //debugger;
       console.log('接收到的表单的值为: ', values);
       console.log(err);
       if (!err) {
