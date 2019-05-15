@@ -97,10 +97,11 @@ class Sections extends React.Component {
           //field.hideLabel = true;
           //field.required = true;
 
-          let placeholderJSX =
-            '请输入' +
-            field.label +
-            (field.hideLabel && field.required ? ' (必填)' : '');
+          let placeholderJSX = !field.readOnly
+            ? '请输入' +
+              field.label +
+              (field.hideLabel && field.required ? ' (必填)' : '')
+            : '';
           let requiredJSX = field.required ? (
             <span style={{ color: 'red' }}>*</span>
           ) : null;
@@ -224,7 +225,12 @@ class Sections extends React.Component {
                   data={data}
                   cols={1}
                 >
-                  <List.Item arrow="horizontal">{labelJSX}</List.Item>
+                  <List.Item
+                    arrow="horizontal"
+                    className={field.readOnly ? 'am-list-item-disabled' : ''}
+                  >
+                    {labelJSX}
+                  </List.Item>
                 </Picker>
               );
             } else if (field.edittype === '2') {
@@ -310,6 +316,7 @@ class Sections extends React.Component {
             return (
               <List.Item
                 key={field.fieldid + idx2}
+                className={field.readOnly ? 'am-list-item-disabled' : ''}
                 extra={
                   <Switch
                     {...getFieldProps(field.fieldid, {
@@ -343,7 +350,7 @@ class Sections extends React.Component {
                   files={this.getImages(field.value)}
                   onChange={this.onChangeOfFileValue.bind(this, field)}
                   onImageClick={(index, fs) => console.log(index, fs)}
-                  selectable={field.length < 7}
+                  selectable={field.value.length < 1}
                   multiple={false}
                 />
               </div>
@@ -367,7 +374,7 @@ class Sections extends React.Component {
                 disabled={field.readOnly}
                 arrow="horizontal"
                 onClick={() => {
-                  this.props.showLookupModal(field);
+                  !field.readOnly && this.props.showLookupModal(field);
                 }}
               >
                 {labelJSX}

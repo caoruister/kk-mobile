@@ -51,7 +51,7 @@ export const _isWeiXinEnv = () => {
 };
 
 export const _setTitle = (title, isTabBar) => {
-  if (!isTabBar && isWeiXinEnv()) {
+  if (!isTabBar && _isWeiXinEnv()) {
     document.title = '';
   } else {
     document.title = title;

@@ -9,8 +9,7 @@ export const getEdit = params =>
       URL_PREFIX + 'record?op=getLayoutForEditing',
       qs.stringify({
         token: localStorage.getItem('__token__'),
-        id: params.id,
-        objid: params.objid
+        ...params
       }),
       {
         headers: {

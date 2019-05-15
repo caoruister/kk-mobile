@@ -54,7 +54,11 @@ function View(props) {
     }
 
     return (
-      <List.Item key={field.fieldid + idx} extra={output}>
+      <List.Item
+        key={field.fieldid + idx}
+        extra={output}
+        className={styles.extraItem}
+      >
         {!field.hideLabel ? field.label : ''}
       </List.Item>
     );
@@ -112,18 +116,18 @@ class List1 extends React.Component {
   componentDidUpdate() {}
 
   genData(pIndex = 0) {
-    let memberFieldName = qs.parse(this.props.location.search, {
+    let params = qs.parse(this.props.location.search, {
       ignoreQueryPrefix: true
-    }).MEMBER_FIELD_NAME;
+    });
     let title = qs.parse(this.props.location.search, {
       ignoreQueryPrefix: true
     }).title;
 
     return getList({
+      ...params,
       objid: this.props.match.params.objid,
       notNeedLogin: false,
-      current: pIndex + 1,
-      MEMBER_FIELD_NAME: memberFieldName || ''
+      current: pIndex + 1
     }).then(res => {
       if (res == null || !res) {
         window.location.href = WEB_CONTEXT + '/#/Login';
