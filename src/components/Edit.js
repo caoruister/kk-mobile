@@ -154,7 +154,7 @@ class Edit extends React.Component {
             let dateStr = field.value.replace(/-/g, '/');
             field.value = new Date(dateStr);
           } else if (field.type === 'L' && field.edittype === '1') {
-            field.value = field.value != null ? [field.value] : [];
+            field.value = !!field.value ? [field.value] : [];
           } else if (field.type === 'IMG') {
             field.value = field.value ? field.value : [];
           }
@@ -190,6 +190,7 @@ class Edit extends React.Component {
     });
     //e.preventDefault();
     this.props.form.validateFields((err, values) => {
+      debugger;
       console.log('接收到的表单的值为: ', values);
       console.log(err);
       if (!err) {

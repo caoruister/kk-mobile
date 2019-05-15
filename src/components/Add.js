@@ -163,7 +163,7 @@ class Add extends React.Component {
 
           if (field.type === 'D' || field.type === 'F') {
             field.value = new Date();
-          } else if (field.type === 'L') {
+          } else if (field.type === 'L' && field.edittype === '1') {
             field.value = [];
           } else if (field.type === 'IMG') {
             field.value = [];
