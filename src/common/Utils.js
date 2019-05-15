@@ -58,14 +58,14 @@ export const _setTitle = (title, isTabBar) => {
   }
 };
 
-export const _success = (content, duration = 1) => {
-  Toast.success(content, duration);
+export const _success = (content, duration, onClick) => {
+  Toast.success(content, duration, onClick);
 };
 
-export const _fail = (content, duration = 1) => {
-  Toast.fail(content, duration);
+export const _fail = (content, duration, onClick) => {
+  Toast.fail(content, duration, onClick);
 };
 
-export const _info = (content, duration = 1) => {
-  Toast.info(content, duration);
+export const _info = (content, duration, onClick) => {
+  Toast.info(content, duration, onClick);
 };
