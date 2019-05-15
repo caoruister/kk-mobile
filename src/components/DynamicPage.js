@@ -15,8 +15,8 @@ import CustomNavBar from './CustomNavBar';
 import {
   WEB_CONTEXT,
   FILE_URL_PREFIX,
-  isWeiXinEnv,
-  setTitle
+  _isWeiXinEnv,
+  _setTitle
 } from '../common/Utils';
 import { getHome } from '../api/HomeAPI';
 
@@ -102,7 +102,7 @@ class DynamicPage extends React.Component {
         });
 
         //debugger;
-        setTitle(this.state.navTitle, !!this.state.selectedTab);
+        _setTitle(this.state.navTitle, !!this.state.selectedTab);
       }
     });
   };

@@ -9,7 +9,7 @@ import CustomNavBar from './CustomNavBar';
 import NotFound from './NotFound';
 
 import { getList } from '../api/ListAPI';
-import { WEB_CONTEXT, FILE_URL_PREFIX, setTitle } from '../common/Utils';
+import { WEB_CONTEXT, FILE_URL_PREFIX, _setTitle } from '../common/Utils';
 
 import addImg from '../assets/images/add.png';
 
@@ -89,7 +89,7 @@ class List1 extends React.Component {
 
   componentDidMount() {
     this._isMounted = true;
-    setTitle(this.state.navTitle);
+    _setTitle(this.state.navTitle);
     // you can scroll to the specified position
     // setTimeout(() => this.lv.scrollTo(0, 120), 800);
 
@@ -106,7 +106,7 @@ class List1 extends React.Component {
       }
     });
 
-    setTitle(this.state.navTitle);
+    _setTitle(this.state.navTitle);
   }
 
   componentDidUpdate() {}
@@ -146,7 +146,7 @@ class List1 extends React.Component {
           navTitle: title || root.tabLabel || root.layoutName
         });
 
-        setTitle(this.state.navTitle);
+        _setTitle(this.state.navTitle);
       }
     });
   }

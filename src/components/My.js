@@ -8,7 +8,7 @@ import UserInfo from './UserInfo';
 
 import { logout } from '../api/LoginAPI';
 import { getMy } from '../api/MyAPI';
-import { WEB_CONTEXT, FILE_URL_PREFIX, isWeiXinEnv } from '../common/Utils';
+import { WEB_CONTEXT, FILE_URL_PREFIX, _isWeiXinEnv } from '../common/Utils';
 
 const Item = List.Item;
 

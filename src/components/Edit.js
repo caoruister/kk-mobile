@@ -30,9 +30,9 @@ import { _callInterface } from '../api/CommonAPI';
 import {
   WEB_CONTEXT,
   FILE_URL_PREFIX,
-  formatDate,
-  formatTime,
-  setTitle,
+  _formatDate,
+  _formatTime,
+  _setTitle,
   _success,
   _fail,
   _info,
@@ -62,7 +62,7 @@ class Edit extends React.Component {
     this._isMounted = true;
     //debugger
     this.getData();
-    setTitle(this.state.navTitle);
+    _setTitle(this.state.navTitle);
 
     this.success = _success;
     this.fail = _fail;
@@ -165,7 +165,7 @@ class Edit extends React.Component {
           navTitle: title || res.layoutName
         });
 
-        setTitle(this.state.navTitle);
+        _setTitle(this.state.navTitle);
 
         //used in onload method
         let page = this;
@@ -208,9 +208,9 @@ class Edit extends React.Component {
               });
               fieldValue[key] = JSON.stringify(tempValue);
             } else if (field.type === 'D') {
-              fieldValue[key] = formatDate(tempValue);
+              fieldValue[key] = _formatDate(tempValue);
             } else if (field.type === 'F') {
-              fieldValue[key] = formatTime(tempValue);
+              fieldValue[key] = _formatTime(tempValue);
             } else if (field.type === 'L' && field.edittype === '1') {
               fieldValue[key] = tempValue.length > 0 ? tempValue[0] : null;
             } else {

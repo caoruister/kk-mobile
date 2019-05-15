@@ -3,11 +3,11 @@ import { withRouter } from 'react-router-dom';
 
 import { NavBar, Icon } from 'antd-mobile';
 
-import { isWeiXinEnv } from '../common/Utils';
+import { _isWeiXinEnv } from '../common/Utils';
 
 class CustomNavBar extends React.Component {
   render() {
-    return isWeiXinEnv() ? null : (
+    return _isWeiXinEnv() ? null : (
       <NavBar
         mode="dark"
         style={{ background: '#4182e6' }}

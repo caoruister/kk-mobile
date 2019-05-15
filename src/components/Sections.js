@@ -16,7 +16,7 @@ import {
 } from 'antd-mobile';
 
 import { uploadFile } from '../api/EditAPI';
-import { WEB_CONTEXT, FILE_URL_PREFIX, formatDate } from '../common/Utils';
+import { WEB_CONTEXT, FILE_URL_PREFIX, _formatDate } from '../common/Utils';
 
 class Sections extends React.Component {
   static propTypes = {

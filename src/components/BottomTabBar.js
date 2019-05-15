@@ -8,7 +8,7 @@ import iconfontUserActive from '../assets/images/iconfont-user-active.png';
 import iconfontHome from '../assets/images/iconfont-home.png';
 import iconfontHomeActive from '../assets/images/iconfont-home-active.png';
 
-import { WEB_CONTEXT, setTitle } from '../common/Utils';
+import { WEB_CONTEXT, _setTitle } from '../common/Utils';
 
 import { getTabBar } from '../api/BottomTabBarAPI';
 
@@ -54,7 +54,7 @@ class BottomTabBar extends React.Component {
             this.props.page.setState({
               navTitle: tab.title
             });
-            setTitle(tab.title, true);
+            _setTitle(tab.title, true);
           }
         });
       }
@@ -86,7 +86,7 @@ class BottomTabBar extends React.Component {
             _this.setState({
               selectedTab: tab.key
             });
-            setTitle(tab.title, true);
+            _setTitle(tab.title, true);
             _this.props.history.push(tab.path);
           }}
         />

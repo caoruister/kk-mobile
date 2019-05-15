@@ -26,7 +26,7 @@ import { _callInterface } from '../api/CommonAPI';
 import {
   WEB_CONTEXT,
   FILE_URL_PREFIX,
-  setTitle,
+  _setTitle,
   _success,
   _fail,
   _info,
@@ -131,7 +131,7 @@ class View extends React.Component {
   componentDidMount() {
     this._isMounted = true;
     this.getData();
-    setTitle(this.state.navTitle);
+    _setTitle(this.state.navTitle);
 
     this.success = _success;
     this.fail = _fail;
@@ -230,7 +230,7 @@ class View extends React.Component {
           navTitle: title || res.layoutName
         });
 
-        setTitle(this.state.navTitle);
+        _setTitle(this.state.navTitle);
 
         //used in onLoad method
         let page = this;

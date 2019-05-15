@@ -18,7 +18,7 @@ export const _setButtonVisible = function(buttonName, isVisible, pageInstance) {
     });
 };
 
-export const formatDate = date => {
+export const _formatDate = date => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
@@ -26,7 +26,7 @@ export const formatDate = date => {
   return [year, month, day].map(formatNumber).join('-');
 };
 
-export const formatTime = date => {
+export const _formatTime = date => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
@@ -46,11 +46,11 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n;
 };
 
-export const isWeiXinEnv = () => {
+export const _isWeiXinEnv = () => {
   return window.__wxjs_environment === 'miniprogram';
 };
 
-export const setTitle = (title, isTabBar) => {
+export const _setTitle = (title, isTabBar) => {
   if (!isTabBar && isWeiXinEnv()) {
     document.title = '';
   } else {
