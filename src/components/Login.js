@@ -17,7 +17,7 @@ import {
   WhiteSpace
 } from 'antd-mobile';
 import { createForm } from 'rc-form';
-import { login } from '../api/LoginAPI';
+import { login, logout } from '../api/LoginAPI';
 import { WEB_CONTEXT } from '../common/Utils';
 
 import loginImg from '../assets/images/login.png';
@@ -215,7 +215,15 @@ const BasicInputWrapper = createForm()(withRouter(BasicInput));
 class Login extends React.Component {
   componentDidMount() {
     document.title = '登录';
+    this.clearItems();
   }
+  clearItems = () => {
+    logout();
+    //
+    localStorage.removeItem('__token__');
+    localStorage.removeItem('__token__userName');
+    localStorage.removeItem('__orgid__');
+  };
   render() {
     return (
       <div>

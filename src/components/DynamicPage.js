@@ -78,15 +78,17 @@ class DynamicPage extends React.Component {
   }
 
   getData = () => {
+    let params = qs.parse(this.props.location.search, {
+      ignoreQueryPrefix: true
+    });
     let title = qs.parse(this.props.location.search, {
       ignoreQueryPrefix: true
     }).title;
 
-    let params = {
+    getHome({
+      ...params,
       pageName: this.props.match.params.pageName || 'HOME'
-    };
-
-    getHome(params).then(res => {
+    }).then(res => {
       if (res == null || !res) {
         window.location.href = WEB_CONTEXT + '/#/Login';
         return;

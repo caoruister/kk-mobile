@@ -124,23 +124,26 @@ class Add extends React.Component {
   };
 
   getData = () => {
-    let layoutid = qs.parse(this.props.location.search, {
+    //let layoutid = qs.parse(this.props.location.search, {
+    //  ignoreQueryPrefix: true
+    //}).layoutid;
+    //let notNeedLogin = qs.parse(this.props.location.search, {
+    //  ignoreQueryPrefix: true
+    //}).notNeedLogin;
+
+    let params = qs.parse(this.props.location.search, {
       ignoreQueryPrefix: true
-    }).layoutid;
-    let notNeedLogin = qs.parse(this.props.location.search, {
-      ignoreQueryPrefix: true
-    }).notNeedLogin;
+    });
     let title = qs.parse(this.props.location.search, {
       ignoreQueryPrefix: true
     }).title;
 
-    let params = {
-      objid: this.props.match.params.objid,
-      notNeedLogin: notNeedLogin,
-      layoutid: layoutid
-    };
-
-    getAdd(params).then(res => {
+    getAdd({
+      ...params,
+      objid: this.props.match.params.objid
+      //notNeedLogin: notNeedLogin,
+      //layoutid: layoutid
+    }).then(res => {
       if (res == null || !res) {
         //window.location.href = WEB_CONTEXT + '/#/Login';
         this.props.history.push('/Login');

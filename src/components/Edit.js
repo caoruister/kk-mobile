@@ -115,17 +115,21 @@ class Edit extends React.Component {
   };
 
   getData = () => {
-    let layoutid = qs.parse(this.props.location.search, {
+    //let layoutid = qs.parse(this.props.location.search, {
+    //  ignoreQueryPrefix: true
+    //}).layoutid;
+    let params = qs.parse(this.props.location.search, {
       ignoreQueryPrefix: true
-    }).layoutid;
+    });
     let title = qs.parse(this.props.location.search, {
       ignoreQueryPrefix: true
     }).title;
 
     getEdit({
+      ...params,
       id: this.props.match.params.id,
-      objid: this.props.match.params.objid,
-      layoutid: layoutid
+      objid: this.props.match.params.objid
+      //layoutid: layoutid
     }).then(res => {
       if (res == null || !res) {
         window.location.href = WEB_CONTEXT + '/#/Login';
