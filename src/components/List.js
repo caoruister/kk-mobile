@@ -49,6 +49,8 @@ function View(props) {
       output = <span>{record[field.name].name || ''}&nbsp;</span>;
     } else if (field.type === 'A') {
       output = <div dangerouslySetInnerHTML={{ __html: record[field.name] }} />;
+    } else if (field.type === 'B') {
+      output = <Icon type={value == 1 ? 'check' : 'cross'} />;
     } else {
       output = <span>{value}&nbsp;</span>;
     }
@@ -126,7 +128,6 @@ class List1 extends React.Component {
     return getList({
       ...params,
       objid: this.props.match.params.objid,
-      notNeedLogin: false,
       current: pIndex + 1
     }).then(res => {
       if (res == null || !res) {

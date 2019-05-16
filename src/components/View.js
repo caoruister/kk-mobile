@@ -52,7 +52,10 @@ class SectionItems extends React.Component {
 
             if (field.type === 'B') {
               return (
-                <List.Item key={field.fieldid + idx2} extra={field.value}>
+                <List.Item
+                  key={field.fieldid + idx2}
+                  extra={<Icon type={field.value == 1 ? 'check' : 'cross'} />}
+                >
                   {labelJSX}
                 </List.Item>
               );

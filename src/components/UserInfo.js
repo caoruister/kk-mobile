@@ -30,10 +30,7 @@ class UserInfo extends React.Component {
         <div className={styles.userinfo}>
           <div className={styles.userinfoAvatar}>
             <img
-              src={
-                FILE_URL_PREFIX + userInfo.headIcon ||
-                userInfo.headIcon[0].thumbnail_url
-              }
+              src={FILE_URL_PREFIX + userInfo.headIcon[0].thumbnail_url}
               mode="scaleToFill"
             />
           </div>

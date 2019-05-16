@@ -101,7 +101,7 @@ class Sections extends React.Component {
             ? '请输入' +
               field.label +
               (field.hideLabel && field.required ? ' (必填)' : '')
-            : '';
+            : '    ';
           let requiredJSX = field.required ? (
             <span style={{ color: 'red' }}>*</span>
           ) : null;
@@ -224,6 +224,8 @@ class Sections extends React.Component {
                   extra={placeholderJSX}
                   data={data}
                   cols={1}
+                  okText="确定"
+                  dismissText="取消"
                 >
                   <List.Item
                     arrow="horizontal"
