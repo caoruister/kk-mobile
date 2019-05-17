@@ -216,6 +216,16 @@ class Sections extends React.Component {
                       {
                         required: field.required,
                         message: '请输入' + field.label
+                      },
+                      {
+                        validator(rule, value, callback, source, options) {
+                          var errors = [];
+                          if (!value[0]) {
+                            callback(field.label + '不能为空');
+                          } else {
+                            callback(errors);
+                          }
+                        }
                       }
                     ]
                   })}
