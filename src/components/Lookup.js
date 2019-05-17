@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { ListView, WhiteSpace, List } from 'antd-mobile';
+import { ListView, WhiteSpace, List, Icon } from 'antd-mobile';
 
 import { getLookup, getSelectedFieldValue } from '../api/LookupAPI';
 import { WEB_CONTEXT, FILE_URL_PREFIX } from '../common/Utils';
@@ -37,6 +37,8 @@ function View(props) {
       output = <span>{record[field.name].name || ''}&nbsp;</span>;
     } else if (field.type === 'A') {
       output = <div dangerouslySetInnerHTML={{ __html: record[field.name] }} />;
+    } else if (field.type === 'B') {
+      output = <Icon type={value == 1 ? 'check' : 'cross'} />;
     } else {
       output = <span>{value}&nbsp;</span>;
     }

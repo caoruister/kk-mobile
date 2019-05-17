@@ -210,6 +210,10 @@ class List1 extends React.Component {
         ignoreQueryPrefix: true
       }).layoutidOfViewPage;
 
+      let notNeedLogin = qs.parse(this.props.location.search, {
+        ignoreQueryPrefix: true
+      }).notNeedLogin;
+
       let url = record.canEdit
         ? '/#/edit/' + this.state.objid + '/' + record.id
         : record.canView
@@ -218,7 +222,9 @@ class List1 extends React.Component {
           '/' +
           record.id +
           '?layoutid=' +
-          (layoutidOfViewPage || '')
+          (layoutidOfViewPage || '') +
+          '&notNeedLogin=' +
+          (notNeedLogin || '')
         : '/#';
       return (
         <a href={url}>
