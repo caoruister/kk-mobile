@@ -102,9 +102,10 @@ class Sections extends React.Component {
               field.label +
               (field.hideLabel && field.required ? ' (必填)' : '')
             : '    ';
-          let requiredJSX = field.required ? (
-            <span style={{ color: 'red' }}>*</span>
-          ) : null;
+          let requiredJSX =
+            field.required && !field.readOnly ? (
+              <span style={{ color: 'red' }}>*</span>
+            ) : null;
           let labelJSX = !field.hideLabel ? (
             <div>
               {requiredJSX}
@@ -220,7 +221,7 @@ class Sections extends React.Component {
                       {
                         validator(rule, value, callback, source, options) {
                           var errors = [];
-                          if (!value[0]) {
+                          if (field.required && !value[0]) {
                             callback(field.label + '不能为空');
                           } else {
                             callback(errors);

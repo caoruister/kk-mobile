@@ -113,6 +113,12 @@ class Add extends React.Component {
       this.setState({});
   };
 
+  setFieldReadOnly = (fieldName, isReadOnly) => {
+    this.state.fieldNameMap[fieldName] &&
+      (this.state.fieldNameMap[fieldName].readOnly = isReadOnly) &&
+      this.setState({});
+  };
+
   callInterface = (apiName, data, callback) => {
     _callInterface(apiName, data).then(res => {
       !!callback && callback(res);
