@@ -305,7 +305,13 @@ class Edit extends React.Component {
                 page={this}
               />
               <WhiteSpace size="lg" />
-              <ButtonSection buttons={buttons} page={this} useDefault={true} />
+              {sections.length != 0 && (
+                <ButtonSection
+                  buttons={buttons}
+                  page={this}
+                  useDefault={true}
+                />
+              )}
             </form>
           </div>
         </div>

@@ -255,7 +255,9 @@ class View extends React.Component {
         <CustomNavBar navTitle={navTitle} />
         <SectionItems sections={sections} />
         <WhiteSpace size="lg" />
-        <ButtonSection buttons={buttons} page={this} useDefault={false} />
+        {sections.length != 0 && (
+          <ButtonSection buttons={buttons} page={this} useDefault={false} />
+        )}
       </div>
     );
   }
