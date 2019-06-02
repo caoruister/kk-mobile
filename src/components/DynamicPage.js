@@ -9,6 +9,7 @@ import Swiper from './Swiper';
 import GridSection from './GridSection';
 import ImagesSection from './ImagesSection';
 import MessagesSection from './MessagesSection';
+import DetailSection from './DetailSection';
 import DynamicSection from '../custom/DynamicSection';
 import CustomNavBar from './CustomNavBar';
 
@@ -39,6 +40,8 @@ class Section extends React.Component {
       template = (
         <GridSection data={this.props.data} columnNum={this.props.columnNum} />
       );
+    } else if (this.props.type === 'detail') {
+      template = <DetailSection data={this.props.data} />;
     }
 
     return (
