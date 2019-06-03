@@ -14,7 +14,7 @@ class GridSection extends React.Component {
             src={dataItem.icon}
             alt=""
             className="am-grid-icon"
-            style={{ width: '60px', height: '60px' }}
+            style={{ width: '40px', height: '40px', padding: '10px 10px' }}
           />
           <div className="am-grid-text">
             <span>{dataItem.label}</span>
