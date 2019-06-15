@@ -6,10 +6,25 @@
 
 .left {
   display: flex;
+  flex-direction: column;
 }
 
 .leftImg {
   height: 64px;
+  margin-right: 15px;
+}
+
+.leftCenter {
+  display: flex;
+}
+
+.leftBottom {
+  display: flex;
+}
+
+.bottomImg {
+  width: 20px;
+  height: 20px;
   margin-right: 15px;
 }
 
@@ -28,8 +43,10 @@
 .right {
   display: flex;
   flex-direction: column;
+  text-align: right;
 }
 
 .rightImg {
-  height: 17px;
+  width: 20px;
+  height: 20px;
 }

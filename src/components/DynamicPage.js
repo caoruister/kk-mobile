@@ -10,6 +10,7 @@ import GridSection from './GridSection';
 import ImagesSection from './ImagesSection';
 import MessagesSection from './MessagesSection';
 import DetailSection from './DetailSection';
+import ListSection from './ListSection';
 import DynamicSection from '../custom/DynamicSection';
 import CustomNavBar from './CustomNavBar';
 
@@ -42,6 +43,10 @@ class Section extends React.Component {
       );
     } else if (this.props.type === 'detail') {
       template = <DetailSection data={this.props.data} />;
+    } else if (this.props.type === 'list') {
+      template = (
+        <ListSection data={this.props.data} columnNum={this.props.columnNum} />
+      );
     }
 
     return (

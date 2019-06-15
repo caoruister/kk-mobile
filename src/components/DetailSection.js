@@ -23,7 +23,7 @@ class DetailSection extends React.Component {
   render() {
     const { data } = this.props;
 
-    let leftJSX = !data.left.hide ? (
+    let leftJSX = (
       <a href={data.left.path}>
         <img
           className={styles.leftImg}
@@ -31,7 +31,7 @@ class DetailSection extends React.Component {
           alt=""
         />
       </a>
-    ) : null;
+    );
 
     let centerJSX = this.props.data.center.rows.map((row, idx1) => {
       let columnsJSX = row.columns.map((column, idx2) => {
@@ -53,13 +53,22 @@ class DetailSection extends React.Component {
       );
     });
 
+    let bottomJSX = this.props.data.bottom.items.map((item, idx) => (
+      <a key={idx} href={item.path}>
+        <img
+          className={styles.bottomImg}
+          src="https://zos.alipayobjects.com/rmsportal/hfVtzEhPzTUewPm.png"
+          alt={item.desc}
+        />
+      </a>
+    ));
+
     let rightJSX = this.props.data.right.items.map((item, idx) => (
       <a key={idx} href={item.path}>
         <img
-          style={item.style}
           className={styles.rightImg}
           src="https://zos.alipayobjects.com/rmsportal/hfVtzEhPzTUewPm.png"
-          alt=""
+          alt={item.desc}
         />
       </a>
     ));
@@ -67,9 +76,14 @@ class DetailSection extends React.Component {
     return (
       <div className={styles.detail}>
         <div className={styles.left}>
-          {leftJSX}
-          {!data.center.hide && (
-            <div className={styles.center}>{centerJSX}</div>
+          <div className={styles.leftCenter}>
+            {!data.left.hide && leftJSX}
+            {!data.center.hide && (
+              <div className={styles.center}>{centerJSX}</div>
+            )}
+          </div>
+          {!data.bottom.hide && (
+            <div className={styles.leftBottom}>{bottomJSX}</div>
           )}
         </div>
         {!data.right.hide && (
