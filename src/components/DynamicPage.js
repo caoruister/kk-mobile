@@ -11,6 +11,7 @@ import ImagesSection from './ImagesSection';
 import MessagesSection from './MessagesSection';
 import DetailSection from './DetailSection';
 import ListSection from './ListSection';
+import RichText from './RichText';
 import DynamicSection from '../custom/DynamicSection';
 import CustomNavBar from './CustomNavBar';
 
@@ -47,6 +48,8 @@ class Section extends React.Component {
       template = (
         <ListSection data={this.props.data} columnNum={this.props.columnNum} />
       );
+    } else if (this.props.type === 'richText') {
+      template = <RichText data={this.props.data} />;
     }
 
     return (
