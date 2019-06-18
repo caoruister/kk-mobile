@@ -25,11 +25,7 @@ class DetailSection extends React.Component {
 
     let leftJSX = (
       <a href={data.left.path} style={data.left.style}>
-        <img
-          className={styles.leftImg}
-          src="https://zos.alipayobjects.com/rmsportal/hfVtzEhPzTUewPm.png"
-          alt=""
-        />
+        <img className={styles.leftImg} src={data.left.icon} alt="" />
       </a>
     );
 
@@ -57,7 +53,7 @@ class DetailSection extends React.Component {
       <a key={idx} href={item.path}>
         <img
           className={styles.bottomImg}
-          src="https://zos.alipayobjects.com/rmsportal/hfVtzEhPzTUewPm.png"
+          src={data.bottom.icon}
           alt={item.desc}
         />
       </a>
@@ -67,7 +63,7 @@ class DetailSection extends React.Component {
       <a key={idx} href={item.path}>
         <img
           className={styles.rightImg}
-          src="https://zos.alipayobjects.com/rmsportal/hfVtzEhPzTUewPm.png"
+          src={data.right.icon}
           alt={item.desc}
         />
       </a>
