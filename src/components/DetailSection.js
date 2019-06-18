@@ -24,7 +24,7 @@ class DetailSection extends React.Component {
     const { data } = this.props;
 
     let leftJSX = (
-      <a href={data.left.path}>
+      <a href={data.left.path} style={data.left.style}>
         <img
           className={styles.leftImg}
           src="https://zos.alipayobjects.com/rmsportal/hfVtzEhPzTUewPm.png"
@@ -79,11 +79,15 @@ class DetailSection extends React.Component {
           <div className={styles.leftCenter}>
             {!data.left.hide && leftJSX}
             {!data.center.hide && (
-              <div className={styles.center}>{centerJSX}</div>
+              <div className={styles.center} style={data.center.style}>
+                {centerJSX}
+              </div>
             )}
           </div>
           {!data.bottom.hide && (
-            <div className={styles.leftBottom}>{bottomJSX}</div>
+            <div className={styles.leftBottom} style={data.bottom.style}>
+              {bottomJSX}
+            </div>
           )}
         </div>
         {!data.right.hide && (
