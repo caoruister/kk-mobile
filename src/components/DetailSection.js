@@ -31,7 +31,7 @@ class DetailSection extends React.Component {
 
     let centerJSX = this.props.data.center.rows.map((row, idx1) => {
       let columnsJSX = row.columns.map((column, idx2) => {
-        let labelJSX = column.hideLabel ? (
+        let labelJSX = !column.hideLabel ? (
           <span style={column.labelStyle}>{column.label}：</span>
         ) : null;
 
