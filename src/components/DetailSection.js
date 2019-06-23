@@ -31,31 +31,56 @@ class DetailSection extends React.Component {
 
     let centerJSX = this.props.data.center.rows.map((row, idx1) => {
       let columnsJSX = row.columns.map((column, idx2) => {
-        let labelJSX = !column.hideLabel ? (
-          <span style={column.labelStyle}>{column.label}：</span>
-        ) : null;
+        if (column.columnType == 'text') {
+          return (
+            <a
+              key={idx2}
+              href={column.path}
+              style={column.style}
+              className={styles.rowColumn}
+            >
+              <span>{column.value}</span>
+            </a>
+          );
+        } else if (column.columnType == 'field') {
+          let labelJSX = !column.hideLabel ? (
+            <span style={column.labelStyle}>{column.label}：</span>
+          ) : null;
 
-        return (
-          <div key={idx2} style={column.style} className={styles.rowColumn}>
-            {labelJSX} <span style={column.inputStyle}>{column.value}</span>
-          </div>
-        );
+          return (
+            <a
+              key={idx2}
+              href={column.path}
+              style={column.style}
+              className={styles.rowColumn}
+            >
+              {labelJSX} <span style={column.inputStyle}>{column.value}</span>
+            </a>
+          );
+        } else if (column.columnType == 'field') {
+          return (
+            <a
+              key={idx2}
+              href={column.path}
+              style={column.style}
+              className={styles.rowColumn}
+            >
+              <img src={column.url} alt="" />
+            </a>
+          );
+        }
       });
 
       return (
-        <div key={idx1} style={{ display: 'flex' }} className={styles.row}>
+        <div key={idx1} style={row.style} className={styles.row}>
           {columnsJSX}
         </div>
       );
     });
 
     let bottomJSX = this.props.data.bottom.items.map((item, idx) => (
-      <a key={idx} href={item.path}>
-        <img
-          className={styles.bottomImg}
-          src={data.bottom.icon}
-          alt={item.desc}
-        />
+      <a key={idx} href={item.path} style={item.style}>
+        <img className={styles.bottomImg} src={item.icon} alt={item.desc} />
       </a>
     ));
 
