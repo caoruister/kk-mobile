@@ -37,7 +37,12 @@ class Section extends React.Component {
     } else if (this.props.type === 'messages') {
       template = <MessagesSection data={this.props.data} />;
     } else if (this.props.type === 'dynamic') {
-      template = <DynamicSection sectionName={this.props.data.sectionName} />;
+      template = (
+        <DynamicSection
+          sectionName={this.props.data.sectionName}
+          page={this.props.page}
+        />
+      );
     } else if (this.props.type === 'customItems') {
       template = (
         <GridSection data={this.props.data} columnNum={this.props.columnNum} />
@@ -132,6 +137,7 @@ class DynamicPage extends React.Component {
         showTitle={!section.hideSectionTitle}
         columnNum={section.columnCount}
         data={section.data}
+        page={this}
       />
     ));
 
