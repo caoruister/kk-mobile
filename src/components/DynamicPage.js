@@ -148,7 +148,7 @@ class DynamicPage extends React.Component {
     return (
       <div>
         {!selectedTab && <CustomNavBar navTitle={navTitle} />}
-        {false && <img src={background} className={styles.backgroundImg} />}
+        {true && <img src={background} className={styles.backgroundImg} />}
         <div className={styles.pageBody}>{sectionsJSX}</div>
         {selectedTab && <BottomTabBar selectedTab={selectedTab} page={this} />}
       </div>
