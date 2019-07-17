@@ -15,6 +15,10 @@ import RichText from './RichText';
 import DynamicSection from '../custom/DynamicSection';
 import CustomNavBar from './CustomNavBar';
 
+import styles from './DynamicPage.module.css';
+
+import background from '../assets/images/home_bg.jpg';
+
 import {
   WEB_CONTEXT,
   FILE_URL_PREFIX,
@@ -144,7 +148,8 @@ class DynamicPage extends React.Component {
     return (
       <div>
         {!selectedTab && <CustomNavBar navTitle={navTitle} />}
-        <div style={{ paddingBottom: '80px' }}>{sectionsJSX}</div>
+        {false && <img src={background} className={styles.backgroundImg} />}
+        <div className={styles.pageBody}>{sectionsJSX}</div>
         {selectedTab && <BottomTabBar selectedTab={selectedTab} page={this} />}
       </div>
     );

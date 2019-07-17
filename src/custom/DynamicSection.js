@@ -1,8 +1,12 @@
 import React from 'react';
+
+import MyComponent from './MyComponent';
+import ReserveRoom from './ReserveRoom';
+
 class DynamicSection extends React.Component {
   render() {
     let sectionName = this.props.sectionName;
-    let section = null;
+    let section = <ReserveRoom />;
     return <div>{section}</div>;
   }
 }

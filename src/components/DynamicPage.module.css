@@ -1,0 +1,12 @@
+.pageBody {
+  padding-bottom: 80px;
+}
+
+.backgroundImg {
+  position: absolute;
+  z-index: -1;
+  margin: auto;
+  cursor: zoom-in;
+  width: 100%;
+  height: 736px;
+}
