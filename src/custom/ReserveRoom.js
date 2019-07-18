@@ -38,8 +38,6 @@ Object.keys(extra).forEach(key => {
 
 var styles = {
   body: {
-    fontSize: '18px',
-    color: '#fff',
     roomImg: {
       width: '100%',
       height: '215px'
