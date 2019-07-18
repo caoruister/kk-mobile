@@ -130,7 +130,7 @@ var styles = {
   }
 };
 
-class MyComponent extends React.Component {
+class HomeSection extends React.Component {
   render() {
     const log = name => {
       return value => {
@@ -195,4 +195,4 @@ class MyComponent extends React.Component {
   }
 }
 
-export default MyComponent;
+export default HomeSection;

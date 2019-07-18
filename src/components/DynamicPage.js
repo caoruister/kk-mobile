@@ -17,8 +17,6 @@ import CustomNavBar from './CustomNavBar';
 
 import styles from './DynamicPage.module.css';
 
-import background from '../assets/images/home_bg.jpg';
-
 import {
   WEB_CONTEXT,
   FILE_URL_PREFIX,
@@ -78,7 +76,8 @@ class DynamicPage extends React.Component {
   state = {
     items: [],
     selectedTab: '',
-    navTitle: ''
+    navTitle: '',
+    backgroundImage: ''
   };
 
   componentDidMount() {
@@ -120,7 +119,8 @@ class DynamicPage extends React.Component {
         this.setState({
           items: res.items || [],
           selectedTab: res.selectedTabKey,
-          navTitle: title || res.tabLabel || res.layoutName || ''
+          navTitle: title || res.tabLabel || res.layoutName || '',
+          backgroundImage: res.backgroundImage
         });
 
         //debugger;
@@ -130,7 +130,7 @@ class DynamicPage extends React.Component {
   };
 
   render() {
-    const { items, selectedTab, navTitle } = this.state;
+    const { items, selectedTab, navTitle, backgroundImage } = this.state;
 
     let sectionsJSX = items.map((section, idx) => (
       <Section
@@ -148,7 +148,9 @@ class DynamicPage extends React.Component {
     return (
       <div>
         {!selectedTab && <CustomNavBar navTitle={navTitle} />}
-        {true && <img src={background} className={styles.backgroundImg} />}
+        {!!backgroundImage && (
+          <img src={backgroundImage} className={styles.backgroundImg} />
+        )}
         <div className={styles.pageBody}>{sectionsJSX}</div>
         {selectedTab && <BottomTabBar selectedTab={selectedTab} page={this} />}
       </div>
