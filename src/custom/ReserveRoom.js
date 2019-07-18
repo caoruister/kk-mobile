@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextareaItem, Calendar, List } from 'antd-mobile';
+import { TextareaItem, Calendar, List, Button } from 'antd-mobile';
 import { createForm } from 'rc-form';
 import enUS from 'antd-mobile/lib/calendar/locale/en_US';
 import zhCN from 'antd-mobile/lib/calendar/locale/zh_CN';
@@ -217,8 +217,37 @@ var styles = {
         }
       }
     },
-    introduce: {},
-    actions: {}
+    introduce: {
+      backgroundColor: '#fff',
+      marginTop: '5px'
+    },
+    actions: {
+      display: 'flex',
+      backgroundColor: '#fff',
+      padding: '20px 15px',
+      justifyContent: 'space-around',
+      fontSize: '18px',
+      contact: {
+        backgroundColor: '#fff',
+        border: 'solid 1px #cc9e48',
+        borderRadius: '5px',
+        padding: '0 48px',
+        fontSize: '19px',
+        color: '#cc9e48',
+        height: '60px',
+        lineHeight: '60px'
+      },
+      reserve: {
+        backgroundColor: '#cc9e48',
+        border: 'solid 1px #cc9e48',
+        borderRadius: '5px',
+        padding: '0 48px',
+        fontSize: '19px',
+        color: '#fff',
+        height: '60px',
+        lineHeight: '60px'
+      }
+    }
   }
 };
 
@@ -417,8 +446,28 @@ class ReserveRoom extends React.Component {
             </div>
           </div>
         </div>
-        <div style={styles.body.introduce} />
-        <div style={styles.body.actions} />
+        <div style={styles.body.introduce}>
+          <img src={cat} style={styles.body.roomImg} />
+        </div>
+        <div style={styles.body.actions}>
+          <Button
+            inline
+            style={styles.body.actions.contact}
+            block="true"
+            onClick={this.onZsyd}
+          >
+            联系客服
+          </Button>
+          <Button
+            inline
+            style={styles.body.actions.reserve}
+            block="true"
+            onClick={this.onZsyd}
+          >
+            立即预定
+          </Button>
+        </div>
+
         <Calendar
           {...this.state.config}
           visible={this.state.show}
