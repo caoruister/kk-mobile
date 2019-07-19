@@ -4,40 +4,7 @@ import { createForm } from 'rc-form';
 
 import CustomNavBar from 'components/CustomNavBar';
 
-import enUS from 'antd-mobile/lib/calendar/locale/en_US';
-import zhCN from 'antd-mobile/lib/calendar/locale/zh_CN';
-
 import cat from 'assets/images/cat.jpg';
-
-const extra = {
-  '2017/07/15': { info: 'Disable', disable: true }
-};
-
-const now = new Date();
-extra[+new Date(now.getFullYear(), now.getMonth(), now.getDate() + 5)] = {
-  info: 'Disable',
-  disable: true
-};
-extra[+new Date(now.getFullYear(), now.getMonth(), now.getDate() + 6)] = {
-  info: 'Disable',
-  disable: true
-};
-extra[+new Date(now.getFullYear(), now.getMonth(), now.getDate() + 7)] = {
-  info: 'Disable',
-  disable: true
-};
-extra[+new Date(now.getFullYear(), now.getMonth(), now.getDate() + 8)] = {
-  info: 'Disable',
-  disable: true
-};
-
-Object.keys(extra).forEach(key => {
-  const info = extra[key];
-  const date = new Date(key);
-  if (!Number.isNaN(+date) && !extra[+date]) {
-    extra[+date] = info;
-  }
-});
 
 var styles = {
   body: {
@@ -254,112 +221,26 @@ var styles = {
   }
 };
 
-class ReserveRoom extends React.Component {
-  originbodyScrollY = document.getElementsByTagName('body')[0].style.overflowY;
-
+class ReserveDetail extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      en: false,
-      show: false,
-      config: {
-        locale: zhCN,
-        enterDirection: 'horizontal',
-        onSelect: (date, state) => {
-          console.log('onSelect', date, state);
-          return [date, new Date(+now - 604800000)];
-        }
-      }
-    };
+    this.state = {};
   }
 
-  renderBtn(zh, en, config = {}) {
-    config.locale = this.state.en ? enUS : zhCN;
-
-    return (
-      <List.Item
-        arrow="horizontal"
-        onClick={() => {
-          document.getElementsByTagName('body')[0].style.overflowY = 'hidden';
-          this.setState({
-            show: true,
-            config
-          });
-        }}
-      >
-        {this.state.en ? en : zh}
-      </List.Item>
-    );
-  }
-
-  changeLanguage = () => {
-    this.setState({
-      en: !this.state.en
-    });
-  };
-
-  onSelectHasDisableDate = dates => {
-    console.warn('onSelectHasDisableDate', dates);
-  };
-
-  onConfirm = (startTime, endTime) => {
-    document.getElementsByTagName(
-      'body'
-    )[0].style.overflowY = this.originbodyScrollY;
-    this.setState({
-      show: false,
-      startTime,
-      endTime
-    });
-  };
-
-  onCancel = () => {
-    document.getElementsByTagName(
-      'body'
-    )[0].style.overflowY = this.originbodyScrollY;
-    this.setState({
-      show: false,
-      startTime: undefined,
-      endTime: undefined
-    });
-  };
-
-  getDateExtra = date => extra[+date];
-
-  cancel = () => {};
-
-  reserve = () => {
-    this.props.history.push('/ReserveDetail');
+  confirm = () => {
+    this.props.history.push('/ReserveSuccess');
   };
 
   render() {
-    const { getFieldProps } = this.props.form;
-
     return (
       <div>
-        <CustomNavBar navTitle="住房预定" />
+        <CustomNavBar navTitle="预定详情" />
         <div style={styles.body}>
-          <img src={cat} style={styles.body.roomImg} />
           <div style={styles.body.detail}>
             <div style={styles.body.detail.style}>
               <div>海南 白金湾养生谷公寓 一房一厅</div>
             </div>
-            <div style={styles.body.detail.address}>
-              <div>海南省琼海市博鳌镇滨海大道东侧 鹏欣 白金湾</div>
-            </div>
-            <div style={styles.body.detail.tags}>
-              <div style={styles.body.detail.tags.tag}>会员尊享</div>
-              <div style={styles.body.detail.tags.tag}>约52~66m²</div>
-            </div>
-          </div>
-          <div style={styles.body.checkin}>
-            <div style={styles.body.checkin.person}>
-              <div>持卡人</div>
-              <div style={styles.body.checkin.person.name}>周春来</div>
-            </div>
-            <div style={styles.body.checkin.line} />
             <div style={styles.body.checkin.reserve}>
-              <div style={styles.body.checkin.reserve.title}>预定日期</div>
               <div style={styles.body.checkin.reserve.date}>
                 <div style={styles.body.checkin.reserve.date.in}>
                   <div>入住日期</div>
@@ -405,65 +286,49 @@ class ReserveRoom extends React.Component {
               </div>
             </div>
           </div>
-          <div style={styles.body.numbers}>
-            <div style={styles.body.numbers.header}>
+          <div style={styles.body.checkin}>
+            <div style={styles.body.checkin.person}>
+              <div>持卡人</div>
+              <div style={styles.body.checkin.person.name}>周春来</div>
+            </div>
+            <div style={styles.body.checkin.line} />
+            <div style={styles.body.checkin.person}>
               <div>入住人数</div>
               <div style={styles.body.numbers.header.text}>
                 <div style={styles.body.numbers.header.text.adult}>成人</div>
                 <div style={styles.body.numbers.header.text.children}>儿童</div>
               </div>
             </div>
-            <div style={styles.body.numbers.adult}>
-              <div>
-                成人
-                <span style={styles.body.numbers.adult.tip}>
-                  最多入住2名成人
-                </span>
-              </div>
+            <div style={styles.body.checkin.line} />
+            <div style={styles.body.checkin.person}>
+              <div>联系手机</div>
               <div />
             </div>
-            <div style={styles.body.numbers.line} />
-            <div style={styles.body.numbers.children}>
-              <div>
-                儿童
-                <span style={styles.body.numbers.children.tip}>
-                  最多入住一名儿童（16周岁以下）
-                </span>
-              </div>
+            <div style={styles.body.checkin.line} />
+            <div style={styles.body.checkin.person}>
+              <div>接车服务</div>
               <div />
+            </div>
+            <div style={styles.body.checkin.line} />
+            <div style={styles.body.checkin.person}>
+              <div>备注</div>
+              <div style={styles.body.append.remark.textarea}>
+                <TextareaItem rows={5} count={46} />
+              </div>
             </div>
           </div>
 
           <div style={styles.body.append}>
             <div style={styles.body.append.carservice}>
-              <div>接车服务</div>
-              <div style={styles.body.append.carservice.checkbox}>
-                <div style={styles.body.append.carservice.checkbox.yes}>
-                  需要
-                </div>
-                <div style={styles.body.append.carservice.checkbox.no}>
-                  不需要
-                </div>
-              </div>
+              <div>订单号</div>
+              <div style={styles.body.append.carservice.checkbox} />
             </div>
-            <div style={styles.body.append.line} />
-            <div style={styles.body.append.remark}>
-              <div>备注</div>
-              <div style={styles.body.append.remark.textarea}>
-                <TextareaItem
-                  {...getFieldProps('remark', {
-                    initialValue: '',
-                    onChange() {}
-                  })}
-                  rows={5}
-                  count={46}
-                />
-              </div>
+            <div style={styles.body.append.carservice}>
+              <div>下单时间</div>
+              <div style={styles.body.append.carservice.checkbox} />
             </div>
           </div>
-          <div style={styles.body.introduce}>
-            <img src={cat} style={styles.body.roomImg} />
-          </div>
+
           <div style={styles.body.actions}>
             <Button
               inline
@@ -477,27 +342,15 @@ class ReserveRoom extends React.Component {
               inline
               style={styles.body.actions.reserve}
               block="true"
-              onClick={this.reserve}
+              onClick={this.confirm}
             >
-              立即预定
+              确认下单
             </Button>
           </div>
-
-          <Calendar
-            {...this.state.config}
-            visible={this.state.show}
-            onCancel={this.onCancel}
-            onConfirm={this.onConfirm}
-            onSelectHasDisableDate={this.onSelectHasDisableDate}
-            getDateExtra={this.getDateExtra}
-            defaultDate={now}
-            minDate={new Date(+now - 5184000000)}
-            maxDate={new Date(+now + 31536000000)}
-          />
         </div>
       </div>
     );
   }
 }
 
-export default createForm()(ReserveRoom);
+export default ReserveDetail;

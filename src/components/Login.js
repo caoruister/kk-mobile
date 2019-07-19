@@ -20,9 +20,49 @@ import { createForm } from 'rc-form';
 import { login, logout } from '../api/LoginAPI';
 import { WEB_CONTEXT } from '../common/Utils';
 
-import loginImg from '../assets/images/login.png';
+import loginImg from '../assets/images/logo.png';
 import mobile from '../assets/images/mobile.png';
 import password from '../assets/images/password.png';
+import agreeIcon from '../assets/images/icon_choise.png';
+
+var styles = {
+  getCode: {
+    fontSize: '18px',
+    color: '#acacac'
+  },
+  loginButton: {
+    backgroundColor: '#cc9e48',
+    borderRadius: '5px',
+    marginTop: '44px',
+    fontSize: '19px',
+    color: '#fff',
+    height: '52px',
+    lineHeight: '52px'
+  },
+  agreement: {
+    position: 'fixed',
+    bottom: '6%',
+    left: '0',
+    right: '0',
+    padding: '0 15px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    icon: {
+      width: '18px',
+      height: '18px'
+    },
+    doc: {
+      fontSize: '14px',
+      color: '#838596',
+      marginLeft: '13px',
+      link: {
+        color: '#838596',
+        textDecoration: 'underline'
+      }
+    }
+  }
+};
 
 function Base64() {
   // private property
@@ -84,9 +124,51 @@ class BasicInput extends React.Component {
     //username: 'admin@kkdev.com',
     //password: '1',
     username: '',
-    password: ''
+    password: '',
+    time: '获取验证码', //倒计时
+    currentTime: 61,
+    reGetButtonDisable: false
   };
   componentDidMount() {}
+  /**
+   * 发送验证码
+   */
+  getCode = () => {
+    let phoneNum = this.state.phoneNum;
+
+    let params = {
+      type: '4',
+      mobilePhone: phoneNum
+    };
+    //login(params).then(res => {
+    //  console.log(res);
+    //  if (res.success === true) {
+    //    this.props.history.push('/My');
+    //  }
+    //});
+    this.setTime();
+  };
+  setTime = () => {
+    var that = this;
+    that.setState({
+      reGetButtonDisable: true
+    });
+    var currentTime = that.state.currentTime;
+    let interval = setInterval(function() {
+      currentTime--;
+      that.setState({
+        time: currentTime + '秒'
+      });
+      if (currentTime <= 0) {
+        clearInterval(interval);
+        that.setState({
+          time: '重新获取',
+          currentTime: 61,
+          reGetButtonDisable: false
+        });
+      }
+    }, 1000);
+  };
   onChangeOfUsername = value => {
     this.setState({
       username: value
@@ -163,7 +245,37 @@ class BasicInput extends React.Component {
   render() {
     const { getFieldProps } = this.props.form;
     return (
-      <WingBlank>
+      <div>
+        {false && (
+          <List>
+            <InputItem
+              {...getFieldProps('username')}
+              placeholder="请输入用户名"
+              onChange={this.onChangeOfUsername}
+              value={this.state.username}
+              id="idOfUsername"
+            >
+              <img
+                style={{ margin: '0 auto', display: 'block' }}
+                src={mobile}
+              />
+            </InputItem>
+            <InputItem
+              {...getFieldProps('password')}
+              type="password"
+              placeholder="请输入密码"
+              onChange={this.onChangeOfPassword}
+              value={this.state.password}
+              id="idOfPassword"
+            >
+              <img
+                style={{ margin: '0 auto', display: 'block' }}
+                src={password}
+              />
+            </InputItem>
+          </List>
+        )}
+
         <List>
           <InputItem
             {...getFieldProps('username')}
@@ -181,6 +293,15 @@ class BasicInput extends React.Component {
             onChange={this.onChangeOfPassword}
             value={this.state.password}
             id="idOfPassword"
+            extra={
+              <button
+                disabled={this.state.reGetButtonDisable}
+                onClick={this.getCode}
+                style={styles.getCode}
+              >
+                {this.state.time}
+              </button>
+            }
           >
             <img
               style={{ margin: '0 auto', display: 'block' }}
@@ -188,24 +309,36 @@ class BasicInput extends React.Component {
             />
           </InputItem>
         </List>
-        <Button
-          type="primary"
-          style={{ marginTop: '10px', background: '#4182e6' }}
-          onClick={this.handleOk}
-        >
-          登录
-        </Button>
 
-        <WhiteSpace size="md" />
-        <Flex justify="between">
-          <a href="/#/Add/register?notNeedLogin=true" className="inline">
-            注册
-          </a>
-          <a href="/#/Home?notNeedLogin=true" className="inline">
-            我是游客
-          </a>
-        </Flex>
-      </WingBlank>
+        <WingBlank>
+          <Button style={styles.loginButton} onClick={this.handleOk}>
+            登录
+          </Button>
+
+          <WhiteSpace size="md" />
+          <Flex justify="between">
+            <a href="/#/Add/register?notNeedLogin=true" className="inline">
+              注册
+            </a>
+            <a href="/#/Home?notNeedLogin=true" className="inline">
+              我是游客
+            </a>
+          </Flex>
+        </WingBlank>
+
+        <div style={styles.agreement}>
+          <img src={agreeIcon} style={styles.agreement.icon} />
+          <div style={styles.agreement.doc}>
+            我已阅读并同意
+            <a
+              href="/#/Home?notNeedLogin=true"
+              style={styles.agreement.doc.link}
+            >
+              《白金湾会员服务协议》
+            </a>
+          </div>
+        </div>
+      </div>
     );
   }
 }

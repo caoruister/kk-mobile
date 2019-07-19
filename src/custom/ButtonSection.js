@@ -8,11 +8,10 @@ var styles = {
     button: {
       backgroundColor: '#cc9e48',
       borderRadius: '5px',
-      padding: '20px 127px',
       fontSize: '19px',
       color: '#fff',
       height: '60px',
-      lineHeight: '1'
+      lineHeight: '60px'
     }
   }
 };

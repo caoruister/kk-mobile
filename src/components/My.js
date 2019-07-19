@@ -26,7 +26,7 @@ class My extends React.Component {
     },
 
     stats: Array.from(new Array(3)).map((_val, i) => ({
-      label: '统计' + i,
+      label: '',
       text: `32${i}`,
       style: { color: '#fea33a', fontSize: '36px' }
     }))
