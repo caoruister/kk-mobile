@@ -134,6 +134,8 @@ class BasicInput extends React.Component {
    * 发送验证码
    */
   getCode = () => {
+    if (this.state.reGetButtonDisable) return;
+
     let phoneNum = this.state.phoneNum;
 
     let params = {
@@ -294,13 +296,13 @@ class BasicInput extends React.Component {
             value={this.state.password}
             id="idOfPassword"
             extra={
-              <button
+              <a
                 disabled={this.state.reGetButtonDisable}
                 onClick={this.getCode}
                 style={styles.getCode}
               >
                 {this.state.time}
-              </button>
+              </a>
             }
           >
             <img
@@ -316,14 +318,16 @@ class BasicInput extends React.Component {
           </Button>
 
           <WhiteSpace size="md" />
-          <Flex justify="between">
-            <a href="/#/Add/register?notNeedLogin=true" className="inline">
-              注册
-            </a>
-            <a href="/#/Home?notNeedLogin=true" className="inline">
-              我是游客
-            </a>
-          </Flex>
+          {false && (
+            <Flex justify="between">
+              <a href="/#/Add/register?notNeedLogin=true" className="inline">
+                注册
+              </a>
+              <a href="/#/Home?notNeedLogin=true" className="inline">
+                我是游客
+              </a>
+            </Flex>
+          )}
         </WingBlank>
 
         <div style={styles.agreement}>

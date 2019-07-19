@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextareaItem, Calendar, List, Button } from 'antd-mobile';
+import { TextareaItem, Calendar, List, Button, Stepper } from 'antd-mobile';
 import { createForm } from 'rc-form';
 
 import CustomNavBar from 'components/CustomNavBar';
@@ -154,13 +154,17 @@ var styles = {
         }
       },
       adult: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         marginTop: '26px',
         paddingRight: '16px',
         tip: {
           marginLeft: '8px',
           fontSize: '16px',
           color: '#838596'
-        }
+        },
+        stepper: {}
       },
       line: {
         marginTop: '21px',
@@ -169,6 +173,9 @@ var styles = {
         backgroundColor: '#dfdfe1'
       },
       children: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         marginTop: '21px',
         paddingRight: '16px',
         tip: {
@@ -269,7 +276,9 @@ class ReserveRoom extends React.Component {
           console.log('onSelect', date, state);
           return [date, new Date(+now - 604800000)];
         }
-      }
+      },
+      adult: 1,
+      children: 1
     };
   }
 
@@ -420,7 +429,16 @@ class ReserveRoom extends React.Component {
                   最多入住2名成人
                 </span>
               </div>
-              <div />
+              <div style={styles.body.numbers.adult.stepper}>
+                <Stepper
+                  style={{ width: '100%', minWidth: '100px' }}
+                  showNumber
+                  max={10}
+                  min={1}
+                  value={this.state.adult}
+                  onChange={this.onChange}
+                />
+              </div>
             </div>
             <div style={styles.body.numbers.line} />
             <div style={styles.body.numbers.children}>
@@ -430,7 +448,16 @@ class ReserveRoom extends React.Component {
                   最多入住一名儿童（16周岁以下）
                 </span>
               </div>
-              <div />
+              <div style={styles.body.numbers.children.stepper}>
+                <Stepper
+                  style={{ width: '100%', minWidth: '100px' }}
+                  showNumber
+                  max={10}
+                  min={1}
+                  value={this.state.children}
+                  onChange={this.onChange}
+                />
+              </div>
             </div>
           </div>
 
