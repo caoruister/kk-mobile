@@ -4,32 +4,26 @@ import { createForm } from 'rc-form';
 
 import CustomNavBar from 'components/CustomNavBar';
 
+import {
+  _formatDate,
+  _getWeekDay,
+  _betweenDays,
+  _setTitle
+} from '../common/Utils';
+
 import enUS from 'antd-mobile/lib/calendar/locale/en_US';
 import zhCN from 'antd-mobile/lib/calendar/locale/zh_CN';
 
 import cat from 'assets/images/cat.jpg';
 
-const extra = {
-  '2017/07/15': { info: 'Disable', disable: true }
-};
+const extra = {};
 
 const now = new Date();
-extra[+new Date(now.getFullYear(), now.getMonth(), now.getDate() + 5)] = {
-  info: 'Disable',
-  disable: true
-};
-extra[+new Date(now.getFullYear(), now.getMonth(), now.getDate() + 6)] = {
-  info: 'Disable',
-  disable: true
-};
-extra[+new Date(now.getFullYear(), now.getMonth(), now.getDate() + 7)] = {
-  info: 'Disable',
-  disable: true
-};
-extra[+new Date(now.getFullYear(), now.getMonth(), now.getDate() + 8)] = {
-  info: 'Disable',
-  disable: true
-};
+const nextMonthToday = new Date(
+  now.getFullYear(),
+  now.getMonth(),
+  now.getDate()
+);
 
 Object.keys(extra).forEach(key => {
   const info = extra[key];
@@ -109,7 +103,8 @@ var styles = {
               fontSize: '18px',
               marginTop: '8px',
               weekday: {
-                fontSize: '12px'
+                fontSize: '12px',
+                marginLeft: '10px'
               }
             }
           },
@@ -126,7 +121,8 @@ var styles = {
               fontSize: '18px',
               marginTop: '8px',
               weekday: {
-                fontSize: '12px'
+                fontSize: '12px',
+                marginLeft: '10px'
               }
             }
           }
@@ -198,20 +194,23 @@ var styles = {
         checkbox: {
           color: '#cc9e48',
           display: 'flex',
-          yes: {
+          noSelected: {
             padding: '13px 17px',
             backgroundColor: '#fff',
             color: '#cc9e48',
             borderRadius: '5px',
-            border: 'solid 1px #cc9e48'
+            marginLeft: '20px',
+            border: 'solid 1px #cc9e48',
+            cursor: 'pointer'
           },
-          no: {
+          selected: {
             padding: '13px 17px',
             backgroundColor: '#cc9e48',
             color: '#fff',
             borderRadius: '5px',
             marginLeft: '20px',
-            border: 'solid 1px #cc9e48'
+            border: 'solid 1px #cc9e48',
+            cursor: 'pointer'
           }
         }
       },
@@ -267,45 +266,27 @@ class ReserveRoom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      en: false,
+      startTime: _formatDate(now),
+      startWeekDay: _getWeekDay(now),
+      endTime: null,
+      endWeekDay: '',
+      days: 0,
       show: false,
       config: {
         locale: zhCN,
         enterDirection: 'horizontal',
+        showShortcut: true,
         onSelect: (date, state) => {
           console.log('onSelect', date, state);
-          return [date, new Date(+now - 604800000)];
         }
       },
       adult: 1,
-      children: 1
+      adultTips: '最多入住2名成人',
+      children: 0,
+      childrenTips: '最多入住一名儿童（16周岁以下）',
+      needCarService: false
     };
   }
-
-  renderBtn(zh, en, config = {}) {
-    config.locale = this.state.en ? enUS : zhCN;
-
-    return (
-      <List.Item
-        arrow="horizontal"
-        onClick={() => {
-          document.getElementsByTagName('body')[0].style.overflowY = 'hidden';
-          this.setState({
-            show: true,
-            config
-          });
-        }}
-      >
-        {this.state.en ? en : zh}
-      </List.Item>
-    );
-  }
-
-  changeLanguage = () => {
-    this.setState({
-      en: !this.state.en
-    });
-  };
 
   onSelectHasDisableDate = dates => {
     console.warn('onSelectHasDisableDate', dates);
@@ -317,8 +298,11 @@ class ReserveRoom extends React.Component {
     )[0].style.overflowY = this.originbodyScrollY;
     this.setState({
       show: false,
-      startTime,
-      endTime
+      startTime: _formatDate(startTime),
+      startWeekDay: _getWeekDay(startTime),
+      endTime: _formatDate(endTime),
+      endWeekDay: _getWeekDay(endTime),
+      days: _betweenDays(startTime, endTime)
     });
   };
 
@@ -327,13 +311,33 @@ class ReserveRoom extends React.Component {
       'body'
     )[0].style.overflowY = this.originbodyScrollY;
     this.setState({
-      show: false,
-      startTime: undefined,
-      endTime: undefined
+      show: false
+      //startTime: null,
+      //startWeekDay: null,
+      //endTime: null,
+      //endWeekDay: null,
     });
   };
 
   getDateExtra = date => extra[+date];
+
+  /**
+   * 入住成人
+   * @param val
+   */
+  onChangeAdult = val => {
+    // console.log(val);
+    this.setState({ adult: val });
+  };
+
+  /**
+   * 入住儿童
+   * @param val
+   */
+  onChangeChildren = val => {
+    // console.log(val);
+    this.setState({ children: val });
+  };
 
   cancel = () => {};
 
@@ -382,15 +386,17 @@ class ReserveRoom extends React.Component {
                       });
                     }}
                   >
-                    7月12日{' '}
+                    <span>{this.state.startTime || '请选择入住日期'}</span>
                     <span
                       style={styles.body.checkin.reserve.date.out.day.weekday}
                     >
-                      周五
+                      {this.state.startWeekDay}
                     </span>
                   </div>
                 </div>
-                <div style={styles.body.checkin.reserve.date.days}>0天</div>
+                <div style={styles.body.checkin.reserve.date.days}>
+                  {this.state.days}天
+                </div>
                 <div style={styles.body.checkin.reserve.date.out}>
                   <div>离店日期</div>
                   <div
@@ -403,11 +409,11 @@ class ReserveRoom extends React.Component {
                       });
                     }}
                   >
-                    7月12日{' '}
+                    <span>{this.state.endTime || '请选择离店日期'}</span>
                     <span
                       style={styles.body.checkin.reserve.date.out.day.weekday}
                     >
-                      周五
+                      {this.state.endWeekDay}
                     </span>
                   </div>
                 </div>
@@ -418,25 +424,29 @@ class ReserveRoom extends React.Component {
             <div style={styles.body.numbers.header}>
               <div>入住人数</div>
               <div style={styles.body.numbers.header.text}>
-                <div style={styles.body.numbers.header.text.adult}>成人</div>
-                <div style={styles.body.numbers.header.text.children}>儿童</div>
+                <div style={styles.body.numbers.header.text.adult}>
+                  {this.state.adult}成人
+                </div>
+                <div style={styles.body.numbers.header.text.children}>
+                  {this.state.children}儿童
+                </div>
               </div>
             </div>
             <div style={styles.body.numbers.adult}>
               <div>
                 成人
                 <span style={styles.body.numbers.adult.tip}>
-                  最多入住2名成人
+                  {this.state.adultTips}
                 </span>
               </div>
               <div style={styles.body.numbers.adult.stepper}>
                 <Stepper
                   style={{ width: '100%', minWidth: '100px' }}
                   showNumber
-                  max={10}
+                  max={2}
                   min={1}
                   value={this.state.adult}
-                  onChange={this.onChange}
+                  onChange={this.onChangeAdult}
                 />
               </div>
             </div>
@@ -445,17 +455,17 @@ class ReserveRoom extends React.Component {
               <div>
                 儿童
                 <span style={styles.body.numbers.children.tip}>
-                  最多入住一名儿童（16周岁以下）
+                  {this.state.childrenTips}
                 </span>
               </div>
               <div style={styles.body.numbers.children.stepper}>
                 <Stepper
                   style={{ width: '100%', minWidth: '100px' }}
                   showNumber
-                  max={10}
-                  min={1}
+                  max={1}
+                  min={0}
                   value={this.state.children}
-                  onChange={this.onChange}
+                  onChange={this.onChangeChildren}
                 />
               </div>
             </div>
@@ -465,10 +475,32 @@ class ReserveRoom extends React.Component {
             <div style={styles.body.append.carservice}>
               <div>接车服务</div>
               <div style={styles.body.append.carservice.checkbox}>
-                <div style={styles.body.append.carservice.checkbox.yes}>
+                <div
+                  style={
+                    this.state.needCarService
+                      ? styles.body.append.carservice.checkbox.selected
+                      : styles.body.append.carservice.checkbox.noSelected
+                  }
+                  onClick={() => {
+                    this.setState({
+                      needCarService: true
+                    });
+                  }}
+                >
                   需要
                 </div>
-                <div style={styles.body.append.carservice.checkbox.no}>
+                <div
+                  style={
+                    this.state.needCarService
+                      ? styles.body.append.carservice.checkbox.noSelected
+                      : styles.body.append.carservice.checkbox.selected
+                  }
+                  onClick={() => {
+                    this.setState({
+                      needCarService: false
+                    });
+                  }}
+                >
                   不需要
                 </div>
               </div>
@@ -482,7 +514,6 @@ class ReserveRoom extends React.Component {
                     initialValue: '',
                     onChange() {}
                   })}
-                  rows={5}
                   count={46}
                 />
               </div>
@@ -518,7 +549,7 @@ class ReserveRoom extends React.Component {
             onSelectHasDisableDate={this.onSelectHasDisableDate}
             getDateExtra={this.getDateExtra}
             defaultDate={now}
-            minDate={new Date(+now - 5184000000)}
+            minDate={new Date(+now)}
             maxDate={new Date(+now + 31536000000)}
           />
         </div>

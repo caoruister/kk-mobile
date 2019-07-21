@@ -18,6 +18,16 @@ export const _setButtonVisible = function(buttonName, isVisible, pageInstance) {
     });
 };
 
+export const _betweenDays = (sdate, edate) => {
+  return (+edate - +sdate) / (1000 * 60 * 60 * 24);
+};
+
+const WEEK_DAYS = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+
+export const _getWeekDay = date => {
+  return WEEK_DAYS[date.getDay()];
+};
+
 export const _formatDate = date => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
