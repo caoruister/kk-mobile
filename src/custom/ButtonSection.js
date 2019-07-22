@@ -5,6 +5,7 @@ import { Button } from 'antd-mobile';
 var styles = {
   buttonArea: {
     padding: '0 20px',
+    marginTop: '15px',
     button: {
       backgroundColor: '#cc9e48',
       borderRadius: '5px',

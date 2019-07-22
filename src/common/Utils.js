@@ -3,6 +3,7 @@ import { Toast } from 'antd-mobile';
 export const URL_PREFIX = process.env.REACT_APP_URL_PREFIX;
 export const FILE_URL_PREFIX = process.env.REACT_APP_FILE_URL_PREFIX;
 export const WEB_CONTEXT = process.env.REACT_APP_WEB_CONTEXT;
+export const LOGIN_TYPE = process.env.REACT_APP_LOGIN_TYPE;
 
 export const _setButtonVisible = function(buttonName, isVisible, pageInstance) {
   var buttons = pageInstance.state.buttons;

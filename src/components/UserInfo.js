@@ -6,6 +6,8 @@ import { WEB_CONTEXT, FILE_URL_PREFIX, _isWeiXinEnv } from '../common/Utils';
 
 import styles from './UserInfo.module.css';
 
+import defaultAvatar from '../assets/images/default_avatar.png';
+
 class UserInfo extends React.Component {
   constructor(props) {
     super(props);
@@ -47,17 +49,16 @@ class UserInfo extends React.Component {
       );
     };
 
+    let avatar = userInfo.headIcon[0].thumbnail_url
+      ? FILE_URL_PREFIX + userInfo.headIcon[0].thumbnail_url
+      : defaultAvatar;
+
     return (
       <div>
         <div className={styles.userinfo}>
           <div className={styles.userinfoAvatar}>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={this.onChangeOfFileValue}
-            />
             <img
-              src={FILE_URL_PREFIX + userInfo.headIcon[0].thumbnail_url}
+              src={avatar}
               mode="scaleToFill"
               onClick={this.onChangeOfFileValue}
             />

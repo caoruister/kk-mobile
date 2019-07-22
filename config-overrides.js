@@ -1,6 +1,6 @@
 const {
     override,
-    fixBabelImports
+    fixBabelImports,
     } = require("customize-cra");
 
 module.exports = override(

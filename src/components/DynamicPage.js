@@ -62,7 +62,9 @@ class Section extends React.Component {
     return (
       this.props.showSection && (
         <div>
-          <div className="sub-title">{this.props.title}</div>
+          {!!this.props.title && (
+            <div className="sub-title">{this.props.title}</div>
+          )}
           <div>{template}</div>
         </div>
       )

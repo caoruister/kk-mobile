@@ -9,7 +9,7 @@ class ImagesSection extends React.Component {
 
     let imageJSX = data.map((img, idx) => {
       return (
-        <a key={idx} href={img.path || ''}>
+        <a key={idx} href={img.path || 'javascript:;'}>
           <img
             src={img.imageUrl}
             style={{ width: img.width || '100%', height: img.height }}
@@ -18,11 +18,7 @@ class ImagesSection extends React.Component {
       );
     });
 
-    return (
-      <div>
-        <WingBlank>{imageJSX}</WingBlank>
-      </div>
-    );
+    return <div>{imageJSX}</div>;
   }
 }
 

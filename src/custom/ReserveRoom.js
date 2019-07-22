@@ -11,6 +11,8 @@ import {
   _setTitle
 } from '../common/Utils';
 
+import { _callInterface } from 'api/CommonAPI';
+
 import enUS from 'antd-mobile/lib/calendar/locale/en_US';
 import zhCN from 'antd-mobile/lib/calendar/locale/zh_CN';
 
@@ -21,7 +23,7 @@ const extra = {};
 const now = new Date();
 const nextMonthToday = new Date(
   now.getFullYear(),
-  now.getMonth(),
+  now.getMonth() + 1,
   now.getDate()
 );
 
@@ -281,11 +283,51 @@ class ReserveRoom extends React.Component {
         }
       },
       adult: 1,
-      adultTips: '最多入住2名成人',
       children: 0,
-      childrenTips: '最多入住一名儿童（16周岁以下）',
-      needCarService: false
+      needCarService: false,
+
+      holderName: '',
+      flatName: '',
+      flatType: '',
+      flatAddress: '',
+      flatTags: [],
+      maxAdult: 0,
+      maxChildren: 0,
+
+      remark: ''
     };
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+    let oThis = this;
+    //
+    var interfaceName = 'getInfoForOrding'; // 接口名称
+    var params = {}; // 向接口提交的参数
+    _callInterface(interfaceName, params).then(res => {
+      if (res == null) {
+        return;
+      }
+      //
+      console.log('------------data-------------');
+      console.log(res);
+
+      if (oThis._isMounted) {
+        oThis.setState({
+          flatName: res.hName,
+          flatType: res.rName,
+          flatAddress: res.address,
+          flatTags: res.rTag,
+          holderName: res.mName,
+          maxAdult: res.crrzsxz,
+          maxChildren: res.etrzsxz
+        });
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   onSelectHasDisableDate = dates => {
@@ -312,10 +354,6 @@ class ReserveRoom extends React.Component {
     )[0].style.overflowY = this.originbodyScrollY;
     this.setState({
       show: false
-      //startTime: null,
-      //startWeekDay: null,
-      //endTime: null,
-      //endWeekDay: null,
     });
   };
 
@@ -326,7 +364,7 @@ class ReserveRoom extends React.Component {
    * @param val
    */
   onChangeAdult = val => {
-    // console.log(val);
+    //console.log(val);
     this.setState({ adult: val });
   };
 
@@ -339,14 +377,63 @@ class ReserveRoom extends React.Component {
     this.setState({ children: val });
   };
 
+  /**
+   * 备注
+   * @param val
+   */
+  onChangeRemark = val => {
+    this.setState({ remark: val });
+  };
+
   cancel = () => {};
 
   reserve = () => {
+    const {
+      flatName,
+      flatType,
+      startTime,
+      startWeekDay,
+      endTime,
+      endWeekDay,
+      days,
+      holderName,
+      adult,
+      children,
+      needCarService,
+      remark
+    } = this.state;
+
+    sessionStorage.setItem(
+      '__reservation__',
+      JSON.stringify({
+        flatName,
+        flatType,
+        startTime,
+        startWeekDay,
+        endTime,
+        endWeekDay,
+        days,
+        holderName,
+        adult,
+        children,
+        needCarService,
+        remark
+      })
+    );
+
     this.props.history.push('/ReserveDetail');
   };
 
   render() {
     const { getFieldProps } = this.props.form;
+
+    let tags = (this.state.flatTags || []).map((tag, index) => {
+      return (
+        <div style={styles.body.detail.tags.tag} key={index}>
+          {tag}
+        </div>
+      );
+    });
 
     return (
       <div>
@@ -355,20 +442,21 @@ class ReserveRoom extends React.Component {
           <img src={cat} style={styles.body.roomImg} />
           <div style={styles.body.detail}>
             <div style={styles.body.detail.style}>
-              <div>海南 白金湾养生谷公寓 一房一厅</div>
+              <div>
+                海南 {this.state.flatName} {this.state.flatType}
+              </div>
             </div>
             <div style={styles.body.detail.address}>
-              <div>海南省琼海市博鳌镇滨海大道东侧 鹏欣 白金湾</div>
+              <div>{this.state.flatAddress}</div>
             </div>
-            <div style={styles.body.detail.tags}>
-              <div style={styles.body.detail.tags.tag}>会员尊享</div>
-              <div style={styles.body.detail.tags.tag}>约52~66m²</div>
-            </div>
+            <div style={styles.body.detail.tags}>{tags}</div>
           </div>
           <div style={styles.body.checkin}>
             <div style={styles.body.checkin.person}>
               <div>持卡人</div>
-              <div style={styles.body.checkin.person.name}>周春来</div>
+              <div style={styles.body.checkin.person.name}>
+                {this.state.holderName}
+              </div>
             </div>
             <div style={styles.body.checkin.line} />
             <div style={styles.body.checkin.reserve}>
@@ -436,16 +524,17 @@ class ReserveRoom extends React.Component {
               <div>
                 成人
                 <span style={styles.body.numbers.adult.tip}>
-                  {this.state.adultTips}
+                  最多入住{this.state.maxAdult}名成人
                 </span>
               </div>
               <div style={styles.body.numbers.adult.stepper}>
                 <Stepper
                   style={{ width: '100%', minWidth: '100px' }}
                   showNumber
-                  max={2}
-                  min={1}
+                  max={this.state.maxAdult}
+                  min={0}
                   value={this.state.adult}
+                  defaultValue={1}
                   onChange={this.onChangeAdult}
                 />
               </div>
@@ -455,14 +544,14 @@ class ReserveRoom extends React.Component {
               <div>
                 儿童
                 <span style={styles.body.numbers.children.tip}>
-                  {this.state.childrenTips}
+                  最多入住{this.state.maxChildren}名儿童（16周岁以下）
                 </span>
               </div>
               <div style={styles.body.numbers.children.stepper}>
                 <Stepper
                   style={{ width: '100%', minWidth: '100px' }}
                   showNumber
-                  max={1}
+                  max={this.state.maxChildren}
                   min={0}
                   value={this.state.children}
                   onChange={this.onChangeChildren}
@@ -510,10 +599,8 @@ class ReserveRoom extends React.Component {
               <div>备注</div>
               <div style={styles.body.append.remark.textarea}>
                 <TextareaItem
-                  {...getFieldProps('remark', {
-                    initialValue: '',
-                    onChange() {}
-                  })}
+                  onChange={this.onChangeRemark}
+                  rows={5}
                   count={46}
                 />
               </div>
@@ -526,7 +613,6 @@ class ReserveRoom extends React.Component {
             <Button
               inline
               style={styles.body.actions.contact}
-              block="true"
               onClick={this.contact}
             >
               联系客服
@@ -534,7 +620,6 @@ class ReserveRoom extends React.Component {
             <Button
               inline
               style={styles.body.actions.reserve}
-              block="true"
               onClick={this.reserve}
             >
               立即预定

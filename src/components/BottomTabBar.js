@@ -98,8 +98,8 @@ class BottomTabBar extends React.Component {
     return (
       <div style={{ zIndex: 2, position: 'fixed', width: '100%', bottom: 0 }}>
         <TabBar
-          unselectedTintColor="#949494"
-          tintColor="#4182e6"
+          unselectedTintColor="#848484"
+          tintColor="#cc9e48"
           barTintColor="white"
           tabBarPosition="bottom"
         >

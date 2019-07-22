@@ -17,8 +17,8 @@ import {
   WhiteSpace
 } from 'antd-mobile';
 import { createForm } from 'rc-form';
-import { login, logout } from '../api/LoginAPI';
-import { WEB_CONTEXT } from '../common/Utils';
+import { login, logout, sendSMS, loginBySMS } from '../api/LoginAPI';
+import { WEB_CONTEXT, LOGIN_TYPE } from '../common/Utils';
 
 import loginImg from '../assets/images/logo.png';
 import mobile from '../assets/images/mobile.png';
@@ -121,34 +121,39 @@ function Base64() {
 
 class BasicInput extends React.Component {
   state = {
+    loginType: LOGIN_TYPE,
+
     //username: 'admin@kkdev.com',
     //password: '1',
     username: '',
     password: '',
+
+    phoneNum: '',
+    smsCode: '',
     time: '获取验证码', //倒计时
     currentTime: 61,
     reGetButtonDisable: false
   };
-  componentDidMount() {}
+  componentDidMount() {
+    console.log(LOGIN_TYPE);
+  }
   /**
    * 发送验证码
    */
   getCode = () => {
+    var that = this;
     if (this.state.reGetButtonDisable) return;
 
-    let phoneNum = this.state.phoneNum;
-
     let params = {
-      type: '4',
-      mobilePhone: phoneNum
+      phone: this.state.phoneNum
     };
-    //login(params).then(res => {
-    //  console.log(res);
-    //  if (res.success === true) {
-    //    this.props.history.push('/My');
-    //  }
-    //});
-    this.setTime();
+    sendSMS(params).then(res => {
+      console.log(res);
+      if (res.success === true) {
+        Toast.success('短信发送成功');
+        that.setTime();
+      }
+    });
   };
   setTime = () => {
     var that = this;
@@ -181,6 +186,18 @@ class BasicInput extends React.Component {
       password: value
     });
   };
+
+  onChangeOfPhoneNum = value => {
+    this.setState({
+      phoneNum: value
+    });
+  };
+  onChangeOfSMSCode = value => {
+    this.setState({
+      smsCode: value
+    });
+  };
+
   handleOk = () => {
     let username = this.state.username;
     let password = this.state.password;
@@ -244,11 +261,48 @@ class BasicInput extends React.Component {
       }
     });
   };
+
+  handleOkBySMS = () => {
+    let phoneNum = this.state.phoneNum;
+    let smsCode = this.state.smsCode;
+    if (phoneNum == null || phoneNum === '') {
+      Toast.info('请输入11位手机号码');
+      document.getElementById('idOfPhoneNum').focus();
+      return;
+    }
+    if (smsCode == null || smsCode === '') {
+      Toast.info('请输入短信验证码');
+      document.getElementById('idOfSMSCode').focus();
+      return;
+    }
+
+    let params = {
+      phone: phoneNum,
+      verifyCode: smsCode,
+      type: 2 //短信验证码登录
+    };
+    loginBySMS(params).then(res => {
+      if (res == null) {
+        return;
+      }
+      //
+      console.log(res);
+      if (res.success === true) {
+        this.setState({
+          username: null,
+          password: null
+        });
+        //
+        //	window.location.href = WEB_CONTEXT + '/#/My';
+        this.props.history.push('/Home');
+      }
+    });
+  };
   render() {
     const { getFieldProps } = this.props.form;
     return (
       <div>
-        {false && (
+        {this.state.loginType == 1 && (
           <List>
             <InputItem
               {...getFieldProps('username')}
@@ -280,21 +334,21 @@ class BasicInput extends React.Component {
 
         <List>
           <InputItem
-            {...getFieldProps('username')}
-            placeholder="请输入用户名"
-            onChange={this.onChangeOfUsername}
-            value={this.state.username}
-            id="idOfUsername"
+            {...getFieldProps('phoneNum')}
+            placeholder="11位手机号码"
+            onChange={this.onChangeOfPhoneNum}
+            value={this.state.phoneNum}
+            id="idOfPhoneNum"
           >
             <img style={{ margin: '0 auto', display: 'block' }} src={mobile} />
           </InputItem>
           <InputItem
-            {...getFieldProps('password')}
-            type="password"
-            placeholder="请输入密码"
-            onChange={this.onChangeOfPassword}
-            value={this.state.password}
-            id="idOfPassword"
+            {...getFieldProps('smsCode')}
+            type="number"
+            placeholder="短信验证码"
+            onChange={this.onChangeOfSMSCode}
+            value={this.state.smsCode}
+            id="idOfSMSCode"
             extra={
               <a
                 disabled={this.state.reGetButtonDisable}
@@ -313,12 +367,17 @@ class BasicInput extends React.Component {
         </List>
 
         <WingBlank>
-          <Button style={styles.loginButton} onClick={this.handleOk}>
+          <Button
+            style={styles.loginButton}
+            onClick={
+              this.state.loginType == 1 ? this.handleOk : this.handleOkBySMS
+            }
+          >
             登录
           </Button>
 
           <WhiteSpace size="md" />
-          {false && (
+          {this.state.loginType == 1 && (
             <Flex justify="between">
               <a href="/#/Add/register?notNeedLogin=true" className="inline">
                 注册

@@ -4,6 +4,8 @@ import { createForm } from 'rc-form';
 
 import CustomNavBar from 'components/CustomNavBar';
 
+import { _callInterface } from 'api/CommonAPI';
+
 import cat from 'assets/images/cat.jpg';
 
 var styles = {
@@ -222,12 +224,53 @@ var styles = {
 };
 
 class ReserveDetail extends React.Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {};
   }
 
+  componentDidMount() {
+    this._isMounted = true;
+    if (this._isMounted) {
+      let reservation =
+        JSON.parse(sessionStorage.getItem('__reservation__') || '') || {};
+
+      this.setState({
+        ...reservation
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   confirm = () => {
+    let oThis = this;
+    //
+    var interfaceName = 'createDueinfo'; // 接口名称
+    var params = {
+      dueStartDate: this.state.startTime,
+      dueEndDate: this.state.endTime,
+      adultNumber: this.state.adult,
+      badyNumber: this.state.children,
+      yyrzts: this.state.days,
+      remark: this.state.remark,
+      pickUpService: this.state.needCarService
+    }; // 向接口提交的参数
+    _callInterface(interfaceName, params).then(res => {
+      if (res == null) {
+        return;
+      }
+      //
+      console.log('------------data-------------');
+      console.log(res);
+
+      sessionStorage.removeItem('__reservation__');
+    });
+
     this.props.history.push('/ReserveSuccess');
   };
 
@@ -238,48 +281,34 @@ class ReserveDetail extends React.Component {
         <div style={styles.body}>
           <div style={styles.body.detail}>
             <div style={styles.body.detail.style}>
-              <div>海南 白金湾养生谷公寓 一房一厅</div>
+              <div>
+                海南 {this.state.flatName} {this.state.flatType}
+              </div>
             </div>
             <div style={styles.body.checkin.reserve}>
               <div style={styles.body.checkin.reserve.date}>
                 <div style={styles.body.checkin.reserve.date.in}>
                   <div>入住日期</div>
-                  <div
-                    style={styles.body.checkin.reserve.date.in.day}
-                    onClick={() => {
-                      document.getElementsByTagName('body')[0].style.overflowY =
-                        'hidden';
-                      this.setState({
-                        show: true
-                      });
-                    }}
-                  >
-                    7月12日{' '}
+                  <div style={styles.body.checkin.reserve.date.in.day}>
+                    {this.state.startTime}
                     <span
                       style={styles.body.checkin.reserve.date.out.day.weekday}
                     >
-                      周五
+                      {this.state.startWeekDay}
                     </span>
                   </div>
                 </div>
-                <div style={styles.body.checkin.reserve.date.days}>0天</div>
+                <div style={styles.body.checkin.reserve.date.days}>
+                  {this.state.days}天
+                </div>
                 <div style={styles.body.checkin.reserve.date.out}>
                   <div>离店日期</div>
-                  <div
-                    style={styles.body.checkin.reserve.date.out.day}
-                    onClick={() => {
-                      document.getElementsByTagName('body')[0].style.overflowY =
-                        'hidden';
-                      this.setState({
-                        show: true
-                      });
-                    }}
-                  >
-                    7月12日{' '}
+                  <div style={styles.body.checkin.reserve.date.out.day}>
+                    {this.state.endTime}
                     <span
                       style={styles.body.checkin.reserve.date.out.day.weekday}
                     >
-                      周五
+                      {this.state.endWeekDay}
                     </span>
                   </div>
                 </div>
@@ -289,31 +318,38 @@ class ReserveDetail extends React.Component {
           <div style={styles.body.checkin}>
             <div style={styles.body.checkin.person}>
               <div>持卡人</div>
-              <div style={styles.body.checkin.person.name}>周春来</div>
+              <div style={styles.body.checkin.person.name}>
+                {this.state.holderName}
+              </div>
             </div>
             <div style={styles.body.checkin.line} />
             <div style={styles.body.checkin.person}>
               <div>入住人数</div>
               <div style={styles.body.numbers.header.text}>
-                <div style={styles.body.numbers.header.text.adult}>成人</div>
-                <div style={styles.body.numbers.header.text.children}>儿童</div>
+                <div style={styles.body.numbers.header.text.adult}>
+                  {this.state.adult}成人
+                </div>
+                <div style={styles.body.numbers.header.text.children}>
+                  {this.state.children}儿童
+                </div>
               </div>
             </div>
             <div style={styles.body.checkin.line} />
             <div style={styles.body.checkin.person}>
               <div>联系手机</div>
-              <div />
+              <div>{this.state.phone}</div>
             </div>
             <div style={styles.body.checkin.line} />
             <div style={styles.body.checkin.person}>
               <div>接车服务</div>
-              <div />
+              {this.state.needCarService && <div>需要</div>}
+              {!this.state.needCarService && <div>不需要</div>}
             </div>
             <div style={styles.body.checkin.line} />
             <div style={styles.body.checkin.person}>
               <div>备注</div>
               <div style={styles.body.append.remark.textarea}>
-                <TextareaItem rows={5} count={46} />
+                {this.state.remark}
               </div>
             </div>
           </div>
@@ -333,7 +369,6 @@ class ReserveDetail extends React.Component {
             <Button
               inline
               style={styles.body.actions.contact}
-              block="true"
               onClick={this.contact}
             >
               联系客服
@@ -341,7 +376,6 @@ class ReserveDetail extends React.Component {
             <Button
               inline
               style={styles.body.actions.reserve}
-              block="true"
               onClick={this.confirm}
             >
               确认下单
