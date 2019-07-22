@@ -233,14 +233,13 @@ class ReserveDetail extends React.Component {
 
   componentDidMount() {
     this._isMounted = true;
-    if (this._isMounted) {
-      let reservation =
-        JSON.parse(sessionStorage.getItem('__reservation__') || '') || {};
+    let reservation = JSON.parse(
+      sessionStorage.getItem('__reservation__') || '{}'
+    );
 
-      this.setState({
-        ...reservation
-      });
-    }
+    this.setState({
+      ...reservation
+    });
   }
 
   componentWillUnmount() {
