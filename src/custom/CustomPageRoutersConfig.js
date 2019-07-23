@@ -1,7 +1,7 @@
-import ReserveRoom from './ReserveRoom';
-import ReserveDetail from './ReserveDetail';
-import ReserveSuccess from './ReserveSuccess';
-import Strategy from './Strategy';
+import ReserveRoom from 'custom/ReserveRoom';
+import ReserveDetail from 'custom/ReserveDetail';
+import ReserveSuccess from 'custom/ReserveSuccess';
+import Strategy from 'custom/Strategy';
 
 export const customPageRoutes = [
   { path: '/ReserveRoom', component: ReserveRoom },

@@ -1,11 +1,10 @@
 import React from 'react';
 
-import HomeSection from './HomeSection';
-import ButtonSection from './ButtonSection';
-import ReserveRoom from './ReserveRoom';
-import ReserveDetail from './ReserveDetail';
-import Strategy from './Strategy';
-import UserInfo from './UserInfo';
+import HomeSection from 'custom/HomeSection';
+import ButtonSection from 'custom/ButtonSection';
+import ReserveRoom from 'custom/ReserveRoom';
+import ReserveDetail from 'custom/ReserveDetail';
+import Strategy from 'custom/Strategy';
 
 class DynamicSection extends React.Component {
   render() {

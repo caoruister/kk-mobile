@@ -9,7 +9,7 @@ import {
   _getWeekDay,
   _betweenDays,
   _setTitle
-} from '../common/Utils';
+} from 'common/Utils';
 
 import { _callInterface } from 'api/CommonAPI';
 

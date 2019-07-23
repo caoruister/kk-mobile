@@ -2,15 +2,15 @@ import React from 'react';
 import { Range, WingBlank, WhiteSpace, NavBar, Icon } from 'antd-mobile';
 import { _callInterface } from 'api/CommonAPI';
 
-import arrow from '../assets/images/home_arrow.png';
-import search from '../assets/images/home_search.png';
-import close from '../assets/images/home_close.png';
-import iconVip from '../assets/images/home_icon_vip.png';
-import iconSee from '../assets/images/home_message.png';
-import iconFirst from '../assets/images/home_icon.png';
-import iconLast from '../assets/images/home_icon_down.png';
-import tips from '../assets/images/icon_tips.png';
-import tipsLogo from '../assets/images/icon_tips_logo.png';
+import arrow from 'assets/images/home_arrow.png';
+import search from 'assets/images/home_search.png';
+import close from 'assets/images/home_close.png';
+import iconVip from 'assets/images/home_icon_vip.png';
+import iconSee from 'assets/images/home_message.png';
+import iconFirst from 'assets/images/home_icon.png';
+import iconLast from 'assets/images/home_icon_down.png';
+import tips from 'assets/images/icon_tips.png';
+import tipsLogo from 'assets/images/icon_tips_logo.png';
 
 var styles = {
   body: {

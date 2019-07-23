@@ -214,18 +214,30 @@ class List1 extends React.Component {
         ignoreQueryPrefix: true
       }).notNeedLogin;
 
-      let url = record.canEdit
-        ? '/#/edit/' + this.state.objid + '/' + record.id
-        : record.canView
-        ? '/#/view/' +
+      let viewPage = qs.parse(this.props.location.search, {
+        ignoreQueryPrefix: true
+      }).VIEW_PAGE;
+
+      let url = '';
+
+      if (record.canView && !!viewPage) {
+        url = '/#/' + viewPage + '?id=' + record.id;
+      } else if (record.canView) {
+        url =
+          '/#/view/' +
           this.state.objid +
           '/' +
           record.id +
           '?layoutid=' +
           (layoutidOfViewPage || '') +
           '&notNeedLogin=' +
-          (notNeedLogin || '')
-        : '/#';
+          (notNeedLogin || '');
+      } else if (record.canEdit) {
+        url = '/#/edit/' + this.state.objid + '/' + record.id;
+      } else {
+        url = 'javascript:;';
+      }
+
       return (
         <a href={url}>
           <List>

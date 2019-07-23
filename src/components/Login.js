@@ -120,6 +120,8 @@ function Base64() {
 }
 
 class BasicInput extends React.Component {
+  _isMounted = false;
+
   state = {
     loginType: LOGIN_TYPE,
 
@@ -135,7 +137,10 @@ class BasicInput extends React.Component {
     reGetButtonDisable: false
   };
   componentDidMount() {
-    console.log(LOGIN_TYPE);
+    this._isMounted = true;
+  }
+  componentWillUnmount() {
+    this._isMounted = false;
   }
   /**
    * 发送验证码
