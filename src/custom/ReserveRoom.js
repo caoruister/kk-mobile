@@ -3,12 +3,15 @@ import { TextareaItem, Calendar, List, Button, Stepper } from 'antd-mobile';
 import { createForm } from 'rc-form';
 
 import CustomNavBar from 'components/CustomNavBar';
+import Swiper from 'components/Swiper';
 
 import {
   _formatDate,
   _getWeekDay,
   _betweenDays,
-  _setTitle
+  _setTitle,
+  _fail,
+  FILE_URL_PREFIX
 } from 'common/Utils';
 
 import { _callInterface } from 'api/CommonAPI';
@@ -16,15 +19,13 @@ import { _callInterface } from 'api/CommonAPI';
 import enUS from 'antd-mobile/lib/calendar/locale/en_US';
 import zhCN from 'antd-mobile/lib/calendar/locale/zh_CN';
 
-import cat from 'assets/images/cat.jpg';
-
 const extra = {};
 
 const now = new Date();
-const nextMonthToday = new Date(
+const nextThirtyDays = new Date(
   now.getFullYear(),
-  now.getMonth() + 1,
-  now.getDate()
+  now.getMonth(),
+  now.getDate() + 30
 );
 
 Object.keys(extra).forEach(key => {
@@ -230,7 +231,11 @@ var styles = {
     },
     introduce: {
       backgroundColor: '#fff',
-      marginTop: '5px'
+      marginTop: '5px',
+      image: {
+        minHeight: '100px',
+        width: '100%'
+      }
     },
     actions: {
       display: 'flex',
@@ -268,8 +273,8 @@ class ReserveRoom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      startTime: _formatDate(now),
-      startWeekDay: _getWeekDay(now),
+      startTime: _formatDate(nextThirtyDays),
+      startWeekDay: _getWeekDay(nextThirtyDays),
       endTime: null,
       endWeekDay: '',
       days: 0,
@@ -294,14 +299,29 @@ class ReserveRoom extends React.Component {
       maxAdult: 0,
       maxChildren: 0,
 
-      remark: ''
+      remark: '',
+
+      banners: [],
+      roomIntroduce: {},
+
+      illustration: '',
+      refund: '',
+      phone: ''
     };
   }
 
   componentDidMount() {
     this._isMounted = true;
     let oThis = this;
-    //
+    //用户回退修改预定信息
+    let reservation = JSON.parse(
+      sessionStorage.getItem('__reservation__') || '{}'
+    );
+
+    this.setState({
+      ...reservation
+    });
+
     var interfaceName = 'getInfoForOrding'; // 接口名称
     var params = {}; // 向接口提交的参数
     _callInterface(interfaceName, params).then(res => {
@@ -312,6 +332,18 @@ class ReserveRoom extends React.Component {
       console.log('------------data-------------');
       console.log(res);
 
+      //房型轮播图
+      let banners = (res.rPic || []).map(pic => {
+        return {
+          imageUrl: FILE_URL_PREFIX + pic,
+          webviewUrl: 'javascript:;'
+        };
+      });
+
+      //房型介绍图
+      let roomIntroduce =
+        res.fxjs && res.fxjs.length > 0 ? FILE_URL_PREFIX + res.fxjs[0] : '';
+
       if (oThis._isMounted) {
         oThis.setState({
           flatName: res.hName,
@@ -320,7 +352,12 @@ class ReserveRoom extends React.Component {
           flatTags: res.rTag,
           holderName: res.mName,
           maxAdult: res.crrzsxz,
-          maxChildren: res.etrzsxz
+          maxChildren: res.etrzsxz,
+          banners: banners,
+          roomIntroduce: roomIntroduce,
+          illustration: res.orgCPolicy,
+          refund: res.orgRPolicy,
+          phone: res.mPhone
         });
       }
     });
@@ -400,8 +437,22 @@ class ReserveRoom extends React.Component {
       adult,
       children,
       needCarService,
-      remark
+      remark,
+      illustration,
+      refund,
+      phone
     } = this.state;
+
+    if (!startTime) {
+      _fail('请选择入住日期!');
+      return;
+    } else if (!endTime) {
+      _fail('请选择离店日期!');
+      return;
+    } else if (adult < 1) {
+      _fail('请至少选择1名成人!');
+      return;
+    }
 
     sessionStorage.setItem(
       '__reservation__',
@@ -417,7 +468,10 @@ class ReserveRoom extends React.Component {
         adult,
         children,
         needCarService,
-        remark
+        remark,
+        illustration,
+        refund,
+        phone
       })
     );
 
@@ -439,7 +493,7 @@ class ReserveRoom extends React.Component {
       <div>
         <CustomNavBar navTitle="住房预定" />
         <div style={styles.body}>
-          <img src={cat} style={styles.body.roomImg} />
+          <Swiper data={this.state.banners} />
           <div style={styles.body.detail}>
             <div style={styles.body.detail.style}>
               <div>
@@ -532,7 +586,7 @@ class ReserveRoom extends React.Component {
                   style={{ width: '100%', minWidth: '100px' }}
                   showNumber
                   max={this.state.maxAdult}
-                  min={0}
+                  min={1}
                   value={this.state.adult}
                   defaultValue={1}
                   onChange={this.onChangeAdult}
@@ -606,16 +660,21 @@ class ReserveRoom extends React.Component {
               </div>
             </div>
           </div>
-          <div style={styles.body.introduce}>
-            <img src={cat} style={styles.body.roomImg} />
-          </div>
+          {this.state.roomIntroduce && (
+            <div style={styles.body.introduce}>
+              <img
+                src={this.state.roomIntroduce}
+                style={styles.body.introduce.image}
+              />
+            </div>
+          )}
           <div style={styles.body.actions}>
             <Button
               inline
               style={styles.body.actions.contact}
               onClick={this.contact}
             >
-              联系客服
+              {this.state.phone}
             </Button>
             <Button
               inline
@@ -633,9 +692,9 @@ class ReserveRoom extends React.Component {
             onConfirm={this.onConfirm}
             onSelectHasDisableDate={this.onSelectHasDisableDate}
             getDateExtra={this.getDateExtra}
-            defaultDate={now}
-            minDate={new Date(+now)}
-            maxDate={new Date(+now + 31536000000)}
+            defaultDate={nextThirtyDays}
+            minDate={new Date(+nextThirtyDays)}
+            maxDate={new Date(+nextThirtyDays + 1000 * 60 * 60 * 24 * 60)}
           />
         </div>
       </div>

@@ -60,7 +60,7 @@ class SectionItems extends React.Component {
                 </List.Item>
               );
             } else if (field.type === 'IMG') {
-              return (
+              let imageJSX = labelJSX ? (
                 <List.Item
                   key={field.fieldid + idx2}
                   extra={
@@ -72,7 +72,13 @@ class SectionItems extends React.Component {
                 >
                   {labelJSX}
                 </List.Item>
+              ) : (
+                <img
+                  src={FILE_URL_PREFIX + field.value[0].thumbnail_url}
+                  style={{ width: '100%' }}
+                />
               );
+              return imageJSX;
             } else if (field.type === 'X') {
               return (
                 <div key={field.fieldid + idx2}>

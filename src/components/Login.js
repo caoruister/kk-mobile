@@ -173,11 +173,14 @@ class BasicInput extends React.Component {
       });
       if (currentTime <= 0) {
         clearInterval(interval);
-        that.setState({
-          time: '重新获取',
-          currentTime: 61,
-          reGetButtonDisable: false
-        });
+
+        if (that._isMounted) {
+          that.setState({
+            time: '重新获取',
+            currentTime: 61,
+            reGetButtonDisable: false
+          });
+        }
       }
     }, 1000);
   };
@@ -399,7 +402,7 @@ class BasicInput extends React.Component {
           <div style={styles.agreement.doc}>
             我已阅读并同意
             <a
-              href="/#/Home?notNeedLogin=true"
+              href="/#/view/FF8080816BFD6783016BFF3BB1B7024A/FF8080816C19D838016C1D7FF0F50545?notNeedLogin=true"
               style={styles.agreement.doc.link}
             >
               《白金湾会员服务协议》

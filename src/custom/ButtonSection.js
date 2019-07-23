@@ -29,11 +29,7 @@ class ButtonSection extends React.Component {
   render() {
     return (
       <div style={styles.buttonArea}>
-        <Button
-          style={styles.buttonArea.button}
-          block="true"
-          onClick={this.onZsyd}
-        >
+        <Button style={styles.buttonArea.button} onClick={this.onZsyd}>
           住宿预订
         </Button>
       </div>

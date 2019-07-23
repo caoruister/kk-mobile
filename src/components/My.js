@@ -12,6 +12,15 @@ import { WEB_CONTEXT, FILE_URL_PREFIX, _isWeiXinEnv } from '../common/Utils';
 
 const Item = List.Item;
 
+var styles = {
+  logout: {
+    backgroundColor: '#cc9e48',
+    borderRadius: '5px',
+    fontSize: '19px',
+    color: '#fff'
+  }
+};
+
 class My extends React.Component {
   _isMounted = false;
 
@@ -87,11 +96,7 @@ class My extends React.Component {
 
         <WhiteSpace size="lg" />
         <WingBlank>
-          <Button
-            type="primary"
-            style={{ background: '#4182e6' }}
-            onClick={this.logout}
-          >
+          <Button style={styles.logout} onClick={this.logout}>
             退出
           </Button>
         </WingBlank>

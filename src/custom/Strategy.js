@@ -1,8 +1,12 @@
 import React from 'react';
-
+import qs from 'qs';
 import { Tabs, WhiteSpace } from 'antd-mobile';
 
 import CustomNavBar from 'components/CustomNavBar';
+
+import { FILE_URL_PREFIX } from 'common/Utils';
+
+import { _callInterface } from 'api/CommonAPI';
 
 var styles = {
   tab: {
@@ -17,31 +21,62 @@ var styles = {
 };
 
 class Strategy extends React.Component {
+  _isMounted = false;
+
+  state = {
+    navTitle: '',
+    tabs: []
+  };
+
+  componentDidMount() {
+    this._isMounted = true;
+
+    let title = qs.parse(this.props.location.search, {
+      ignoreQueryPrefix: true
+    }).title;
+
+    this.setState({
+      navTitle: title
+    });
+
+    let oThis = this;
+    //
+    var interfaceName = 'getBanner'; // 接口名称
+    var params = {
+      bannerTypeName: title
+    }; // 向接口提交的参数
+    _callInterface(interfaceName, params).then(res => {
+      if (res == null) {
+        return;
+      }
+      //
+      console.log('------------data-------------');
+      console.log(res);
+
+      if (oThis._isMounted) {
+        oThis.setState({
+          tabs: res.list
+        });
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   renderContent = tab => (
     <div style={styles.tab}>
-      <img
-        src="http://dj3199.kz-info.cn:7073/ysdj-file/file?getfile=402883B86BD1787A016BD1787A120000/mobile/images/home_bg.jpg"
-        style={styles.tab.image}
-      />
+      <img src={FILE_URL_PREFIX + tab.wznytp} style={styles.tab.image} />
     </div>
   );
 
   render() {
-    const tabs = [
-      { title: '1st Tab' },
-      { title: '2nd Tab' },
-      { title: '3rd Tab' },
-      { title: '4th Tab' },
-      { title: '5th Tab' },
-      { title: '6th Tab' },
-      { title: '7th Tab' },
-      { title: '8th Tab' },
-      { title: '9th Tab' }
-    ];
+    const { navTitle, tabs } = this.state;
 
     return (
       <div>
-        <CustomNavBar navTitle="住房预定" />
+        <CustomNavBar navTitle={navTitle} />
         <Tabs
           tabs={tabs}
           renderTabBar={props => <Tabs.DefaultTabBar {...props} page={3} />}

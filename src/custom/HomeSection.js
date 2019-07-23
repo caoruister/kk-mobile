@@ -263,14 +263,14 @@ class HomeSection extends React.Component {
           </a>
         </div>
         <div style={styles.body.quick}>
-          <a href="/#/Strategy" style={styles.body.quick.left}>
+          <a href="/#/Strategy?title=博鳌攻略" style={styles.body.quick.left}>
             <div>
               博鳌<span style={styles.body.quick.left.strategy}>攻略</span>
             </div>
             <img src={tipsLogo} style={styles.body.quick.left.leftIcon} />
           </a>
           <div style={styles.body.quick.center} />
-          <a href="/#/Strategy" style={styles.body.quick.right}>
+          <a href="/#/Strategy?title=周边攻略" style={styles.body.quick.right}>
             <div>
               周边<span style={styles.body.quick.left.strategy}>攻略</span>
             </div>

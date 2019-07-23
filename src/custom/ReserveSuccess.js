@@ -1,4 +1,5 @@
 import React from 'react';
+import qs from 'qs';
 import { Result, Icon, Button, WingBlank, WhiteSpace } from 'antd-mobile';
 
 import CustomNavBar from 'components/CustomNavBar';
@@ -38,10 +39,15 @@ class ReserveSuccess extends React.Component {
     this.state = {};
   }
 
-  viewReservation = () => {};
+  viewReservation = () => {
+    let id = qs.parse(this.props.location.search, {
+      ignoreQueryPrefix: true
+    }).id;
+    this.props.history.push('/ViewReserve?id=' + id);
+  };
 
   backHome = () => {
-    this.props.history.push('/home');
+    this.props.history.push('/Home');
   };
 
   render() {

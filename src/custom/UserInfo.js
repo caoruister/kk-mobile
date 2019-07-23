@@ -4,19 +4,20 @@ import { createForm } from 'rc-form';
 
 import BottomTabBar from 'components/BottomTabBar';
 
-import settingIcon from 'assets/images/my_icon_set.png';
+import backgroundIcon from 'assets/images/my_bg_pic.png';
+import avatarIcon from 'assets/images/default_avatar.png';
 
 var styles = {
   body: {
     header: {
-      setting: {
-        height: '265px',
-        backgroundColor: '#cc9e48',
-        boxShadow: 'inset 0px 4px 18px 0px rgba(66, 43, 0, 0.35)',
+      icon: {
+        width: '100%'
+      },
+      avatar: {
         icon: {}
       }
     },
-    avatar: {},
+
     card: {}
   }
 };
@@ -32,15 +33,16 @@ class UserInfo extends React.Component {
       <div>
         <div style={styles.body}>
           <div style={styles.body.header}>
-            <div style={styles.body.header.setting}>
-              <img src={settingIcon} style={styles.body.header.setting.icon} />
+            <img src={backgroundIcon} style={styles.body.header.icon} />
+            <div style={styles.body.header.avatar}>
+              <img src={avatarIcon} style={styles.body.header.avatar.icon} />
+              <div>尊贵的唐先生</div>
             </div>
-            <div style={styles.body.header.avatar} />
             <div style={styles.body.header.card} />
           </div>
           <div style={styles.body.list} />
         </div>
-        <BottomTabBar selectedTab="my" page={this} />
+        <BottomTabBar selectedTab="a1" page={this} />
       </div>
     );
   }

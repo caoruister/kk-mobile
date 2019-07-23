@@ -1,4 +1,5 @@
 import React from 'react';
+import qs from 'qs';
 import { TextareaItem, Calendar, List, Button } from 'antd-mobile';
 import { createForm } from 'rc-form';
 
@@ -152,24 +153,41 @@ var styles = {
       fontSize: '16px',
       color: '#6a646d',
       marginTop: '5px',
-      padding: '15px 15px',
-      illustration: {
-        preVerLine: {
-          width: '5px',
-          height: '10px',
-          backgroundColor: '#cc9e48',
-          borderRadius: '3px',
-          display: 'inline-block'
-        },
-        title: {
-          marginLeft: '11px'
-        },
-        content: {
-          marginTop: '11px'
+      carservice: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '16px 15px',
+        checkbox: {
+          color: '#cc9e48',
+          display: 'flex',
+          yes: {
+            padding: '13px 17px',
+            backgroundColor: '#fff',
+            color: '#cc9e48',
+            borderRadius: '5px',
+            border: 'solid 1px #cc9e48'
+          },
+          no: {
+            padding: '13px 17px',
+            backgroundColor: '#cc9e48',
+            color: '#fff',
+            borderRadius: '5px',
+            marginLeft: '20px',
+            border: 'solid 1px #cc9e48'
+          }
         }
       },
-      refund: {
-        marginTop: '31px'
+      line: {
+        width: '100%',
+        height: '1px',
+        backgroundColor: '#dfdfe1'
+      },
+      remark: {
+        padding: '16px 15px',
+        textarea: {
+          marginTop: '10px'
+        }
       }
     },
     introduce: {
@@ -202,10 +220,6 @@ var styles = {
         height: '60px',
         lineHeight: '60px'
       }
-    },
-    notice: {
-      fontSize: '16px',
-      color: '#6a646d'
     }
   }
 };
@@ -215,36 +229,44 @@ class ReserveDetail extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      startTime: '',
+      startWeekDay: '',
+      endTime: null,
+      endWeekDay: '',
+      days: 0,
+      adult: 1,
+      children: 0,
+      needCarService: false,
+
+      holderName: '',
+      flatName: '',
+      flatType: '',
+      flatAddress: '',
+
+      remark: ''
+    };
   }
 
   componentDidMount() {
     this._isMounted = true;
-    let reservation = JSON.parse(
-      sessionStorage.getItem('__reservation__') || '{}'
-    );
-
-    this.setState({
-      ...reservation
-    });
+    this.getData();
   }
 
   componentWillUnmount() {
     this._isMounted = false;
   }
 
-  confirm = () => {
+  getData = () => {
     let oThis = this;
     //
-    var interfaceName = 'createDueinfo'; // 接口名称
+    let id = qs.parse(this.props.location.search, {
+      ignoreQueryPrefix: true
+    }).id;
+    //
+    var interfaceName = 'getInfoForOrdingForView'; // 接口名称
     var params = {
-      dueStartDate: this.state.startTime,
-      dueEndDate: this.state.endTime,
-      adultNumber: this.state.adult,
-      badyNumber: this.state.children,
-      yyrzts: this.state.days,
-      remark: this.state.remark,
-      pickUpService: this.state.needCarService
+      id: id
     }; // 向接口提交的参数
     _callInterface(interfaceName, params).then(res => {
       if (res == null) {
@@ -253,17 +275,29 @@ class ReserveDetail extends React.Component {
       //
       console.log('------------data-------------');
       console.log(res);
-
-      sessionStorage.removeItem('__reservation__');
-
-      oThis.props.history.replace('/ReserveSuccess?id=' + res.id);
+      //
+      oThis.setState({
+        startTime: res.dueStartDate,
+        endTime: res.dueEndDate,
+        adult: res.adultNumber,
+        children: res.badyNumber,
+        days: res.yyrzts,
+        remark: res.remark,
+        needCarService: res.pickUpService,
+        orderTime: res.createdate,
+        orderNum: res.name,
+        phone: res.duePhone,
+        flatName: res.hName,
+        flatType: res.rName,
+        holderName: res.mName
+      });
     });
   };
 
   render() {
     return (
       <div>
-        <CustomNavBar navTitle="预定详情" />
+        <CustomNavBar navTitle="订单详情" />
         <div style={styles.body}>
           <div style={styles.body.detail}>
             <div style={styles.body.detail.style}>
@@ -334,58 +368,25 @@ class ReserveDetail extends React.Component {
             <div style={styles.body.checkin.line} />
             <div style={styles.body.checkin.person}>
               <div>备注</div>
-              <div>{this.state.remark}</div>
+              <div style={styles.body.append.remark.textarea}>
+                {this.state.remark}
+              </div>
             </div>
           </div>
 
           <div style={styles.body.append}>
-            <div style={styles.body.append.illustration}>
-              <div style={styles.body.append.illustration.preVerLine} />
-              <span style={styles.body.append.illustration.title}>
-                预定说明
-              </span>
-              <div
-                style={styles.body.append.illustration.content}
-                dangerouslySetInnerHTML={{ __html: this.state.illustration }}
-              />
+            <div style={styles.body.append.carservice}>
+              <div>订单号</div>
+              <div style={styles.body.append.carservice.checkbox}>
+                {this.state.orderNum}
+              </div>
             </div>
-            <div style={styles.body.append.refund}>
-              <div style={styles.body.append.illustration.preVerLine} />
-              <span style={styles.body.append.illustration.title}>
-                退订规则
-              </span>
-              <div
-                style={styles.body.append.illustration.content}
-                dangerouslySetInnerHTML={{ __html: this.state.refund }}
-              />
+            <div style={styles.body.append.carservice}>
+              <div>下单时间</div>
+              <div style={styles.body.append.carservice.checkbox}>
+                {this.state.orderTime}
+              </div>
             </div>
-          </div>
-          <List.Item
-            arrow="horizontal"
-            onClick={() => {
-              this.props.history.push(
-                '/view/FF8080816BFD6783016BFF3BB1B7024A/FF8080816C19D838016C1CB7C6A9026A?notNeedLogin=true'
-              );
-            }}
-          >
-            <div style={styles.body.notice}>会员预定与入住须知</div>
-          </List.Item>
-
-          <div style={styles.body.actions}>
-            <Button
-              inline
-              style={styles.body.actions.contact}
-              onClick={this.contact}
-            >
-              {this.state.phone}
-            </Button>
-            <Button
-              inline
-              style={styles.body.actions.reserve}
-              onClick={this.confirm}
-            >
-              确认下单
-            </Button>
           </div>
         </div>
       </div>
