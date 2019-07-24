@@ -11,5 +11,5 @@ export const customPageRoutes = [
   { path: '/ReserveSuccess', component: ReserveSuccess },
   { path: '/Strategy', component: Strategy },
   { path: '/ViewReserve', component: OrderDetail },
-  { path: '/A1', component: UserInfo }
+  { path: '/UserInfo', component: UserInfo }
 ];

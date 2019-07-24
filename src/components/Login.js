@@ -163,27 +163,26 @@ class BasicInput extends React.Component {
   setTime = () => {
     var that = this;
 
-    if (that._isMounted) {
+    that._isMounted &&
       that.setState({
         reGetButtonDisable: true
       });
-    }
     var currentTime = that.state.currentTime;
     let interval = setInterval(function() {
       currentTime--;
-      that.setState({
-        time: currentTime + '秒'
-      });
+      that._isMounted &&
+        that.setState({
+          time: currentTime + '秒'
+        });
       if (currentTime <= 0) {
         clearInterval(interval);
 
-        if (that._isMounted) {
+        that._isMounted &&
           that.setState({
             time: '重新获取',
             currentTime: 61,
             reGetButtonDisable: false
           });
-        }
       }
     }, 1000);
   };

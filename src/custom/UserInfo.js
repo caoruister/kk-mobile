@@ -198,7 +198,7 @@ class UserInfo extends React.Component {
           </Button>
         </WingBlank>
 
-        <BottomTabBar selectedTab="a1" page={this} />
+        <BottomTabBar selectedTab="userInfo" page={this} />
       </div>
     );
   }
