@@ -2,15 +2,33 @@ import React from 'react';
 import { Range, WingBlank, WhiteSpace, NavBar, Icon } from 'antd-mobile';
 import { _callInterface } from 'api/CommonAPI';
 
-import arrow from 'assets/images/home_arrow.png';
-import search from 'assets/images/home_search.png';
-import close from 'assets/images/home_close.png';
-import iconVip from 'assets/images/home_icon_vip.png';
-import iconSee from 'assets/images/home_message.png';
-import iconFirst from 'assets/images/home_icon.png';
-import iconLast from 'assets/images/home_icon_down.png';
-import tips from 'assets/images/icon_tips.png';
-import tipsLogo from 'assets/images/icon_tips_logo.png';
+const arrow =
+  process.env.REACT_APP_FILE_URL_PREFIX +
+  'file?getfile=402883B86BD1787A016BD1787A120000/mobile/images/home_arrow.png';
+const search =
+  process.env.REACT_APP_FILE_URL_PREFIX +
+  'file?getfile=402883B86BD1787A016BD1787A120000/mobile/images/home_search.png';
+const close =
+  process.env.REACT_APP_FILE_URL_PREFIX +
+  'file?getfile=402883B86BD1787A016BD1787A120000/mobile/images/home_close.png';
+const iconVip =
+  process.env.REACT_APP_FILE_URL_PREFIX +
+  'file?getfile=402883B86BD1787A016BD1787A120000/mobile/images/home_icon_vip.png';
+const iconSee =
+  process.env.REACT_APP_FILE_URL_PREFIX +
+  'file?getfile=402883B86BD1787A016BD1787A120000/mobile/images/home_message.png';
+const iconFirst =
+  process.env.REACT_APP_FILE_URL_PREFIX +
+  'file?getfile=402883B86BD1787A016BD1787A120000/mobile/images/home_icon.png';
+const iconLast =
+  process.env.REACT_APP_FILE_URL_PREFIX +
+  'file?getfile=402883B86BD1787A016BD1787A120000/mobile/images/home_icon_down.png';
+const tips =
+  process.env.REACT_APP_FILE_URL_PREFIX +
+  'file?getfile=402883B86BD1787A016BD1787A120000/mobile/images/icon_tips.png';
+const tipsLogo =
+  process.env.REACT_APP_FILE_URL_PREFIX +
+  'file?getfile=402883B86BD1787A016BD1787A120000/mobile/images/icon_tips_logo.png';
 
 var styles = {
   body: {

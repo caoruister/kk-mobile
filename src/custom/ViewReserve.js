@@ -7,8 +7,6 @@ import CustomNavBar from 'components/CustomNavBar';
 
 import { _callInterface } from 'api/CommonAPI';
 
-import cat from 'assets/images/cat.jpg';
-
 var styles = {
   body: {
     roomImg: {
@@ -224,7 +222,7 @@ var styles = {
   }
 };
 
-class ReserveDetail extends React.Component {
+class ViewReserve extends React.Component {
   _isMounted = false;
 
   constructor(props) {
@@ -394,4 +392,4 @@ class ReserveDetail extends React.Component {
   }
 }
 
-export default ReserveDetail;
+export default ViewReserve;
