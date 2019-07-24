@@ -17,7 +17,7 @@ import {
   Toast
 } from 'antd-mobile';
 
-import styles from './DetailSection.module.css';
+import './DetailSection.less';
 
 class DetailSection extends React.Component {
   render() {
@@ -25,7 +25,7 @@ class DetailSection extends React.Component {
 
     let leftJSX = (
       <a href={data.left.path} style={data.left.style}>
-        <img className={styles.leftImg} src={data.left.icon} alt="" />
+        <img className="leftImg" src={data.left.icon} alt="" />
       </a>
     );
 
@@ -37,7 +37,7 @@ class DetailSection extends React.Component {
               key={idx2}
               href={column.path}
               style={column.style}
-              className={styles.rowColumn}
+              className="rowColumn"
             >
               <span>{column.value}</span>
             </a>
@@ -52,7 +52,7 @@ class DetailSection extends React.Component {
               key={idx2}
               href={column.path}
               style={column.style}
-              className={styles.rowColumn}
+              className="rowColumn"
             >
               {labelJSX} <span style={column.inputStyle}>{column.value}</span>
             </a>
@@ -63,7 +63,7 @@ class DetailSection extends React.Component {
               key={idx2}
               href={column.path}
               style={column.style}
-              className={styles.rowColumn}
+              className="rowColumn"
             >
               <img src={column.url} alt="" />
             </a>
@@ -72,7 +72,7 @@ class DetailSection extends React.Component {
       });
 
       return (
-        <div key={idx1} style={row.style} className={styles.row}>
+        <div key={idx1} style={row.style} className="row">
           {columnsJSX}
         </div>
       );
@@ -80,39 +80,35 @@ class DetailSection extends React.Component {
 
     let bottomJSX = this.props.data.bottom.items.map((item, idx) => (
       <a key={idx} href={item.path} style={item.style}>
-        <img className={styles.bottomImg} src={item.icon} alt={item.desc} />
+        <img className="bottomImg" src={item.icon} alt={item.desc} />
       </a>
     ));
 
     let rightJSX = this.props.data.right.items.map((item, idx) => (
       <a key={idx} href={item.path}>
-        <img
-          className={styles.rightImg}
-          src={data.right.icon}
-          alt={item.desc}
-        />
+        <img className="rightImg" src={data.right.icon} alt={item.desc} />
       </a>
     ));
 
     return (
-      <div className={styles.detail}>
-        <div className={styles.left}>
-          <div className={styles.leftCenter}>
+      <div className="detail">
+        <div className="left">
+          <div className="leftCenter">
             {!data.left.hide && leftJSX}
             {!data.center.hide && (
-              <div className={styles.center} style={data.center.style}>
+              <div className="center" style={data.center.style}>
                 {centerJSX}
               </div>
             )}
           </div>
           {!data.bottom.hide && (
-            <div className={styles.leftBottom} style={data.bottom.style}>
+            <div className="leftBottom" style={data.bottom.style}>
               {bottomJSX}
             </div>
           )}
         </div>
         {!data.right.hide && (
-          <div className={styles.right} style={data.right.style}>
+          <div className="right" style={data.right.style}>
             {rightJSX}
           </div>
         )}

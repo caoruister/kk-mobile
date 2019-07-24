@@ -4,26 +4,26 @@ import qs from 'qs';
 
 import { Grid, WhiteSpace, Flex, WingBlank, NavBar, Icon } from 'antd-mobile';
 
-import BottomTabBar from './BottomTabBar';
-import Swiper from './Swiper';
-import GridSection from './GridSection';
-import ImagesSection from './ImagesSection';
-import MessagesSection from './MessagesSection';
-import DetailSection from './DetailSection';
-import ListSection from './ListSection';
-import RichText from './RichText';
-import DynamicSection from '../custom/DynamicSection';
-import CustomNavBar from './CustomNavBar';
+import BottomTabBar from 'components/BottomTabBar';
+import Swiper from 'components/Swiper';
+import GridSection from 'components/GridSection';
+import ImagesSection from 'components/ImagesSection';
+import MessagesSection from 'components/MessagesSection';
+import DetailSection from 'components/DetailSection';
+import ListSection from 'components/ListSection';
+import RichText from 'components/RichText';
+import DynamicSection from 'custom/DynamicSection';
+import CustomNavBar from 'components/CustomNavBar';
 
-import styles from './DynamicPage.module.css';
+import 'components/DynamicPage.less';
 
 import {
   WEB_CONTEXT,
   FILE_URL_PREFIX,
   _isWeiXinEnv,
   _setTitle
-} from '../common/Utils';
-import { getHome } from '../api/HomeAPI';
+} from 'common/Utils';
+import { getHome } from 'api/HomeAPI';
 
 class Section extends React.Component {
   render() {
@@ -151,9 +151,9 @@ class DynamicPage extends React.Component {
       <div>
         {!selectedTab && <CustomNavBar navTitle={navTitle} />}
         {!!backgroundImage && (
-          <img src={backgroundImage} className={styles.backgroundImg} />
+          <img src={backgroundImage} className="background-img" />
         )}
-        <div className={styles.pageBody}>{sectionsJSX}</div>
+        <div className="page-body">{sectionsJSX}</div>
         {selectedTab && <BottomTabBar selectedTab={selectedTab} page={this} />}
       </div>
     );

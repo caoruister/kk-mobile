@@ -4,6 +4,8 @@ import { createForm } from 'rc-form';
 
 import BottomTabBar from 'components/BottomTabBar';
 
+import { _callInterface } from 'api/CommonAPI';
+
 import backgroundIcon from 'assets/images/my_bg_pic.png';
 import avatarIcon from 'assets/images/default_avatar.png';
 
@@ -26,7 +28,9 @@ var styles = {
         margin: '59px 20px 0 20px',
         icon: {
           width: '63px',
-          height: '63px'
+          height: '63px',
+          borderRadius: '50%',
+          border: 'solid 1px #e3e3e5'
         },
         name: {
           marginLeft: '20px',
@@ -35,8 +39,8 @@ var styles = {
         }
       },
       card: {
-        margin: '33px 16px 0 16px',
-        padding: '20px 19px 26px 19px',
+        margin: '28px 16px 0 16px',
+        padding: '24px 19px 26px 19px',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -60,9 +64,49 @@ var styles = {
 };
 
 class UserInfo extends React.Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      cardNo: '',
+      cardTypeName: '',
+      name: '',
+      avatar: '',
+      callNo: '',
+      memberId: ''
+    };
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+    let oThis = this;
+    //
+    var interfaceName = 'getMyInfo'; // 接口名称
+    var params = {}; // 向接口提交的参数
+    _callInterface(interfaceName, params).then(res => {
+      if (res == null) {
+        return;
+      }
+      //
+      console.log('------------data-------------');
+      console.log(res);
+
+      if (oThis._isMounted) {
+        oThis.setState({
+          cardNo: res.cardNo,
+          cardTypeName: res.cardTypeName,
+          name: res.mName,
+          callNo: res.hotline,
+          avatar: res.tx,
+          memberId: res.memberId
+        });
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   render() {
@@ -72,20 +116,36 @@ class UserInfo extends React.Component {
           <div style={styles.body.header}>
             <img src={backgroundIcon} style={styles.body.header.icon} />
             <div style={styles.body.header.avatar}>
-              <img src={avatarIcon} style={styles.body.header.avatar.icon} />
-              <div style={styles.body.header.avatar.name}>尊贵的唐先生</div>
+              <img
+                src={this.state.avatar}
+                style={styles.body.header.avatar.icon}
+              />
+              <div style={styles.body.header.avatar.name}>
+                {this.state.name}
+              </div>
             </div>
-            <div style={styles.body.header.card}>
-              <div style={styles.body.header.card.name}>鹏程卡</div>
-              <div style={styles.body.header.card.number}>401****4546</div>
-            </div>
+            <a
+              style={styles.body.header.card}
+              href={
+                '/#/view/FF8080816BDE6699016BE0D6096602FF/' +
+                this.state.memberId +
+                '?title=会员信息'
+              }
+            >
+              <div style={styles.body.header.card.name}>
+                {this.state.cardTypeName}
+              </div>
+              <div style={styles.body.header.card.number}>
+                {this.state.cardNo}
+              </div>
+            </a>
           </div>
           <div style={styles.body.list}>
             <List.Item
               arrow="horizontal"
               onClick={() => {
                 this.props.history.push(
-                  '/view/FF8080816BFD6783016BFF3BB1B7024A/FF8080816C19D838016C1CB7C6A9026A?notNeedLogin=true'
+                  '/list/FF8080816BDE6699016BE0F26AB503BD?title=我的预订&MEMBER_FIELD_NAME=mName&VIEW_PAGE=ViewReserve'
                 );
               }}
             >
@@ -95,13 +155,13 @@ class UserInfo extends React.Component {
               arrow="horizontal"
               onClick={() => {
                 this.props.history.push(
-                  '/view/FF8080816BFD6783016BFF3BB1B7024A/FF8080816C19D838016C1CB7C6A9026A?notNeedLogin=true'
+                  '/add/FF8080816BDE6699016BE1089D93049B?title=用户反馈'
                 );
               }}
             >
               <div style={styles.body.list.title}>用户反馈</div>
             </List.Item>
-            <List.Item extra="4006233116" onClick={() => {}}>
+            <List.Item extra={this.state.callNo} onClick={() => {}}>
               <div style={styles.body.list.title}>在线客服</div>
             </List.Item>
           </div>

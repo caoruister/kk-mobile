@@ -74,7 +74,8 @@ class SectionItems extends React.Component {
                 </List.Item>
               ) : (
                 <img
-                  src={FILE_URL_PREFIX + field.value[0].thumbnail_url}
+                  key={field.fieldid + idx2}
+                  src={FILE_URL_PREFIX + field.value[0].url}
                   style={{ width: '100%' }}
                 />
               );
