@@ -42,6 +42,10 @@
       "git add"
     ]
   },
+  "theme": {
+    "brand-primary": "red",
+    "color-text-base":  "#333"
+  },
   "devDependencies": {
     "babel-plugin-import": "^1.12.0",
     "css-loader": "^3.1.0",

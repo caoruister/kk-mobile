@@ -12,6 +12,7 @@ import {
   Switch,
   Radio,
   Flex,
+  WhiteSpace,
   Toast
 } from 'antd-mobile';
 
@@ -300,24 +301,25 @@ class Sections extends React.Component {
             );
           } else if (field.type === 'X') {
             return (
-              <TextareaItem
-                {...getFieldProps(field.fieldid, {
-                  initialValue: field.value,
-                  onChange() {},
-                  rules: [
-                    {
-                      required: field.required,
-                      message: '请输入' + field.label
-                    }
-                  ]
-                })}
-                key={field.fieldid + idx2}
-                title={labelJSX}
-                placeholder={placeholderJSX}
-                disabled={field.readOnly}
-                rows={5}
-                count={100}
-              />
+              <div key={field.fieldid + idx2}>
+                {!field.hideLabel && <List.Item>{labelJSX}</List.Item>}
+                <TextareaItem
+                  {...getFieldProps(field.fieldid, {
+                    initialValue: field.value,
+                    onChange() {},
+                    rules: [
+                      {
+                        required: field.required,
+                        message: '请输入' + field.label
+                      }
+                    ]
+                  })}
+                  placeholder={placeholderJSX}
+                  disabled={field.readOnly}
+                  rows={5}
+                  count={100}
+                />
+              </div>
             );
           } else if (field.type === 'A') {
             //富文本
@@ -349,6 +351,7 @@ class Sections extends React.Component {
             let imageField = (
               <div key={field.fieldid + idx2}>
                 {!field.hideLabel && <List.Item>{labelJSX}</List.Item>}
+
                 <ImagePicker
                   {...getFieldProps(field.fieldid, {
                     initialValue: field.value,
@@ -366,6 +369,7 @@ class Sections extends React.Component {
                   selectable={field.value.length < 1}
                   multiple={false}
                 />
+                <WhiteSpace />
               </div>
             );
             return imageField;

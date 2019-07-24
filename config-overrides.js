@@ -7,9 +7,11 @@ const {
 
 module.exports = override(
     addDecoratorsLegacy(),
-    addLessLoader(),
-    fixBabelImports("babel-plugin-import", {
+    addLessLoader({
+        javascriptEnabled: true
+    }),
+    fixBabelImports("import", {
       libraryName: "antd-mobile",
-      style: "css"
+      style: true
     })
 );

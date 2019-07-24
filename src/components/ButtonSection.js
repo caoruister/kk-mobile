@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Button, WingBlank, Flex, Toast } from 'antd-mobile';
 
+import './ButtonSection.less';
+
 class ButtonSection extends React.Component {
   onClickHandler(onClick) {
     let page = this.props.page;
@@ -19,8 +21,7 @@ class ButtonSection extends React.Component {
           button.visible && (
             <Flex.Item key={button.id + idx}>
               <Button
-                type="primary"
-                style={{ marginRight: '4px', background: '#4182e6' }}
+                style={{ marginRight: '4px' }}
                 onClick={() => {
                   this.onClickHandler(button.events && button.events.onClick);
                 }}
@@ -34,8 +35,8 @@ class ButtonSection extends React.Component {
       buttons = (
         <Flex.Item>
           <Button
-            type="primary"
-            style={{ marginRight: '4px', background: '#4182e6' }}
+            className="section-button"
+            style={{ marginRight: '4px' }}
             onClick={() => {
               this.props.page.save();
             }}
