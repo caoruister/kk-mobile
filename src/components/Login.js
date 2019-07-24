@@ -162,9 +162,12 @@ class BasicInput extends React.Component {
   };
   setTime = () => {
     var that = this;
-    that.setState({
-      reGetButtonDisable: true
-    });
+
+    if (that._isMounted) {
+      that.setState({
+        reGetButtonDisable: true
+      });
+    }
     var currentTime = that.state.currentTime;
     let interval = setInterval(function() {
       currentTime--;
@@ -259,11 +262,6 @@ class BasicInput extends React.Component {
       //
       console.log(res);
       if (res.success === true) {
-        this.setState({
-          username: null,
-          password: null
-        });
-        //
         //	window.location.href = WEB_CONTEXT + '/#/My';
         this.props.history.push('/My');
       }
@@ -296,11 +294,6 @@ class BasicInput extends React.Component {
       //
       console.log(res);
       if (res.success === true) {
-        this.setState({
-          username: null,
-          password: null
-        });
-        //
         //	window.location.href = WEB_CONTEXT + '/#/My';
         this.props.history.push('/Home');
       }

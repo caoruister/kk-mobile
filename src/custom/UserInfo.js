@@ -1,10 +1,11 @@
 import React from 'react';
-import { Calendar, List, Button } from 'antd-mobile';
-import { createForm } from 'rc-form';
+import { List, Button, WhiteSpace, WingBlank } from 'antd-mobile';
 
 import BottomTabBar from 'components/BottomTabBar';
 
+import { logout } from 'api/LoginAPI';
 import { _callInterface } from 'api/CommonAPI';
+import { WEB_CONTEXT } from 'common/Utils';
 
 import backgroundIcon from 'assets/images/my_bg_pic.png';
 import avatarIcon from 'assets/images/default_avatar.png';
@@ -60,6 +61,13 @@ var styles = {
         padding: '10px 0 10px 0'
       }
     }
+  },
+
+  logout: {
+    backgroundColor: '#cc9e48',
+    borderRadius: '5px',
+    fontSize: '19px',
+    color: '#fff'
   }
 };
 
@@ -108,6 +116,22 @@ class UserInfo extends React.Component {
   componentWillUnmount() {
     this._isMounted = false;
   }
+
+  logout = () => {
+    logout().then(res => {
+      if (res == null || !res) {
+        window.location.href = WEB_CONTEXT + '/#/Login';
+        return;
+      }
+      //
+      console.log(res);
+    });
+    //
+    localStorage.removeItem('__token__');
+    localStorage.removeItem('__token__userName');
+    localStorage.removeItem('__orgid__');
+    window.location.href = WEB_CONTEXT + '/#/Login';
+  };
 
   render() {
     return (
@@ -166,6 +190,13 @@ class UserInfo extends React.Component {
             </List.Item>
           </div>
         </div>
+
+        <WhiteSpace size="lg" />
+        <WingBlank>
+          <Button style={styles.logout} onClick={this.logout}>
+            退出
+          </Button>
+        </WingBlank>
 
         <BottomTabBar selectedTab="a1" page={this} />
       </div>

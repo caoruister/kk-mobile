@@ -669,13 +669,12 @@ class ReserveRoom extends React.Component {
             </div>
           )}
           <div style={styles.body.actions}>
-            <Button
-              inline
+            <a
               style={styles.body.actions.contact}
-              onClick={this.contact}
+              href={'tel:' + this.state.phone}
             >
-              {this.state.phone}
-            </Button>
+              联系客服
+            </a>
             <Button
               inline
               style={styles.body.actions.reserve}
