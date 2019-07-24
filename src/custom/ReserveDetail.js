@@ -244,7 +244,8 @@ class ReserveDetail extends React.Component {
       badyNumber: this.state.children,
       yyrzts: this.state.days,
       remark: this.state.remark,
-      pickUpService: this.state.needCarService
+      pickUpService: this.state.needCarService,
+      flatType: this.state.flatType
     }; // 向接口提交的参数
     _callInterface(interfaceName, params).then(res => {
       if (res == null) {
