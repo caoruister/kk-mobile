@@ -35,7 +35,7 @@ var styles = {
         }
       },
       card: {
-        margin: '27px 16px 0 16px',
+        margin: '33px 16px 0 16px',
         padding: '20px 19px 26px 19px',
         display: 'flex',
         justifyContent: 'space-between',
@@ -50,8 +50,12 @@ var styles = {
         }
       }
     },
-
-    card: {}
+    list: {
+      marginTop: '5px',
+      title: {
+        padding: '10px 0 10px 0'
+      }
+    }
   }
 };
 
@@ -76,8 +80,33 @@ class UserInfo extends React.Component {
               <div style={styles.body.header.card.number}>401****4546</div>
             </div>
           </div>
-          <div style={styles.body.list} />
+          <div style={styles.body.list}>
+            <List.Item
+              arrow="horizontal"
+              onClick={() => {
+                this.props.history.push(
+                  '/view/FF8080816BFD6783016BFF3BB1B7024A/FF8080816C19D838016C1CB7C6A9026A?notNeedLogin=true'
+                );
+              }}
+            >
+              <div style={styles.body.list.title}>我的预定</div>
+            </List.Item>
+            <List.Item
+              arrow="horizontal"
+              onClick={() => {
+                this.props.history.push(
+                  '/view/FF8080816BFD6783016BFF3BB1B7024A/FF8080816C19D838016C1CB7C6A9026A?notNeedLogin=true'
+                );
+              }}
+            >
+              <div style={styles.body.list.title}>用户反馈</div>
+            </List.Item>
+            <List.Item extra="4006233116" onClick={() => {}}>
+              <div style={styles.body.list.title}>在线客服</div>
+            </List.Item>
+          </div>
         </div>
+
         <BottomTabBar selectedTab="a1" page={this} />
       </div>
     );
