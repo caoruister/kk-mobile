@@ -148,7 +148,7 @@ var styles = {
       color: '#ffe3b4',
       left: {
         display: 'flex',
-        justifyContent: 'flex-start',
+        justifyContent: 'space-between',
         alignItems: 'center',
         flex: '1',
         color: '#ffe3b4',
@@ -159,19 +159,21 @@ var styles = {
         },
         leftIcon: {
           width: '35px',
-          height: '35px',
-          marginLeft: '37px'
+          height: '35px'
+          //marginLeft: '37px'
         }
       },
       center: {
         width: '1px',
         height: '30px',
         backgroundColor: '#838596',
-        opacity: '0.36'
+        opacity: '0.36',
+        marginLeft: '15px',
+        marginRight: '15px'
       },
       right: {
         display: 'flex',
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
         alignItems: 'center',
         flex: '1',
         color: '#ffe3b4',
@@ -182,8 +184,8 @@ var styles = {
         },
         rightIcon: {
           width: '35px',
-          height: '35px',
-          marginLeft: '37px'
+          height: '35px'
+          //marginLeft: '37px'
         }
       }
     }
@@ -237,7 +239,7 @@ class HomeSection extends React.Component {
     return (
       <div style={styles.body}>
         <div style={styles.body.topMenu}>
-          <div>海南省</div>
+          <div>海南</div>
           <img src={arrow} style={styles.body.topMenu.locationIcon} />
           <div style={styles.body.topMenu.search}>
             <img src={search} style={styles.body.topMenu.search.searchIcon} />

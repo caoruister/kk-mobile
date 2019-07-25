@@ -71,6 +71,11 @@ var styles = {
       marginTop: '5px',
       title: {
         padding: '10px 0 10px 0'
+      },
+      callNo: {
+        backgroundColor: '#fff',
+        fontSize: '18px',
+        color: '#6a646d'
       }
     }
   },
@@ -94,7 +99,7 @@ class UserInfo extends React.Component {
       showCardNo: '',
       cardTypeName: '',
       name: '',
-      avatar: avatarIcon,
+      avatar: '',
       callNo: '',
       memberId: ''
     };
@@ -159,7 +164,7 @@ class UserInfo extends React.Component {
             <img src={backgroundIcon} style={styles.body.header.icon} />
             <div style={styles.body.header.avatar}>
               <img
-                src={this.state.avatar}
+                src={this.state.avatar || avatarIcon}
                 style={styles.body.header.avatar.icon}
               />
               <div style={styles.body.header.avatar.name}>
@@ -204,7 +209,17 @@ class UserInfo extends React.Component {
             >
               <div style={styles.body.list.title}>用户反馈</div>
             </List.Item>
-            <List.Item extra={this.state.callNo} onClick={() => {}}>
+            <List.Item
+              extra={
+                <a
+                  style={styles.body.list.callNo}
+                  href={'tel:' + this.state.callNo}
+                >
+                  {this.state.callNo}
+                </a>
+              }
+              onClick={() => {}}
+            >
               <div style={styles.body.list.title}>在线客服</div>
             </List.Item>
           </div>

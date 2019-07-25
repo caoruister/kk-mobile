@@ -355,8 +355,8 @@ class ReserveRoom extends React.Component {
           maxChildren: res.etrzsxz,
           banners: banners,
           roomIntroduce: roomIntroduce,
-          illustration: res.orgCPolicy,
-          refund: res.orgRPolicy,
+          illustration: res.orgRPolicy,
+          refund: res.orgCPolicy,
           phone: res.mPhone
         });
       }
@@ -497,7 +497,7 @@ class ReserveRoom extends React.Component {
           <div style={styles.body.detail}>
             <div style={styles.body.detail.style}>
               <div>
-                海南 {this.state.flatName} {this.state.flatType}
+                {this.state.flatName} {this.state.flatType}
               </div>
             </div>
             <div style={styles.body.detail.address}>
@@ -520,13 +520,7 @@ class ReserveRoom extends React.Component {
                   <div>入住日期</div>
                   <div
                     style={styles.body.checkin.reserve.date.in.day}
-                    onClick={() => {
-                      document.getElementsByTagName('body')[0].style.overflowY =
-                        'hidden';
-                      this.setState({
-                        show: true
-                      });
-                    }}
+                    onClick={() => {}}
                   >
                     <span>{this.state.startTime || '请选择入住日期'}</span>
                     <span
@@ -654,7 +648,7 @@ class ReserveRoom extends React.Component {
               <div style={styles.body.append.remark.textarea}>
                 <TextareaItem
                   onChange={this.onChangeRemark}
-                  rows={5}
+                  rows={2}
                   count={46}
                 />
               </div>
@@ -687,6 +681,7 @@ class ReserveRoom extends React.Component {
           <Calendar
             {...this.state.config}
             visible={this.state.show}
+            showShortcut={false}
             onCancel={this.onCancel}
             onConfirm={this.onConfirm}
             onSelectHasDisableDate={this.onSelectHasDisableDate}

@@ -149,8 +149,15 @@ class BasicInput extends React.Component {
     var that = this;
     if (this.state.reGetButtonDisable) return;
 
+    let phone = this.state.phoneNum;
+    if (!phone) {
+      Toast.info('请输入11位手机号码');
+      document.getElementById('idOfPhoneNum').focus();
+      return;
+    }
+
     let params = {
-      phone: this.state.phoneNum
+      phone: phone
     };
     sendSMS(params).then(res => {
       console.log(res);
@@ -340,6 +347,8 @@ class BasicInput extends React.Component {
             <InputItem
               {...getFieldProps('phoneNum')}
               placeholder="11位手机号码"
+              type="number"
+              maxLength="11"
               onChange={this.onChangeOfPhoneNum}
               value={this.state.phoneNum}
               id="idOfPhoneNum"
