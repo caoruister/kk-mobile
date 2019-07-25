@@ -6,8 +6,6 @@ import CustomNavBar from 'components/CustomNavBar';
 
 import { _callInterface } from 'api/CommonAPI';
 
-import cat from 'assets/images/cat.jpg';
-
 var styles = {
   body: {
     roomImg: {

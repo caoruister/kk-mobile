@@ -4,8 +4,6 @@ import { Result, Icon, Button, WingBlank, WhiteSpace } from 'antd-mobile';
 
 import CustomNavBar from 'components/CustomNavBar';
 
-import cat from 'assets/images/cat.jpg';
-
 var styles = {
   body: {
     resultIcon: {

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Button, WingBlank, Flex, Toast } from 'antd-mobile';
 
-import './ButtonSection.less';
+import 'components/ButtonSection.less';
 
 class ButtonSection extends React.Component {
   onClickHandler(onClick) {

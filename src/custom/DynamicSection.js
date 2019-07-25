@@ -9,7 +9,7 @@ import Strategy from 'custom/Strategy';
 class DynamicSection extends React.Component {
   render() {
     let sectionName = this.props.sectionName;
-    let section = <Strategy page={this.props.page} />;
+    let section = null;
     if (
       'DSFF8080816BD45A82016BD47899DF0103_DS011F8316706B4F32BA9D3F72D3CA6CC0' ==
       sectionName

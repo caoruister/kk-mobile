@@ -300,6 +300,9 @@ class BasicInput extends React.Component {
   };
   render() {
     const { getFieldProps } = this.props.form;
+
+    console.log(this.state.loginType);
+
     return (
       <div>
         {this.state.loginType == 1 && (
@@ -332,39 +335,44 @@ class BasicInput extends React.Component {
           </List>
         )}
 
-        <List>
-          <InputItem
-            {...getFieldProps('phoneNum')}
-            placeholder="11位手机号码"
-            onChange={this.onChangeOfPhoneNum}
-            value={this.state.phoneNum}
-            id="idOfPhoneNum"
-          >
-            <img style={{ margin: '0 auto', display: 'block' }} src={mobile} />
-          </InputItem>
-          <InputItem
-            {...getFieldProps('smsCode')}
-            type="number"
-            placeholder="短信验证码"
-            onChange={this.onChangeOfSMSCode}
-            value={this.state.smsCode}
-            id="idOfSMSCode"
-            extra={
-              <a
-                disabled={this.state.reGetButtonDisable}
-                onClick={this.getCode}
-                style={styles.getCode}
-              >
-                {this.state.time}
-              </a>
-            }
-          >
-            <img
-              style={{ margin: '0 auto', display: 'block' }}
-              src={password}
-            />
-          </InputItem>
-        </List>
+        {this.state.loginType == 2 && (
+          <List>
+            <InputItem
+              {...getFieldProps('phoneNum')}
+              placeholder="11位手机号码"
+              onChange={this.onChangeOfPhoneNum}
+              value={this.state.phoneNum}
+              id="idOfPhoneNum"
+            >
+              <img
+                style={{ margin: '0 auto', display: 'block' }}
+                src={mobile}
+              />
+            </InputItem>
+            <InputItem
+              {...getFieldProps('smsCode')}
+              type="number"
+              placeholder="短信验证码"
+              onChange={this.onChangeOfSMSCode}
+              value={this.state.smsCode}
+              id="idOfSMSCode"
+              extra={
+                <a
+                  disabled={this.state.reGetButtonDisable}
+                  onClick={this.getCode}
+                  style={styles.getCode}
+                >
+                  {this.state.time}
+                </a>
+              }
+            >
+              <img
+                style={{ margin: '0 auto', display: 'block' }}
+                src={password}
+              />
+            </InputItem>
+          </List>
+        )}
 
         <WingBlank>
           <Button

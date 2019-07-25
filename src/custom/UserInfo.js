@@ -24,7 +24,8 @@ var styles = {
         zIndex: '-1',
         cursor: 'zoom-in',
         width: '100%',
-        opacity: '1'
+        opacity: '1',
+        height: '221px'
       },
       avatar: {
         display: 'flex',

@@ -17,7 +17,7 @@ import {
   Toast
 } from 'antd-mobile';
 
-import './DetailSection.less';
+import 'components/DetailSection.less';
 
 class DetailSection extends React.Component {
   render() {
