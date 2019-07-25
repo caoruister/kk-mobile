@@ -10,6 +10,10 @@ import { WEB_CONTEXT } from 'common/Utils';
 import backgroundIcon from 'assets/images/my_bg_pic.png';
 import avatarIcon from 'assets/images/default_avatar.png';
 
+const iconSee =
+  process.env.REACT_APP_FILE_URL_PREFIX +
+  'file?getfile=402883B86BD1787A016BD1787A120000/mobile/images/home_message.png';
+
 var styles = {
   body: {
     header: {
@@ -51,7 +55,14 @@ var styles = {
         },
         number: {
           fontSize: '15px',
-          color: '#fff'
+          color: '#fff',
+          display: 'flex',
+          alignItems: 'center',
+          view: {
+            marginLeft: '11px',
+            width: '15px',
+            height: '10px'
+          }
         }
       }
     },
@@ -78,9 +89,11 @@ class UserInfo extends React.Component {
     super(props);
     this.state = {
       cardNo: '',
+      maskCardNo: '',
+      showCardNo: '',
       cardTypeName: '',
       name: '',
-      avatar: '',
+      avatar: avatarIcon,
       callNo: '',
       memberId: ''
     };
@@ -100,9 +113,13 @@ class UserInfo extends React.Component {
       console.log('------------data-------------');
       console.log(res);
 
+      let cardNo = res.cardNo;
+      let maskCardNo = cardNo.slice(0, 3) + '****' + cardNo.slice(7);
+
       if (oThis._isMounted) {
         oThis.setState({
-          cardNo: res.cardNo,
+          cardNo: cardNo,
+          maskCardNo: maskCardNo,
           cardTypeName: res.cardTypeName,
           name: res.mName,
           callNo: res.hotline,
@@ -160,7 +177,8 @@ class UserInfo extends React.Component {
                 {this.state.cardTypeName}
               </div>
               <div style={styles.body.header.card.number}>
-                {this.state.cardNo}
+                {!this.state.showCardNo && <span>{this.state.maskCardNo}</span>}
+                {this.state.showCardNo && <span>{this.state.cardNo}</span>}
               </div>
             </a>
           </div>

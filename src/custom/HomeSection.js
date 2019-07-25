@@ -196,7 +196,9 @@ class HomeSection extends React.Component {
   state = {
     cardTypeName: '',
     cardNo: '',
-    vipCard: ''
+    vipCard: '',
+    maskCardNo: '',
+    showCardNo: false
   };
 
   componentDidMount() {
@@ -213,10 +215,14 @@ class HomeSection extends React.Component {
       console.log('------------data-------------');
       console.log(res);
 
+      let cardNo = res.cardNo;
+      let maskCardNo = cardNo.slice(0, 3) + '****' + cardNo.slice(7);
+
       if (oThis._isMounted) {
         oThis.setState({
           cardTypeName: res.cardTypeName,
-          cardNo: res.cardNo,
+          cardNo: cardNo,
+          maskCardNo: maskCardNo,
           vipCard: res.huiYuanQuanYiRooter
         });
       }
@@ -246,8 +252,17 @@ class HomeSection extends React.Component {
             会员
           </div>
           <div style={styles.body.welcome.cardnum}>
-            <span>{this.state.cardNo}</span>
-            <img src={iconSee} style={styles.body.welcome.cardnum.view} />
+            {!this.state.showCardNo && <span>{this.state.maskCardNo}</span>}
+            {this.state.showCardNo && <span>{this.state.cardNo}</span>}
+            <img
+              src={iconSee}
+              style={styles.body.welcome.cardnum.view}
+              onClick={() => {
+                this.setState({
+                  showCardNo: true
+                });
+              }}
+            />
           </div>
           <div style={styles.body.welcome.desc}>
             <div style={styles.body.welcome.desc.first}>
