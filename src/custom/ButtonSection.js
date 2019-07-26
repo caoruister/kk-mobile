@@ -18,18 +18,14 @@ var styles = {
 };
 
 class ButtonSection extends React.Component {
-  onZsyd = () => {
+  goReserve = () => {
     console.log(this.props.page.props);
-    //this.props.page.props.history.push(
-    //  '/Add/FF8080816BDE6699016BE0F26AB503BD?layoutid=FF8080816BEBAFB4016BEBE0BBD4008E'
-    //);
-
     this.props.page.props.history.push('/ReserveRoom');
   };
   render() {
     return (
       <div style={styles.buttonArea}>
-        <Button style={styles.buttonArea.button} onClick={this.onZsyd}>
+        <Button style={styles.buttonArea.button} onClick={this.goReserve}>
           住宿预订
         </Button>
       </div>

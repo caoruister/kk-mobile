@@ -46,7 +46,8 @@ class Strategy extends React.Component {
       bannerTypeName: title
     }; // 向接口提交的参数
     _callInterface(interfaceName, params).then(res => {
-      if (res == null) {
+      if (!res) {
+        this.props.history.push('/Login');
         return;
       }
       //

@@ -246,7 +246,8 @@ class ReserveDetail extends React.Component {
       flatType: this.state.flatType
     }; // 向接口提交的参数
     _callInterface(interfaceName, params).then(res => {
-      if (res == null) {
+      if (!res) {
+        this.props.history.push('/Login');
         return;
       }
       //
@@ -267,7 +268,7 @@ class ReserveDetail extends React.Component {
           <div style={styles.body.detail}>
             <div style={styles.body.detail.style}>
               <div>
-                海南 {this.state.flatName} {this.state.flatType}
+                {this.state.flatName} {this.state.flatType}
               </div>
             </div>
             <div style={styles.body.checkin.reserve}>

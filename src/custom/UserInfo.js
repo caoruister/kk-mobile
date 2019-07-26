@@ -112,7 +112,7 @@ class UserInfo extends React.Component {
     var interfaceName = 'getMyInfo'; // 接口名称
     var params = {}; // 向接口提交的参数
     _callInterface(interfaceName, params).then(res => {
-      if (res == null) {
+      if (!res) {
         return;
       }
       //

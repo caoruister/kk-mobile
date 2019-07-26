@@ -20,6 +20,8 @@ import { createForm } from 'rc-form';
 import { login, logout, sendSMS, loginBySMS } from '../api/LoginAPI';
 import { WEB_CONTEXT, LOGIN_TYPE } from '../common/Utils';
 
+import 'components/Login.less';
+
 import loginImg from '../assets/images/logo.png';
 import mobile from '../assets/images/mobile.png';
 import password from '../assets/images/password.png';
@@ -351,6 +353,7 @@ class BasicInput extends React.Component {
               maxLength="11"
               onChange={this.onChangeOfPhoneNum}
               value={this.state.phoneNum}
+              className="login-input"
               id="idOfPhoneNum"
             >
               <img
@@ -364,6 +367,7 @@ class BasicInput extends React.Component {
               placeholder="短信验证码"
               onChange={this.onChangeOfSMSCode}
               value={this.state.smsCode}
+              className="login-input"
               id="idOfSMSCode"
               extra={
                 <a

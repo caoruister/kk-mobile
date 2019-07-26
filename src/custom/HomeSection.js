@@ -210,7 +210,8 @@ class HomeSection extends React.Component {
     var interfaceName = 'getMemberCardInfo'; // 接口名称
     var params = {}; // 向接口提交的参数
     _callInterface(interfaceName, params).then(res => {
-      if (res == null) {
+      if (!res) {
+        this.props.page.props.history.push('/Login');
         return;
       }
       //

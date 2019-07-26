@@ -150,7 +150,7 @@ class Add extends React.Component {
       //notNeedLogin: notNeedLogin,
       //layoutid: layoutid
     }).then(res => {
-      if (res == null || !res) {
+      if (!res) {
         //window.location.href = WEB_CONTEXT + '/#/Login';
         this.props.history.push('/Login');
         return;
