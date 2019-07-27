@@ -412,7 +412,9 @@ class ReserveRoom extends React.Component {
           roomIntroduce: roomIntroduce,
           illustration: res.orgRPolicy,
           refund: res.orgCPolicy,
-          phone: res.mPhone
+          phone: res.mPhone,
+          contactName: res.mName,
+          contactMobile: res.mPhone
         });
       }
     });
