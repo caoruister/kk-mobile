@@ -70,7 +70,8 @@ var styles = {
           border: 'none',
           fontSize: '16px',
           color: '#fff',
-          backgroundColor: '#464646'
+          backgroundColor: '#464646',
+          width: '140px'
         },
         closeIcon: {
           width: '24px',
@@ -148,7 +149,7 @@ var styles = {
     },
     quick: {
       display: 'flex',
-      margin: '137px 20px 0 20px',
+      margin: '20px 20px 0 20px',
       padding: '6px 17px 6px 17px',
       borderRadius: '5px',
       border: 'solid 1px rgb(197, 165, 103, .36)',
@@ -221,16 +222,19 @@ class HomeSection extends React.Component {
     var interfaceName = 'getMemberCardInfo'; // 接口名称
     var params = {}; // 向接口提交的参数
     _callInterface(interfaceName, params).then(res => {
-      if (!res) {
-        this.props.page.props.history.push('/Login');
-        return;
-      }
       //
       console.log('------------data-------------');
       console.log(res);
 
+      if (res == null) {
+        this.props.page.props.history.push('/Login');
+        return;
+      }
+
       let cardNo = res.cardNo;
-      let maskCardNo = cardNo.slice(0, 3) + '****' + cardNo.slice(7);
+      let maskCardNo = !!cardNo
+        ? cardNo.slice(0, 3) + '****' + cardNo.slice(7)
+        : '';
 
       if (oThis._isMounted) {
         oThis.setState({

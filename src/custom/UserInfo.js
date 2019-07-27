@@ -36,7 +36,8 @@ var styles = {
           width: '63px',
           height: '63px',
           borderRadius: '50%',
-          border: 'solid 1px #e3e3e5'
+          border: 'solid 1px #e3e3e5',
+          backgroundColor: '#282828'
         },
         name: {
           marginLeft: '20px',
@@ -112,15 +113,19 @@ class UserInfo extends React.Component {
     var interfaceName = 'getMyInfo'; // 接口名称
     var params = {}; // 向接口提交的参数
     _callInterface(interfaceName, params).then(res => {
-      if (!res) {
-        return;
-      }
       //
       console.log('------------data-------------');
       console.log(res);
 
+      if (res == null) {
+        this.props.history.push('/Login');
+        return;
+      }
+
       let cardNo = res.cardNo;
-      let maskCardNo = cardNo.slice(0, 3) + '****' + cardNo.slice(7);
+      let maskCardNo = !!cardNo
+        ? cardNo.slice(0, 3) + '****' + cardNo.slice(7)
+        : '';
 
       if (oThis._isMounted) {
         oThis.setState({

@@ -1,5 +1,12 @@
 import React from 'react';
-import { TextareaItem, Calendar, List, Button, Stepper } from 'antd-mobile';
+import {
+  TextareaItem,
+  Calendar,
+  List,
+  Button,
+  Stepper,
+  InputItem
+} from 'antd-mobile';
 import { createForm } from 'rc-form';
 
 import CustomNavBar from 'components/CustomNavBar';
@@ -161,7 +168,7 @@ var styles = {
         text: {
           display: 'flex',
           adult: {
-            color: '#cc9e48'
+            //color: '#cc9e48'
           },
           children: {
             marginLeft: '10px'
@@ -198,6 +205,23 @@ var styles = {
           fontSize: '16px',
           color: '#838596'
         }
+      }
+    },
+    person: {
+      color: '#6a646d',
+      backgroundColor: '#fff',
+      marginTop: '5px',
+      contact: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '16px 15px'
+      },
+      mobile: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '16px 15px'
       }
     },
     append: {
@@ -332,7 +356,10 @@ class ReserveRoom extends React.Component {
 
       illustration: '',
       refund: '',
-      phone: ''
+      phone: '',
+
+      contactName: '',
+      contactMobile: ''
     };
   }
 
@@ -351,13 +378,14 @@ class ReserveRoom extends React.Component {
     var interfaceName = 'getInfoForOrding'; // 接口名称
     var params = {}; // 向接口提交的参数
     _callInterface(interfaceName, params).then(res => {
-      if (!res) {
-        this.props.history.push('/Login');
-        return;
-      }
       //
       console.log('------------data-------------');
       console.log(res);
+
+      if (res == null) {
+        this.props.history.push('/Login');
+        return;
+      }
 
       //房型轮播图
       let banners = (res.rPic || []).map(pic => {
@@ -467,7 +495,9 @@ class ReserveRoom extends React.Component {
       remark,
       illustration,
       refund,
-      phone
+      phone,
+      contactName,
+      contactMobile
     } = this.state;
 
     if (!startTime) {
@@ -498,7 +528,9 @@ class ReserveRoom extends React.Component {
         remark,
         illustration,
         refund,
-        phone
+        phone,
+        contactName,
+        contactMobile
       })
     );
 
@@ -644,6 +676,42 @@ class ReserveRoom extends React.Component {
             </div>
           </div>
 
+          <div style={styles.body.person}>
+            <div style={styles.body.person.contact}>
+              <div>联系人</div>
+              <div>
+                <InputItem
+                  placeholder="请输入联系人"
+                  className="contact-person"
+                  value={this.state.contactName}
+                  onChange={v => {
+                    this.setState({
+                      contactName: v
+                    });
+                  }}
+                />
+              </div>
+            </div>
+            <div style={styles.body.append.line} />
+            <div style={styles.body.person.mobile}>
+              <div>手机号</div>
+              <div>
+                <InputItem
+                  type="number"
+                  maxLength="11"
+                  placeholder="请输入手机号"
+                  className="contact-person"
+                  value={this.state.contactMobile}
+                  onChange={v => {
+                    this.setState({
+                      contactMobile: v
+                    });
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+
           <div style={styles.body.append}>
             <div style={styles.body.append.carservice}>
               <div>接车服务</div>
@@ -687,6 +755,7 @@ class ReserveRoom extends React.Component {
                   style={styles.body.append.remark.textarea.content}
                   className="remark-content"
                   placeholder="可输入46个字"
+                  value={this.state.remark}
                   rows={2}
                   count={46}
                 />

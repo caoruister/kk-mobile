@@ -54,6 +54,12 @@ var styles = {
           color: '#36333a'
         }
       },
+      remark: {
+        padding: '16px 15px',
+        content: {
+          marginTop: '10px'
+        }
+      },
       line: {
         width: '100%',
         height: '1px',
@@ -114,7 +120,7 @@ var styles = {
         text: {
           display: 'flex',
           adult: {
-            color: '#cc9e48'
+            //color: '#cc9e48'
           },
           children: {
             marginLeft: '10px'
@@ -157,7 +163,7 @@ var styles = {
         justifyContent: 'space-between',
         padding: '16px 15px',
         checkbox: {
-          color: '#cc9e48',
+          color: '#404e6d',
           display: 'flex',
           yes: {
             padding: '13px 17px',
@@ -242,7 +248,10 @@ class ViewReserve extends React.Component {
       flatType: '',
       flatAddress: '',
 
-      remark: ''
+      remark: '',
+
+      contactName: '',
+      contactMobile: ''
     };
   }
 
@@ -267,13 +276,15 @@ class ViewReserve extends React.Component {
       id: id
     }; // 向接口提交的参数
     _callInterface(interfaceName, params).then(res => {
-      if (!res) {
-        this.props.history.push('/Login');
-        return;
-      }
       //
       console.log('------------data-------------');
       console.log(res);
+
+      if (res == null) {
+        this.props.history.push('/Login');
+        return;
+      }
+
       //
       oThis.setState({
         startTime: res.dueStartDate,
@@ -288,7 +299,9 @@ class ViewReserve extends React.Component {
         phone: res.duePhone,
         flatName: res.hName,
         flatType: res.rName,
-        holderName: res.mName
+        holderName: res.mName,
+        contactName: res.ddlxr,
+        contactMobile: res.ddlxdh
       });
     });
   };
@@ -355,8 +368,13 @@ class ViewReserve extends React.Component {
             </div>
             <div style={styles.body.checkin.line} />
             <div style={styles.body.checkin.person}>
+              <div>联系人</div>
+              <div>{this.state.contactName}</div>
+            </div>
+            <div style={styles.body.checkin.line} />
+            <div style={styles.body.checkin.person}>
               <div>联系手机</div>
-              <div>{this.state.phone}</div>
+              <div>{this.state.contactMobile}</div>
             </div>
             <div style={styles.body.checkin.line} />
             <div style={styles.body.checkin.person}>
@@ -365,9 +383,9 @@ class ViewReserve extends React.Component {
               {!this.state.needCarService && <div>不需要</div>}
             </div>
             <div style={styles.body.checkin.line} />
-            <div style={styles.body.checkin.person}>
+            <div style={styles.body.checkin.remark}>
               <div>备注</div>
-              <div style={styles.body.append.remark.textarea}>
+              <div style={styles.body.checkin.remark.content}>
                 {this.state.remark}
               </div>
             </div>
