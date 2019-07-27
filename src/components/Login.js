@@ -271,7 +271,7 @@ class BasicInput extends React.Component {
       console.log(res);
       if (res.success === true) {
         //	window.location.href = WEB_CONTEXT + '/#/My';
-        this.props.history.push('/My');
+        this.props.history.replace('/My');
       }
     });
   };
@@ -303,7 +303,7 @@ class BasicInput extends React.Component {
       console.log(res);
       if (res.success === true) {
         //	window.location.href = WEB_CONTEXT + '/#/My';
-        this.props.history.push('/Home');
+        this.props.history.replace('/Home');
       }
     });
   };

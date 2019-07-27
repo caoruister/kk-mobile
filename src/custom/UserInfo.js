@@ -96,7 +96,7 @@ class UserInfo extends React.Component {
     this.state = {
       cardNo: '',
       maskCardNo: '',
-      showCardNo: '',
+      showCardNo: true,
       cardTypeName: '',
       name: '',
       avatar: '',
@@ -197,7 +197,7 @@ class UserInfo extends React.Component {
                 );
               }}
             >
-              <div style={styles.body.list.title}>我的预定</div>
+              <div style={styles.body.list.title}>我的预盯</div>
             </List.Item>
             <List.Item
               arrow="horizontal"

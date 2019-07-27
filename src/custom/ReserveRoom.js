@@ -19,6 +19,12 @@ import { _callInterface } from 'api/CommonAPI';
 import enUS from 'antd-mobile/lib/calendar/locale/en_US';
 import zhCN from 'antd-mobile/lib/calendar/locale/zh_CN';
 
+import addressIcon from 'assets/images/icon_location.png';
+
+//const addressIcon =
+//    process.env.REACT_APP_FILE_URL_PREFIX +
+//    'file?getfile=402883B86BD1787A016BD1787A120000/mobile/images/icon_location.png';
+
 const extra = {};
 
 const now = new Date();
@@ -52,9 +58,19 @@ var styles = {
         alignItems: 'center'
       },
       address: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
         fontSize: '15px',
         color: '#36333a',
-        marginTop: '15px'
+        marginTop: '15px',
+        icon: {
+          width: '12px',
+          height: '15px'
+        },
+        text: {
+          marginLeft: '11px'
+        }
       },
       tags: {
         fontSize: '12px',
@@ -198,7 +214,9 @@ var styles = {
           color: '#cc9e48',
           display: 'flex',
           noSelected: {
-            padding: '13px 17px',
+            width: '80px',
+            textAlign: 'center',
+            padding: '13px 0',
             backgroundColor: '#fff',
             color: '#cc9e48',
             borderRadius: '5px',
@@ -207,7 +225,9 @@ var styles = {
             cursor: 'pointer'
           },
           selected: {
-            padding: '13px 17px',
+            width: '80px',
+            textAlign: 'center',
+            padding: '13px 0',
             backgroundColor: '#cc9e48',
             color: '#fff',
             borderRadius: '5px',
@@ -225,7 +245,8 @@ var styles = {
       remark: {
         padding: '16px 15px',
         textarea: {
-          marginTop: '10px'
+          marginTop: '10px',
+          content: {}
         }
       }
     },
@@ -241,27 +262,32 @@ var styles = {
       display: 'flex',
       backgroundColor: '#fff',
       padding: '20px 15px',
-      justifyContent: 'space-around',
+      justifyContent: 'space-between',
       fontSize: '18px',
       contact: {
+        textAlign: 'center',
+        flex: '1',
         backgroundColor: '#fff',
         border: 'solid 1px #cc9e48',
         borderRadius: '5px',
-        padding: '0 48px',
+        //padding: '0 48px',
         fontSize: '19px',
         color: '#cc9e48',
         height: '60px',
         lineHeight: '60px'
       },
       reserve: {
+        textAlign: 'center',
+        flex: '1',
         backgroundColor: '#cc9e48',
         border: 'solid 1px #cc9e48',
         borderRadius: '5px',
-        padding: '0 48px',
+        //padding: '0 48px',
         fontSize: '19px',
         color: '#fff',
         height: '60px',
-        lineHeight: '60px'
+        lineHeight: '60px',
+        marginLeft: '14px'
       }
     }
   }
@@ -502,7 +528,10 @@ class ReserveRoom extends React.Component {
               </div>
             </div>
             <div style={styles.body.detail.address}>
-              <div>{this.state.flatAddress}</div>
+              <img src={addressIcon} style={styles.body.detail.address.icon} />
+              <div style={styles.body.detail.address.text}>
+                {this.state.flatAddress}
+              </div>
             </div>
             <div style={styles.body.detail.tags}>{tags}</div>
           </div>
@@ -521,7 +550,13 @@ class ReserveRoom extends React.Component {
                   <div>入住日期</div>
                   <div
                     style={styles.body.checkin.reserve.date.in.day}
-                    onClick={() => {}}
+                    onClick={() => {
+                      document.getElementsByTagName('body')[0].style.overflowY =
+                        'hidden';
+                      this.setState({
+                        show: true
+                      });
+                    }}
                   >
                     <span>{this.state.startTime || '请选择入住日期'}</span>
                     <span
@@ -649,6 +684,9 @@ class ReserveRoom extends React.Component {
               <div style={styles.body.append.remark.textarea}>
                 <TextareaItem
                   onChange={this.onChangeRemark}
+                  style={styles.body.append.remark.textarea.content}
+                  className="remark-content"
+                  placeholder="可输入46个字"
                   rows={2}
                   count={46}
                 />
@@ -670,13 +708,9 @@ class ReserveRoom extends React.Component {
             >
               联系客服
             </a>
-            <Button
-              inline
-              style={styles.body.actions.reserve}
-              onClick={this.reserve}
-            >
+            <a style={styles.body.actions.reserve} onClick={this.reserve}>
               立即预定
-            </Button>
+            </a>
           </div>
 
           <Calendar

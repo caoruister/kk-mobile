@@ -163,7 +163,8 @@ var styles = {
           marginLeft: '11px'
         },
         content: {
-          marginTop: '11px'
+          marginTop: '11px',
+          fontSize: '13px'
         }
       },
       refund: {
@@ -181,24 +182,29 @@ var styles = {
       justifyContent: 'space-around',
       fontSize: '18px',
       contact: {
+        textAlign: 'center',
+        flex: '1',
         backgroundColor: '#fff',
         border: 'solid 1px #cc9e48',
         borderRadius: '5px',
-        padding: '0 48px',
+        //padding: '0 48px',
         fontSize: '19px',
         color: '#cc9e48',
         height: '60px',
         lineHeight: '60px'
       },
       reserve: {
+        textAlign: 'center',
+        flex: '1',
         backgroundColor: '#cc9e48',
         border: 'solid 1px #cc9e48',
         borderRadius: '5px',
-        padding: '0 48px',
+        //padding: '0 48px',
         fontSize: '19px',
         color: '#fff',
         height: '60px',
-        lineHeight: '60px'
+        lineHeight: '60px',
+        marginLeft: '14px'
       }
     },
     notice: {
@@ -378,13 +384,9 @@ class ReserveDetail extends React.Component {
             >
               联系客服
             </a>
-            <Button
-              inline
-              style={styles.body.actions.reserve}
-              onClick={this.confirm}
-            >
+            <a style={styles.body.actions.reserve} onClick={this.confirm}>
               确认下单
-            </Button>
+            </a>
           </div>
         </div>
       </div>

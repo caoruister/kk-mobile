@@ -4,8 +4,8 @@ import { Button } from 'antd-mobile';
 
 var styles = {
   buttonArea: {
-    padding: '0 20px',
-    marginTop: '15px',
+    margin: '22px 20px 0px',
+    textAlign: 'center',
     button: {
       backgroundColor: '#cc9e48',
       borderRadius: '5px',
@@ -25,9 +25,9 @@ class ButtonSection extends React.Component {
   render() {
     return (
       <div style={styles.buttonArea}>
-        <Button style={styles.buttonArea.button} onClick={this.goReserve}>
+        <div style={styles.buttonArea.button} onClick={this.goReserve}>
           住宿预订
-        </Button>
+        </div>
       </div>
     );
   }

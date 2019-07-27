@@ -2,6 +2,8 @@ import React from 'react';
 import { Range, WingBlank, WhiteSpace, NavBar, Icon } from 'antd-mobile';
 import { _callInterface } from 'api/CommonAPI';
 
+import input from 'assets/images/home_bg02.png';
+
 const arrow =
   process.env.REACT_APP_FILE_URL_PREFIX +
   'file?getfile=402883B86BD1787A016BD1787A120000/mobile/images/home_arrow.png';
@@ -51,11 +53,11 @@ var styles = {
         flex: '1',
         position: 'relative',
         height: '39px',
-        backgroundColor: '#f9f9f9',
+        backgroundColor: '#464646',
         borderRadius: '19px',
-        opacity: '0.1',
+        //opacity: '0.1',
         marginLeft: '23px',
-        padding: '0 9px 0 35px',
+        padding: '0 9px 0 42px',
         searchIcon: {
           position: 'absolute',
           top: '10px',
@@ -67,11 +69,17 @@ var styles = {
           flex: '1',
           border: 'none',
           fontSize: '16px',
-          color: '#838596'
+          color: '#fff',
+          backgroundColor: '#464646'
         },
         closeIcon: {
           width: '24px',
           height: '24px'
+        },
+        inputIcon: {
+          position: 'absolute',
+          top: '0',
+          left: '0'
         }
       }
     },
@@ -126,7 +134,7 @@ var styles = {
         fontSize: '17px',
         color: '#ffe3b4',
         border: '1px solid #c5a567',
-        borderRadius: '5%',
+        borderRadius: '40px',
         display: 'flex',
         alignItems: 'center',
         iconVip: {
@@ -143,9 +151,12 @@ var styles = {
       margin: '137px 20px 0 20px',
       padding: '6px 17px 6px 17px',
       borderRadius: '5px',
-      border: 'solid 1px #c5a567',
+      border: 'solid 1px rgb(197, 165, 103, .36)',
       fontSize: '16px',
       color: '#ffe3b4',
+      height: '65px',
+      //opacity: '.36',
+      backgroundColor: 'rgb(0, 0, 0, .36)',
       left: {
         display: 'flex',
         justifyContent: 'space-between',
@@ -165,7 +176,7 @@ var styles = {
       },
       center: {
         width: '1px',
-        height: '30px',
+        height: '65px',
         backgroundColor: '#838596',
         opacity: '0.36',
         marginLeft: '15px',
@@ -245,7 +256,6 @@ class HomeSection extends React.Component {
           <div style={styles.body.topMenu.search}>
             <img src={search} style={styles.body.topMenu.search.searchIcon} />
             <input type="text" style={styles.body.topMenu.search.inputText} />
-            <img src={close} style={styles.body.topMenu.search.closeIcon} />
           </div>
         </div>
         <div style={styles.body.welcome}>
@@ -255,17 +265,8 @@ class HomeSection extends React.Component {
             会员
           </div>
           <div style={styles.body.welcome.cardnum}>
-            {!this.state.showCardNo && <span>{this.state.maskCardNo}</span>}
+            {this.state.showCardNo && <span>{this.state.maskCardNo}</span>}
             {this.state.showCardNo && <span>{this.state.cardNo}</span>}
-            <img
-              src={iconSee}
-              style={styles.body.welcome.cardnum.view}
-              onClick={() => {
-                this.setState({
-                  showCardNo: true
-                });
-              }}
-            />
           </div>
           <div style={styles.body.welcome.desc}>
             <div style={styles.body.welcome.desc.first}>
