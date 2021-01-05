@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "antd-mobile": "^2.2.14",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "customize-cra": "^0.2.12",
     "husky": "^2.2.0",
     "lint-staged": "^8.1.6",
